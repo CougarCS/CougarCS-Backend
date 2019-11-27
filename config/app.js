@@ -23,6 +23,5 @@ app.use('/api/officers', officer);
 app.use('/api/profile', profile);
 app.use('/api/resume', resume);
 app.use('/api/payment', payment);
-// app.use('/api/event', require('./routes/api/event'));
 
 export default app;
