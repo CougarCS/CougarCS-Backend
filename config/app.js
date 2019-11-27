@@ -2,7 +2,6 @@ import cors from 'cors';
 import 'dotenv/config';
 import express, { json } from 'express';
 import morgan from 'morgan';
-import { join } from 'path';
 import admin from '../routes/api/admin';
 import auth from '../routes/api/auth';
 import member from '../routes/api/member';

@@ -6,10 +6,11 @@ import {
 import { join } from 'path';
 import request from 'supertest';
 import app from '../config/app';
-import { connectDB, dropDB } from '../config/db';
+import { closeDB, connectDB, dropDB } from '../config/db';
 import Member from '../models/Member';
 
 process.env.NODE_ENV = 'test';
+
 
 const authenticatedUser = request.agent(app);
 let memberID;
@@ -85,6 +86,7 @@ describe('POST /member', () => {
   after(async (done) => {
     dropDB();
     // deleteImage();
+    closeDB();
     done();
   });
 

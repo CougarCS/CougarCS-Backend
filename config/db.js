@@ -35,7 +35,11 @@ export const closeDB = () => {
   if (process.env.NODE_ENV === 'test') disconnect();
 };
 export const dropDB = () => {
-  if (process.env.NODE_ENV === 'test') connection.dropDatabase();
+  if (process.env.NODE_ENV === 'test') {
+    connection.once('connected', () => {
+      connection.dropDatabase();
+    });
+  }
 };
 
 export default { connectDB, closeDB, dropDB };
