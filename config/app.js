@@ -15,6 +15,9 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(json({ extended: false }));
 
+app.get('/', (req, res) => {
+  res.json({ welcome: 'CougarCS Backend 🐯' });
+});
 app.use('/api/admin', admin);
 app.use('/api/auth', auth);
 app.use('/api/member', member);
