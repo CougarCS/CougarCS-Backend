@@ -4,36 +4,35 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [10.x, 12.x]
         mongodb-version: ["4.0", "4.2"]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Start MongoDB As Docker
-      uses: wbari/start-mongoDB@v0.2
-      with:
-        # MongoDB Version
-        mongoDBVersion: ${{ matrix.mongodb-version }}
-    - name: yarn install, build, and test
-      run: |
-        yarn
-        yarn test
-      env:
-        MONGO_URI: ${{ secrets.MONGO_URI }}
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        AUTH_ADMIN: ${{ secrets.AUTH_ADMIN }}
-        ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
-        ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
-        AWS_ACCESS_KEYS: ${{ secrets.AWS_ACCESS_KEYS }}
-        AWS_ACCESS_SECRET: ${{ secrets.AWS_ACCESS_SECRET }}
-        AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-        AWS_REGIONS: ${{ secrets.AWS_REGIONS }}
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Start MongoDB As Docker
+        uses: wbari/start-mongoDB@v0.2
+        with:
+          # MongoDB Version
+          mongoDBVersion: ${{ matrix.mongodb-version }}
+      - name: yarn install, build, and test
+        run: |
+          yarn
+          yarn test
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          AUTH_ADMIN: ${{ secrets.AUTH_ADMIN }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
+          AWS_ACCESS_KEYS: ${{ secrets.AWS_ACCESS_KEYS }}
+          AWS_ACCESS_SECRET: ${{ secrets.AWS_ACCESS_SECRET }}
+          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+          AWS_REGIONS: ${{ secrets.AWS_REGIONS }}
