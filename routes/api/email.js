@@ -41,7 +41,7 @@ router.post('/', [
 
     const mail = {
         from: email,
-        to: 'vyas.r@cougarcs.com',
+        to: 'info@cougarcs.com',
         subject: 'New Message from Contact Form',
         text: content,
     };
