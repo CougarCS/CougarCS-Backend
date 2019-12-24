@@ -11,6 +11,8 @@ import payment from '../routes/api/payment';
 import profile from '../routes/api/profile';
 import resume from '../routes/api/resume';
 
+process.env.AWS_BUCKET_NAME = process.env.NODE_ENV === 'test' ? process.env.AWS_BUCKET_NAME_TEST : process.env.AWS_BUCKET_NAME;
+
 const app = express();
 app.use(cors());
 app.use(morgan('dev'));

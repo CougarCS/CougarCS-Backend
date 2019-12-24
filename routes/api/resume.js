@@ -7,6 +7,8 @@ import { upload } from '../../uploads/resume';
 
 const router = Router();
 
+const bucket = process.env.NODE_ENV === 'test' ? process.env.AWS_BUCKET_NAME_TEST : process.env.AWS_BUCKET_NAME;
+
 // @route   PUT api/resume
 // @desc    Add or update resume
 // @access  Private
@@ -21,7 +23,7 @@ router.put(
     if (!errors.isEmpty()) {
       s3.deleteObject(
         {
-          Bucket: process.env.AWS_BUCKET_NAME,
+          Bucket: bucket,
           Key: req.file.key,
         },
         (err) => {
@@ -37,7 +39,7 @@ router.put(
         if (member.resumeData.resumeKey != null) {
           s3.deleteObject(
             {
-              Bucket: process.env.AWS_BUCKET_NAME,
+              Bucket: bucket,
               Key: member.resumeData.resumeKey,
             },
             (err) => {
@@ -62,7 +64,7 @@ router.put(
     } catch (err) {
       s3.deleteObject(
         {
-          Bucket: process.env.AWS_BUCKET_NAME,
+          Bucket: bucket,
           Key: member.resumeData.resumeKey,
         },
         (_err) => {
@@ -84,7 +86,7 @@ router.delete('/', auth, async (req, res) => {
       if (Object.entries(member.resumeData)[2][1]) {
         s3.deleteObject(
           {
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: bucket,
             Key: member.resumeData.resumeKey,
           },
           async () => {

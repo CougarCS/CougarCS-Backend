@@ -13,7 +13,7 @@ const fileFilter = (req, file, cb) => {
 export const upload = multer({
   storage: multerS3({
     s3,
-    bucket: process.env.AWS_BUCKET_NAME,
+    bucket: process.env.NODE_ENV === 'test' ? process.env.AWS_BUCKET_NAME_TEST : process.env.AWS_BUCKET_NAME,
     acl: 'public-read',
     metadata(req, file, cb) {
       cb(null, { fieldName: file.fieldname });
@@ -22,7 +22,7 @@ export const upload = multer({
       cb(
         null,
         `images/${new Date().toISOString().replace(/:/g, '-')}${
-          file.originalname
+        file.originalname
         }`,
       );
     },

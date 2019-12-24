@@ -1,16 +1,12 @@
 import { genSalt, hash } from 'bcryptjs';
 import { expect } from 'chai';
-import {
- after, before, beforeEach, describe, it 
-} from 'mocha';
-import { join } from 'path';
+import { after, before, beforeEach, describe, it } from 'mocha';
 import request from 'supertest';
 import app from '../config/app';
 import { closeDB, connectDB, dropDB } from '../config/db';
 import Member from '../models/Member';
 
 process.env.NODE_ENV = 'test';
-
 
 const authenticatedUser = request.agent(app);
 let memberID;
@@ -43,7 +39,7 @@ const createTempMember = async () => {
   try {
     const profileImageData = {
       profileImage:
-        'https://cougarscs-profile-images.s3.us-east-2.amazonaws.com/static/users-01.png',
+        'https://cougarcs-testing.s3.us-east-2.amazonaws.com/static/users-01.png',
       profileImageKey: 'static/users-01.png',
     };
 
@@ -69,6 +65,7 @@ const createTempMember = async () => {
 
 describe('POST /member', () => {
   before(async (done) => {
+    process.env.NODE_ENV = 'test';
     dropDB();
     // deleteImage();
     connectDB();
@@ -77,18 +74,19 @@ describe('POST /member', () => {
   });
 
   beforeEach((done) => {
+    process.env.NODE_ENV = 'test';
     Member.deleteMany({ email: 'test@test.com' }, (err) => {
       if (err) done(err);
       done();
     });
   });
 
-  after(async (done) => {
-    dropDB();
-    // deleteImage();
-    closeDB();
-    done();
-  });
+  // after(async (done) => {
+  //   dropDB();
+  //   // deleteImage();
+  //   closeDB();
+  //   done();
+  // });
 
   it('Creating a new member', (done) => {
     request(app)
@@ -293,127 +291,14 @@ describe('POST /member', () => {
         done();
       });
   });
-});
 
-/*
- PUT REQUEST TESTING MEMBER
-*/
-describe('PUT /member', () => {
-  before(async (done) => {
-    dropDB();
-    // deleteImage();
-    connectDB();
-    createTempMember();
-    done();
-  });
-
-  beforeEach((done) => {
-    Member.deleteMany({ email: 'test@test.com' }, (err) => {
-      if (err) done(err);
-      done();
-    });
-  });
-
-
-  it('Auth User', (done) => {
+  it('Delete, user', (done) => {
     authenticatedUser
-      .post('/api/auth')
-      .send({ email: 'vyas@test.com', password: '123456' })
+      .delete(`/api/member/${memberID}`)
+      .set('x-auth-token', `${memberToken}`)
+      .set('x-admin-token', `${process.env.AUTH_ADMIN}`)
       .then((res) => {
         expect(res.statusCode).to.equal(200);
-        expect(res.body).to.contain.property('token');
-        memberToken = res.body.token;
-        done();
-      });
-  });
-
-  it('Update user info', (done) => {
-    authenticatedUser
-      .put(`/api/member/${memberID}`)
-      .set('x-auth-token', `${memberToken}`)
-      .field('firstName', 'Vyas')
-      .field('lastName', 'Ramankulangara')
-      .field('email', 'vyas0189@gmail.com')
-      .attach('profileImage', `${join(__dirname, '../assets/', 'cougarcs_background1.jpg')}`)
-      .then((res) => {
-        expect(res.statusCode).to.equal(200);
-        expect(res.body).to.contain.property('_id');
-
-        done();
-      })
-      .catch((err) => {
-        console.log(err);
-        done(err);
-      });
-  });
-
-  it('Fail, Update user info: firstName', (done) => {
-    authenticatedUser
-      .put(`/api/member/${memberID}`)
-      .set('x-auth-token', `${memberToken}`)
-      .field('lastName', 'Ramankulangara')
-      .field('email', 'vyas0189@gmail.com')
-      .attach('profileImage', `${join(__dirname, '../assets/', 'cougarcs_background1.jpg')}`)
-      .then((res) => {
-        expect(res.statusCode).to.equal(400);
-        expect(res.body.msg[0].msg).to.equal('First Name is required');
-
-        done();
-      })
-      .catch((err) => {
-        console.log(err);
-        done(err);
-      });
-  });
-
-  it('Fail, Update user info: lastName', (done) => {
-    authenticatedUser
-      .put(`/api/member/${memberID}`)
-      .set('x-auth-token', `${memberToken}`)
-      .field('firstName', 'Vyas')
-      .field('email', 'vyas0189@gmail.com')
-      .attach('profileImage', `${join(__dirname, '../assets/', 'cougarcs_background1.jpg')}`)
-      .then((res) => {
-        expect(res.statusCode).to.equal(400);
-        expect(res.body.msg[0].msg).to.equal('Last Name is required');
-
-        done();
-      })
-      .catch((err) => {
-        console.log(err);
-        done(err);
-      });
-  });
-
-  it('Fail, Update user info: Email', (done) => {
-    authenticatedUser
-      .put(`/api/member/${memberID}`)
-      .set('x-auth-token', `${memberToken}`)
-      .field('firstName', 'Vyas')
-      .field('lastName', 'Ramankulangara')
-      .attach('profileImage', `${join(__dirname, '../assets/', 'cougarcs_background1.jpg')}`)
-      .then((res) => {
-        expect(res.statusCode).to.equal(400);
-        expect(res.body.msg[0].msg).to.equal('Email is required');
-
-        done();
-      })
-      .catch((err) => {
-        console.log(err);
-        done(err);
-      });
-  });
-
-  it('Fail, Update user info: Image', (done) => {
-    authenticatedUser
-      .put(`/api/member/${memberID}`)
-      .set('x-auth-token', `${memberToken}`)
-      .field('firstName', 'Vyas')
-      .field('email', 'vyas0189@gmail.com')
-      .field('lastName', 'Ramankulangara')
-      .then((res) => {
-        expect(res.statusCode).to.equal(400);
-        expect(res.body.errors[0].msg).to.equal('Error updating');
         done();
       })
       .catch((err) => {
@@ -424,6 +309,157 @@ describe('PUT /member', () => {
 
   after(async (done) => {
     dropDB();
+    // deleteImage();
+    closeDB();
     done();
   });
 });
+
+/*
+ PUT REQUEST TESTING MEMBER
+*/
+// describe('PUT /member', () => {
+//   before(async (done) => {
+//     process.env.NODE_ENV = 'test';
+//     dropDB();
+//     // deleteImage();
+//     connectDB();
+//     createTempMember();
+//     done();
+//   });
+
+//   beforeEach((done) => {
+//     process.env.NODE_ENV = 'test';
+//     Member.deleteMany({ email: 'test@test.com' }, (err) => {
+//       if (err) done(err);
+//       done();
+//     });
+//   });
+
+
+// it('Auth User', (done) => {
+//   authenticatedUser
+//     .post('/api/auth')
+//     .send({ email: 'vyas@test.com', password: '123456' })
+//     .then((res) => {
+//       expect(res.statusCode).to.equal(200);
+//       expect(res.body).to.contain.property('token');
+//       memberToken = res.body.token;
+//       done();
+//     });
+// });
+
+// it('Update user info', (done) => {
+//   authenticatedUser
+//     .put(`/api/member/${memberID}`)
+//     .set('x-auth-token', `${memberToken}`)
+//     .field('firstName', 'Vyas')
+//     .field('lastName', 'Test')
+//     .field('email', 'test@gmail.com')
+//     .attach('profileImage', `${join(__dirname, '../assets/', 'download.jpeg')}`)
+//     .then((res) => {
+//       expect(res.statusCode).to.equal(200);
+//       expect(res.body).to.contain.property('_id');
+
+//       done();
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       done(err);
+//     });
+// });
+
+//   it('Fail, Update user info: firstName', (done) => {
+//     authenticatedUser
+//       .put(`/api/member/${memberID}`)
+//       .set('x-auth-token', `${memberToken}`)
+//       .field('lastName', 'test')
+//       .field('email', 'test@gmail.com')
+//       .attach('profileImage', `${join(__dirname, '../assets/', 'CougarCS-1.png')}`)
+//       .then((res) => {
+//         expect(res.statusCode).to.equal(400);
+//         expect(res.body.msg[0].msg).to.equal('First Name is required');
+
+//         done();
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         done(err);
+//       });
+//   });
+
+//   it('Fail, Update user info: lastName', (done) => {
+//     authenticatedUser
+//       .put(`/api/member/${memberID}`)
+//       .set('x-auth-token', `${memberToken}`)
+//       .field('firstName', 'Vyas')
+//       .field('email', 'test@gmail.com')
+//       .attach('profileImage', `${join(__dirname, '../assets/', 'placeholder.jpg')}`)
+//       .then((res) => {
+//         expect(res.statusCode).to.equal(400);
+//         expect(res.body.msg[0].msg).to.equal('Last Name is required');
+
+//         done();
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         done(err);
+//       });
+//   });
+
+//   it('Fail, Update user info: Email', (done) => {
+//     authenticatedUser
+//       .put(`/api/member/${memberID}`)
+//       .set('x-auth-token', `${memberToken}`)
+//       .field('firstName', 'Vyas')
+//       .field('lastName', 'test')
+//       .attach('profileImage', `${join(__dirname, '../assets/', 'CFG19_Dallas-995.jpg')}`)
+//       .then((res) => {
+//         expect(res.statusCode).to.equal(400);
+//         expect(res.body.msg[0].msg).to.equal('Email is required');
+
+//         done();
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         done(err);
+//       });
+//   });
+
+//   it('Fail, Update user info: Image', (done) => {
+//     authenticatedUser
+//       .put(`/api/member/${memberID}`)
+//       .set('x-auth-token', `${memberToken}`)
+//       .field('firstName', 'Vyas')
+//       .field('email', 'test@gmail.com')
+//       .field('lastName', 'Test')
+//       .then((res) => {
+//         expect(res.statusCode).to.equal(400);
+//         expect(res.body.errors[0].msg).to.equal('Error updating');
+//         done();
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         done(err);
+//       });
+//   });
+//   it('Delete, user', (done) => {
+//     authenticatedUser
+//       .delete(`/api/member/${memberID}`)
+//       .set('x-auth-token', `${memberToken}`)
+//       .set('x-admin-token', `${process.env.AUTH_ADMIN}`)
+//       .then((res) => {
+//         expect(res.statusCode).to.equal(200);
+//         done();
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         done(err);
+//       });
+//   });
+
+//   after(async (done) => {
+//     dropDB();
+//     done();
+//   });
+// });

@@ -8,8 +8,11 @@ import Member from '../../models/Member';
 import Officer from '../../models/Officer';
 import { upload } from '../../uploads/profileImage';
 
-
 const router = Router();
+
+const bucket = process.env.AWS_BUCKET_NAME;
+const filePath = 'https://cougarscs-profile-images.s3.us-east-2.amazonaws.com/static/users-01.png';
+
 
 // @route   GET api/members
 // @desc    Get all members
@@ -75,7 +78,7 @@ router.post(
       }
       const profileImageData = {
         profileImage:
-          'https://cougarscs-profile-images.s3.us-east-2.amazonaws.com/static/users-01.png',
+          filePath,
         profileImageKey: 'static/users-01.png',
       };
       member = new Member({
@@ -138,7 +141,7 @@ router.put(
       if (req.file && req.file.originalname !== 'users-01.png') {
         s3.deleteObject(
           {
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: bucket,
             Key: req.file.key,
           },
           (err) => {
@@ -172,7 +175,7 @@ router.put(
             ) {
               s3.deleteObject(
                 {
-                  Bucket: process.env.AWS_BUCKET_NAME,
+                  Bucket: bucket,
                   Key: member.profileImageData.profileImageKey,
                 },
                 (err) => {
@@ -196,7 +199,7 @@ router.put(
             if (req.file && req.file.originalname !== 'users-01.png') {
               s3.deleteObject(
                 {
-                  Bucket: process.env.AWS_BUCKET_NAME,
+                  Bucket: bucket,
                   Key: req.file.key,
                 },
                 (err) => {
@@ -213,7 +216,7 @@ router.put(
         if (req.file && req.file.originalname !== 'users-01.png') {
           s3.deleteObject(
             {
-              Bucket: process.env.AWS_BUCKET_NAME,
+              Bucket: bucket,
               Key: req.file.key,
             },
             (err) => {
@@ -227,7 +230,7 @@ router.put(
       if (req.file && req.file.originalname !== 'users-01.png') {
         s3.deleteObject(
           {
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: bucket,
             Key: req.file.key,
           },
           (err2) => {
@@ -261,7 +264,7 @@ router.delete('/:member_id', auth, async (req, res) => {
             ) {
               s3.deleteObject(
                 {
-                  Bucket: process.env.AWS_BUCKET_NAME,
+                  Bucket: bucket,
                   Key: member.profileImageData.profileImageKey,
                 },
                 (err2) => {
@@ -271,7 +274,7 @@ router.delete('/:member_id', auth, async (req, res) => {
             }
             s3.deleteObject(
               {
-                Bucket: process.env.AWS_BUCKET_NAME,
+                Bucket: bucket,
                 Key: member.resumeData.resumeKey,
               },
               (err2) => {
@@ -291,7 +294,7 @@ router.delete('/:member_id', auth, async (req, res) => {
             ) {
               s3.deleteObject(
                 {
-                  Bucket: process.env.AWS_BUCKET_NAME,
+                  Bucket: bucket,
                   Key: member.profileImageData.profileImageKey,
                 },
                 (err2) => {
@@ -301,7 +304,7 @@ router.delete('/:member_id', auth, async (req, res) => {
             }
             s3.deleteObject(
               {
-                Bucket: process.env.AWS_BUCKET_NAME,
+                Bucket: bucket,
                 Key: member.resumeData.resumeKey,
               },
               (err2) => {

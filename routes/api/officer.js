@@ -8,6 +8,8 @@ import { upload } from '../../uploads/profileImage';
 
 const router = Router();
 
+const bucket = process.env.NODE_ENV === 'test' ? process.env.AWS_BUCKET_NAME_TEST : process.env.AWS_BUCKET_NAME;
+
 // @route   GET api/officer
 // @desc    Get all officers
 // @access  Public
@@ -69,7 +71,7 @@ router.put(
       if (req.file.originalname !== 'users-01.png') {
         s3.deleteObject(
           {
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: bucket,
             Key: req.file.key,
           },
           (err) => {
@@ -113,7 +115,7 @@ router.put(
         ) {
           s3.deleteObject(
             {
-              Bucket: process.env.AWS_BUCKET_NAME,
+              Bucket: bucket,
               Key: member.profileImageData.profileImageKey,
             },
             (err) => {
@@ -153,7 +155,7 @@ router.put(
         ) {
           s3.deleteObject(
             {
-              Bucket: process.env.AWS_BUCKET_NAME,
+              Bucket: bucket,
               Key: member.profileImageData.profileImageKey,
             },
             (err) => {
@@ -183,7 +185,7 @@ router.put(
         ) {
           s3.deleteObject(
             {
-              Bucket: process.env.AWS_BUCKET_NAME,
+              Bucket: bucket,
               Key: member.profileImageData.profileImageKey,
             },
             (err) => {
@@ -206,7 +208,7 @@ router.put(
         if (req.file.originalname !== 'users-01.png') {
           s3.deleteObject(
             {
-              Bucket: process.env.AWS_BUCKET_NAME,
+              Bucket: bucket,
               Key: req.file.key,
             },
             (err) => {
@@ -219,7 +221,7 @@ router.put(
         if (req.file.originalname !== 'users-01.png') {
           s3.deleteObject(
             {
-              Bucket: process.env.AWS_BUCKET_NAME,
+              Bucket: bucket,
               Key: req.file.key,
             },
             (err) => {
@@ -233,7 +235,7 @@ router.put(
       if (req.file.originalname !== 'users-01.png') {
         s3.deleteObject(
           {
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: bucket,
             Key: req.file.key,
           },
           (err2) => {
