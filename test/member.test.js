@@ -1,6 +1,8 @@
 import { genSalt, hash } from 'bcryptjs';
 import { expect } from 'chai';
-import { after, before, beforeEach, describe, it } from 'mocha';
+import {
+  after, before, beforeEach, describe, it,
+} from 'mocha';
 import request from 'supertest';
 import app from '../config/app';
 import { closeDB, connectDB, dropDB } from '../config/db';
