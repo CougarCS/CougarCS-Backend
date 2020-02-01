@@ -20,6 +20,7 @@ const filePath = 'https://cougarscs-profile-images.s3.us-east-2.amazonaws.com/st
 router.get('/', async (req, res) => {
   try {
     const members = await Member.find().select('-password');
+    res.status(200);
     res.send(members);
   } catch (err) {
     console.error(err.message);
