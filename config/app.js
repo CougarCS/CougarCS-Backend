@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import admin from '../routes/api/admin';
 import auth from '../routes/api/auth';
 import email from '../routes/api/email';
+import events from '../routes/api/event';
 import member from '../routes/api/member';
 import officer from '../routes/api/officer';
 import payment from '../routes/api/payment';
@@ -31,6 +32,8 @@ app.use('/api/profile', profile);
 app.use('/api/resume', resume);
 app.use('/api/payment', payment);
 app.use('/api/send', email);
+app.use('/api/events', events);
+
 app.use((req, res, next) => {
   const error = new Error(`Not Found - ${req.originalUrl}`);
   res.status(404);
