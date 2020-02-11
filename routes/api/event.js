@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
 
   futureEvents = _.sortBy(futureEvents, (o) => moment(o.start.date));
   pastEvents = _.sortBy(pastEvents, (o) => moment(o.start.date)).reverse();
-  res.send({ futureEvents, pastEvents });
+  res.send([ ...futureEvents, pastEvents ]);
 });
 
 export default router;
