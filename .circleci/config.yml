@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  build-and-test:
     working_directory: ~/mern-starter
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
