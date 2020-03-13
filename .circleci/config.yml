@@ -7,6 +7,7 @@ jobs:
       name: node/default
     docker:
       - image: mongo:latest
+      - image: node:12
     steps:
       - checkout
       - node/with-cache:
