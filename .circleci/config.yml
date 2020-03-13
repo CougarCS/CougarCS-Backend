@@ -5,6 +5,8 @@ jobs:
   build-and-test:
     executor:
       name: node/default
+    docker:
+      - image: mongo:latest
     steps:
       - checkout
       - node/with-cache:
