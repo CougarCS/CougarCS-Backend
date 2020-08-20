@@ -24,12 +24,12 @@ router.get('/', async (req, res) => {
       if (moment(item.start.date) > now) {
         futureEvents.push(item);
       }
-      if (moment(item.start.date) < now && moment(item.start.date) > moment().subtract(4, 'months')) { pastEvents.push(item); }
+      if (moment(item.start.date) < now && moment(item.start.date) > moment().subtract(1, 'year')) { pastEvents.push(item); }
     } else {
       if (moment(item.start.dateTime) > now) {
         futureEvents.push(item);
       }
-      if (moment(item.start.dateTime) < now && moment(item.start.dateTime) > moment().subtract(4, 'months')) { pastEvents.push(item); }
+      if (moment(item.start.dateTime) < now && moment(item.start.dateTime) > moment().subtract(1, 'year')) { pastEvents.push(item); }
     }
   });
 
