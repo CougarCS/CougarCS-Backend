@@ -9,7 +9,7 @@ import email from '../routes/api/email';
 import events from '../routes/api/event';
 // import member from '../routes/api/member';
 // import officer from '../routes/api/officer';
-// import payment from '../routes/api/payment';
+import payment from '../routes/api/payment';
 // import profile from '../routes/api/profile';
 // import resume from '../routes/api/resume';
 
@@ -22,7 +22,7 @@ app.use(helmet());
 app.use(json({ extended: false }));
 
 app.get('/', (req, res) => {
-  res.json({ welcome: 'CougarCS Backend 🐯' });
+	res.json({ welcome: 'CougarCS Backend 🐯' });
 });
 // app.use('/api/admin', admin);
 // app.use('/api/auth', auth);
@@ -30,22 +30,22 @@ app.get('/', (req, res) => {
 // app.use('/api/officers', officer);
 // app.use('/api/profile', profile);
 // app.use('/api/resume', resume);
-// app.use('/api/payment', payment);
+app.use('/api/payment', payment);
 app.use('/api/send', email);
 app.use('/api/events', events);
 
 app.use((req, res, next) => {
-  const error = new Error(`Not Found - ${req.originalUrl}`);
-  res.status(404);
-  next(error);
+	const error = new Error(`Not Found - ${req.originalUrl}`);
+	res.status(404);
+	next(error);
 });
 app.use((error, req, res, next) => {
-  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-  res.status(statusCode);
-  res.json({
-    message: error.message,
-    stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
-  });
+	const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+	res.status(statusCode);
+	res.json({
+		message: error.message,
+		stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
+	});
 });
 
 export default app;
