@@ -12,3 +12,4 @@ start-server.sh
 
 .vscode/
 keys.json
+.history/
