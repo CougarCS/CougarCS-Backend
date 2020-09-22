@@ -1,24 +1,23 @@
 version: 2.1
 jobs:
   build-and-test:
-    working_directory: ~/mern-starter
+    working_directory: ~/cougarcs-backend
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
       - image: circleci/node:12
-      # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
-      - image: mongo:latest
+      # - image: mongo:latest
     steps:
       - checkout
       - run:
           name: Update npm
-          command: "sudo npm install -g npm@latest"
+          command: 'sudo npm install -g npm@latest'
       - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
-          name: Install npm wee
+          name: Install npm
           command: npm install && npm test
       - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
 workflows:
