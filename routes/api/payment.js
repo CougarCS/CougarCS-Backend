@@ -5,6 +5,7 @@ import { check, validationResult } from 'express-validator/check';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import Stripe from 'stripe';
 import moment from 'moment';
+import request from 'request';
 import { v4 as uuidv4 } from 'uuid';
 
 const router = Router();
@@ -38,6 +39,8 @@ router.post(
 			.not().isEmpty().trim().escape()
 			.matches(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/).withMessage('Bad Request!'),
 
+		check('recaptchaToken')
+			.not().isEmpty().trim().escape(),
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
@@ -45,11 +48,21 @@ router.post(
 			return res.status(500).json({ errors: errors.array() });
 		}
 
-		// console.log(req.body);
 		const {
 			token,
-			user
+			user,
+			recaptchaToken
 		} = req.body;
+
+		// check recaptcha
+		var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + process.env.recaptcha_secret_key + "&response=" + recaptchaToken;
+		request(verificationUrl, function (error, response, body) {
+			body = JSON.parse(body);
+			if (body.success !== undefined && !body.success) {
+				return res.status(500).json({ response: "Failed to validate ReCaptcha" });
+			}
+		});
+
 		const idempotencyKey = uuidv4();
 
 		let amount = 0;
@@ -60,8 +73,6 @@ router.post(
 		} else {
 			return res.status(500).json({ response: "Bad Request!" })
 		}
-
-		let result
 
 		// create customer
 		stripe.customers.create({
