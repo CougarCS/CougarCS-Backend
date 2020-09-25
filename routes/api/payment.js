@@ -111,11 +111,9 @@ router.post(
 			const doc = new GoogleSpreadsheet(
 				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
 			);
-			console.log(process.env.private_key);
-			console.log(process.env.client_email);
 			await doc.useServiceAccountAuth({
 				client_email: process.env.client_email,
-				private_key: process.env.private_key,
+				private_key: process.env.private_key.replace(/\\n/g, '\n'),
 			});
 			await doc.loadInfo();
 			const sheet = doc.sheetsByIndex[0];
