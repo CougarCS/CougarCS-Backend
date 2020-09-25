@@ -1,7 +1,7 @@
 /* eslint-disable no-tabs */
 /* eslint-disable indent */
 import { Router } from 'express';
-import { check, validationResult } from 'express-validator';
+import { check, validationResult } from 'express-validator/check';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import Stripe from 'stripe';
 import moment from 'moment';
@@ -111,10 +111,11 @@ router.post(
 			const doc = new GoogleSpreadsheet(
 				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
 			);
-			await doc.useServiceAccountAuth({
-				client_email: process.env.client_email,
-				private_key: process.env.private_key.replace(/\\n/g, '\n'),
-			});
+			// await doc.useServiceAccountAuth({
+			// 	client_email: process.env.client_email,
+			// 	private_key: process.env.private_key.replace(/\\n/g, '\n'),
+			// });
+			await doc.useServiceAccountAuth(process.env.GOOGLE_SHEET_CREDENTIALS, process.env.client_email);
 			await doc.loadInfo();
 			const sheet = doc.sheetsByIndex[0];
 			await sheet.addRow({
