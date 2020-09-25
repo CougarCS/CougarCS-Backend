@@ -115,7 +115,9 @@ router.post(
 			// 	client_email: process.env.client_email,
 			// 	private_key: process.env.private_key.replace(/\\n/g, '\n'),
 			// });
-			await doc.useServiceAccountAuth(JSON.parse(process.env.GOOGLE_SHEET_CREDENTIALS));
+			await doc.useServiceAccountAuth(
+				JSON.parse(process.env.GOOGLE_SHEET_CREDENTIALS)
+			);
 			await doc.loadInfo();
 			const sheet = doc.sheetsByIndex[0];
 			await sheet.addRow({
@@ -131,8 +133,7 @@ router.post(
 			});
 		} catch (err) {
 			console.log(err);
-			return res.json(err);
-
+			return res.status(500).json(err);
 		}
 
 		return res.status(200).json({ message: 'OK' });
