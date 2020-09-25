@@ -1,7 +1,7 @@
 /* eslint-disable no-tabs */
 /* eslint-disable indent */
 import { Router } from 'express';
-import { check, validationResult } from 'express-validator';
+import { check, validationResult } from 'express-validator/check';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import Stripe from 'stripe';
 import moment from 'moment';
