@@ -100,7 +100,7 @@ router.post(
 						payment_method: token,
 						customer: customer.id,
 						confirm: true,
-						receipt_email: 'secretary@cougarcs.com',
+						receipt_email: user.email,
 					},
 					{ idempotencyKey }
 				);
