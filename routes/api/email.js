@@ -34,7 +34,7 @@ router.post(
 			sgMail.send(msg);
 			// res.status(200).send('Email sent.');
 		} catch (err) {
-			res.status(500).json(err);
+			return res.status(500).json(err);
 		}
 
 		// GOOGLE SHEETS
@@ -64,10 +64,10 @@ router.post(
 			});
 		} catch (err) {
 			console.log(err);
-			res.status(500).json(err);
+			return res.status(500).json(err);
 		}
 
-		res.status(200).send('Email sent.');
+		return res.status(200).send('Email sent.');
 	}
 );
 
