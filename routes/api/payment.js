@@ -64,7 +64,7 @@ router.post(
 			if (body.success !== undefined && !body.success) {
 				return res
 					.status(500)
-					.json({ response: 'Failed to validate ReCaptcha' });
+					.json({ message: 'Failed to validate ReCaptcha' });
 			}
 		});
 
@@ -76,35 +76,40 @@ router.post(
 		} else if (user.paidUntil === 'year') {
 			amount = 1800;
 		} else {
-			return res.status(500).json({ response: 'Bad Request!' });
+			return res.status(500).json({ message: 'Bad Request!' });
 		}
 
 		// create customer
-		stripe.customers
-			.create({
-				email: user.email,
-				phone: user.phone,
-				name: `${user.firstName} ${user.lastName}`,
-				metadata: {
-					'UH ID': user.uhID,
-					'Paid For': user.paidUntil,
-				},
-			})
-			// create payment intent and charge customer
-			.then((customer) => {
-				stripe.paymentIntents.create(
-					{
-						amount,
-						currency: 'USD',
-						description: 'Membership Payment',
-						payment_method: token,
-						customer: customer.id,
-						confirm: true,
-						receipt_email: user.email,
+		try {
+			stripe.customers
+				.create({
+					email: user.email,
+					phone: user.phone,
+					name: `${user.firstName} ${user.lastName}`,
+					metadata: {
+						'UH ID': user.uhID,
+						'Paid For': user.paidUntil,
 					},
-					{ idempotencyKey }
-				);
-			});
+				})
+				// create payment intent and charge customer
+				.then((customer) => {
+					stripe.paymentIntents.create(
+						{
+							amount,
+							currency: 'USD',
+							description: 'Membership Payment',
+							payment_method: token,
+							customer: customer.id,
+							confirm: true,
+							receipt_email: user.email,
+						},
+						{ idempotencyKey }
+					);
+				});
+		} catch (err) {
+			console.log(err);
+			return res.status(500).json({ message: 'Payment Error!' });
+		}
 
 		// GOOGLE SHEETS
 		try {
