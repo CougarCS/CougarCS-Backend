@@ -12,4 +12,5 @@ start-server.sh
 
 .vscode/
 keys.json
+gsheet.json
 .history/
