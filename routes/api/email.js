@@ -3,8 +3,6 @@
 import sgMail from '@sendgrid/mail';
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator/check';
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import moment from 'moment';
 
 const router = Router();
 
@@ -26,42 +24,13 @@ router.post(
 		try {
 			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 			const msg = {
-				to: 'webmaster@cougarcs.com',
+				to: 'info@cougarcs.com',
 				from: email,
 				subject: 'New Message from Contact Form',
 				text: content,
 			};
 			sgMail.send(msg);
-			// res.status(200).send('Email sent.');
 		} catch (err) {
-			return res.status(500).json(err);
-		}
-
-		// GOOGLE SHEETS
-		try {
-			const doc = new GoogleSpreadsheet(
-				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
-			);
-			// await doc.useServiceAccountAuth({
-			// 	client_email: process.env.client_email,
-			// 	private_key: process.env.private_key,
-			// });
-			await doc.useServiceAccountAuth(require('../../gsheet.json'));
-			await doc.loadInfo();
-			const sheet = doc.sheetsByIndex[0];
-			await sheet.addRow({
-				Timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
-				Email: 'Test',
-				'First Name': 'Test',
-				'Last Name': 'Test',
-				PeopleSoft: 'Test',
-				Classification: 'Test',
-				'Paid Until': 'Test',
-				'Payment Method': 'Stripe',
-				'Phone Number': 'Test',
-			});
-		} catch (err) {
-			console.log(err);
 			return res.status(500).json(err);
 		}
 
