@@ -3,6 +3,7 @@
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator/check';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
 import moment from 'moment';
 import request from 'request';
@@ -111,18 +112,17 @@ router.post(
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
 
+
 		// GOOGLE SHEETS
 		try {
 			const doc = new GoogleSpreadsheet(
 				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
 			);
-			await doc.useServiceAccountAuth({
-				client_email: process.env.client_email,
-				private_key: process.env.private_key,
-			});
-			// await doc.useServiceAccountAuth(
-			// 	JSON.parse(process.env.GOOGLE_SHEET_CREDENTIALS)
-			// );
+			// await doc.useServiceAccountAuth({
+			// 	client_email: process.env.client_email,
+			// 	private_key: process.env.private_key,
+			// });
+			await doc.useServiceAccountAuth(require('../../gsheet.json'));
 			await doc.loadInfo();
 			const sheet = doc.sheetsByIndex[0];
 			await sheet.addRow({
@@ -137,6 +137,14 @@ router.post(
 				'Phone Number': user.phone,
 			});
 		} catch (err) {
+			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+			const msg = {
+				to: 'webmaster@cougarcs.com',
+				from: 'info@cougarcs.com',
+				subject: 'GSheet Error on Website Payments',
+				text: err,
+			};
+			sgMail.send(msg);
 			console.log(err);
 		}
 
