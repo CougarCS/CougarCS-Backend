@@ -42,13 +42,11 @@ router.post(
 			const doc = new GoogleSpreadsheet(
 				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
 			);
-			await doc.useServiceAccountAuth({
-				client_email: process.env.client_email,
-				private_key: process.env.private_key,
-			});
-			// await doc.useServiceAccountAuth(
-			// 	JSON.parse(process.env.GOOGLE_SHEET_CREDENTIALS)
-			// );
+			// await doc.useServiceAccountAuth({
+			// 	client_email: process.env.client_email,
+			// 	private_key: process.env.private_key,
+			// });
+			await doc.useServiceAccountAuth(require('../../gsheet.json'));
 			await doc.loadInfo();
 			const sheet = doc.sheetsByIndex[0];
 			await sheet.addRow({
