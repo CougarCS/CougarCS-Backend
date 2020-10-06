@@ -16,7 +16,7 @@ router.post(
 		check('email', 'Email is required').isEmail(),
 		check('body', 'Body is required').not().isEmpty(),
 	],
-	(req, res) => {
+	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ msg: errors.array() });
