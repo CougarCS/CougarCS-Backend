@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import app from './src/config/app';
-import { logger } from './src/utils/logger';
+import app from './config/app';
+import { logger } from './utils/logger';
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, (err) => {

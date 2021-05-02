@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import axios from 'axios';
 import { Router } from 'express';
 import _ from 'lodash';
@@ -59,7 +58,9 @@ router.get('/', async (req, res) => {
 		pastEvents.forEach((obj) => renameKey(obj.end, 'dateTime', 'date'));
 
 		futureEvents = _.sortBy(futureEvents, (o) => moment(o.start.date));
-		pastEvents = _.sortBy(pastEvents, (o) => moment(o.start.date)).reverse();
+		pastEvents = _.sortBy(pastEvents, (o) =>
+			moment(o.start.date)
+		).reverse();
 		logger.info('Events sent');
 		return res.send({ futureEvents, pastEvents, data });
 	} catch (err) {

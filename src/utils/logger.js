@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { createLogger, config, transports } from 'winston';
 
 const options = {

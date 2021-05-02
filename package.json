@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon --exec babel-node server.js",
-    "start": "babel-node server.js",
+    "server": "nodemon --exec babel-node ./src/server.js",
+    "start": "babel-node ./src/server.js",
     "eslint-check": "eslint ./src --ext .js",
     "eslint-fix": "eslint src/**/*.js --fix"
   },
@@ -28,7 +28,6 @@
     "helmet": "^3.21.2",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.5",
     "morgan": "^1.10.0",
     "morgan-json": "^1.1.0",
     "stripe": "^8.93.0",
@@ -39,9 +38,7 @@
     "@babel/cli": "^7.7.0",
     "@babel/core": "^7.7.2",
     "@babel/node": "^7.7.0",
-    "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.7.1",
-    "@babel/register": "^7.7.0",
     "@babel/runtime": "^7.7.2",
     "eslint": "^7.25.0",
     "eslint-config-airbnb-base": "^14.2.1",
