@@ -1,9 +1,11 @@
+/* eslint-disable no-param-reassign */
 import axios from 'axios';
 import { Router } from 'express';
 import _ from 'lodash';
 import moment from 'moment';
 
 const router = new Router();
+
 const renameKey = (obj, oldKey, newKey) => {
 	if (oldKey !== newKey && !obj.date) {
 		Object.defineProperty(
@@ -22,7 +24,7 @@ router.get('/', async (req, res) => {
 	let futureEvents = [];
 	let pastEvents = [];
 
-	data.items.map((item) => {
+	data.items.forEach((item) => {
 		if (item.start === undefined) {
 			return;
 		}

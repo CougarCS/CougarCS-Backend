@@ -1,13 +1,13 @@
 {
-  "name": "CougarCS",
+  "name": "cougarcs-backend",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "server": "nodemon --exec babel-node server.js",
     "start": "babel-node server.js",
-    "eslint": "eslint ./routes/api/ && eslint ./models/ && eslint ./config/ && eslint ./middleware/ && eslint ./test/ && eslint ./uploads/ eslint server.js",
-    "eslint-fix": "eslint ./routes/api/ --fix && eslint ./models/ --fix && eslint ./config/ --fix && eslint ./middleware/ --fix && eslint ./test/ --fix && eslint ./uploads/ --fix && eslint server.js --fix"
+    "eslint-check": "eslint ./src --ext .js",
+    "eslint-fix": "eslint src/**/*.js --fix"
   },
   "keywords": [],
   "author": "",
@@ -38,9 +38,13 @@
     "@babel/preset-env": "^7.7.1",
     "@babel/register": "^7.7.0",
     "@babel/runtime": "^7.7.2",
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "nodemon": "^1.19.2"
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier-check": "^1.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "nodemon": "^1.19.2",
+    "prettier": "^2.2.1"
   }
 }
