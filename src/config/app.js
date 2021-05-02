@@ -4,11 +4,18 @@ import 'dotenv/config';
 import express, { json } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import RateLimit from 'express-rate-limit';
 import email from '../api/routes/email';
 import events from '../api/routes/event';
 import payment from '../api/routes/payment';
 
+const limiter = new RateLimit({
+	windowMs: 1 * 60 * 1000,
+	max: 10,
+});
+
 const app = express();
+app.use(limiter);
 app.use(cors());
 app.use(morgan('common'));
 app.use(helmet());
