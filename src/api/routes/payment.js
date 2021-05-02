@@ -2,7 +2,7 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-console */
 import { Router } from 'express';
-import { check, validationResult } from 'express-validator/check';
+import { check, validationResult } from 'express-validator';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid';

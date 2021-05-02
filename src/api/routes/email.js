@@ -1,6 +1,6 @@
 import sgMail from '@sendgrid/mail';
 import { Router } from 'express';
-import { check, validationResult } from 'express-validator/check';
+import { check, validationResult } from 'express-validator';
 
 const router = Router();
 
