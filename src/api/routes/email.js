@@ -1,6 +1,7 @@
 import sgMail from '@sendgrid/mail';
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
+import { logger } from '../../utils/logger';
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.post(
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
+			logger.info(errors);
 			return res.status(400).json({ msg: errors.array() });
 		}
 		const { firstName, lastName, email, body } = req.body;
@@ -29,9 +31,15 @@ router.post(
 			};
 			sgMail.send(msg);
 		} catch (err) {
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
+
 			return res.status(500).json(err);
 		}
-
+		logger.info('Email sent');
 		return res.status(200).send('Email sent.');
 	}
 );

@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 import moment from 'moment';
+import { logger } from '../../utils/logger';
 
 const router = Router();
 const stripe = new Stripe(process.env.STRIPE_API_KEY);
@@ -53,6 +54,7 @@ router.post(
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
+			logger.info(errors);
 			return res.status(500).json({ errors: errors.array() });
 		}
 
@@ -64,6 +66,7 @@ router.post(
 		const resp = await axios.post(verificationUrl);
 
 		if (!resp.data.success) {
+			logger.info('Failed to validate ReCaptcha');
 			return res.status(500).json({ message: 'Failed to validate ReCaptcha' });
 		}
 
@@ -75,6 +78,7 @@ router.post(
 		} else if (user.paidUntil === 'year') {
 			amount = 1800;
 		} else {
+			logger.info('Invalid paidUntil');
 			return res.status(500).json({ message: 'Bad Request!' });
 		}
 
@@ -106,7 +110,11 @@ router.post(
 					);
 				});
 		} catch (err) {
-			console.log(err);
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
 
@@ -142,9 +150,13 @@ router.post(
 				text: err,
 			};
 			sgMail.send(msg);
-			console.log(err);
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
 		}
-
+		logger.info('Payment Success');
 		return res.status(200).json({ message: 'OK' });
 	}
 );
