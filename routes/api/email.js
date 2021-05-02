@@ -1,5 +1,3 @@
-/* eslint-disable no-tabs */
-/* eslint-disable indent */
 import sgMail from '@sendgrid/mail';
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator/check';

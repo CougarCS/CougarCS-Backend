@@ -1,5 +1,3 @@
-/* eslint-disable no-tabs */
-/* eslint-disable indent */
 import axios from 'axios';
 import { Router } from 'express';
 import _ from 'lodash';
