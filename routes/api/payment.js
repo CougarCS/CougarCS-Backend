@@ -1,13 +1,9 @@
-/* eslint-disable no-tabs */
-/* eslint-disable indent */
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator/check';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
-import moment from 'moment';
-import request from 'request';
 import { v4 as uuidv4 } from 'uuid';
+import axios from "axios";
 
 const router = Router();
 const stripe = new Stripe(process.env.STRIPE_API_KEY);
@@ -60,14 +56,13 @@ router.post(
 		// check recaptcha
 		const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.recaptcha_secret_key}&response=${recaptchaToken}`;
 
-		request(verificationUrl, (error, response, body) => {
-			body = JSON.parse(body);
-			if (body.success !== undefined && !body.success) {
-				return res
-					.status(500)
-					.json({ message: 'Failed to validate ReCaptcha' });
-			}
-		});
+		const resp = await axios.post(verificationUrl);
+
+		if (!resp.data.success) {
+			return res
+				.status(500)
+				.json({ message: 'Failed to validate ReCaptcha' });
+		}
 
 		const idempotencyKey = uuidv4();
 
@@ -113,7 +108,7 @@ router.post(
 		}
 
 
-		// GOOGLE SHEETS
+		GOOGLE SHEETS;
 		try {
 			const doc = new GoogleSpreadsheet(
 				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
