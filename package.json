@@ -1,7 +1,7 @@
 {
   "name": "cougarcs-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "CougarCS-Backend",
   "main": "server.js",
   "scripts": {
     "server": "nodemon --exec babel-node server.js",
