@@ -1,7 +1,7 @@
 {
   "name": "cougarcs-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "CougarCS-Backend",
   "main": "server.js",
   "scripts": {
     "server": "nodemon --exec babel-node server.js",
@@ -21,12 +21,12 @@
     "express": "^4.16.4",
     "express-rate-limit": "^5.2.6",
     "express-validator": "^6.0.0",
-    "google-spreadsheet": "^3.0.13",
+    "google-spreadsheet": "^3.1.15",
     "googleapis": "^49.0.0",
     "helmet": "^3.21.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.5",
+    "mongoose": "^5.12.3",
     "morgan": "^1.9.1",
     "stripe": "^8.93.0",
     "uuid": "^8.3.0"
