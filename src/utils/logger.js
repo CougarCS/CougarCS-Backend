@@ -16,7 +16,6 @@ const options = {
 		json: false,
 		colorize: true,
 	},
-
 };
 
 const logger = createLogger({
