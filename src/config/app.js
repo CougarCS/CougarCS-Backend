@@ -48,6 +48,7 @@ app.use(Sentry.Handlers.errorHandler());
 app.use((req, res) => {
 	res.status(500).send('Error!');
 });
+
 app.use((err, req, res, next) => {
 	logger.error(
 		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
@@ -56,5 +57,6 @@ app.use((err, req, res, next) => {
 	);
 	next(err);
 });
+
 
 export default app;

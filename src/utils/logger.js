@@ -3,7 +3,7 @@ import { createLogger, config, transports } from 'winston';
 const options = {
 	file: {
 		level: 'info',
-		filename: './logs/app.log',
+		filename: './logs/info.log',
 		handleExceptions: true,
 		json: true,
 		maxsize: 5242880, // 5MB
@@ -16,6 +16,7 @@ const options = {
 		json: false,
 		colorize: true,
 	},
+
 };
 
 const logger = createLogger({
