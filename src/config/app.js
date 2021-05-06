@@ -28,10 +28,14 @@ Sentry.init({
 	],
 });
 
+const corsOptions = {
+	origin: 'cougarcs.com',
+};
+
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 app.use(limiter);
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(httpLogger);
 app.use(helmet());
 app.use(json({ extended: false }));
@@ -51,8 +55,7 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
 	logger.error(
-		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-			req.method
+		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
 		} - ${req.ip}`
 	);
 	next(err);
