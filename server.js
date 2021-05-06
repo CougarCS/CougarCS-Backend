@@ -1,9 +1,8 @@
 import 'dotenv/config';
-import app from './config/app';
-
+import app from './src/config/app';
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, (err) => {
-  if (err) throw err;
-  console.info(`URL: http://localhost:${PORT}`);
+	if (err) throw err;
+	console.info(`Running on port ${PORT}`);
 });
