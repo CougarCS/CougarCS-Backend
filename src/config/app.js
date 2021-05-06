@@ -55,7 +55,8 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
 	logger.error(
-		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
+		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+			req.method
 		} - ${req.ip}`
 	);
 	next(err);
