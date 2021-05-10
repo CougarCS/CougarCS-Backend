@@ -108,6 +108,11 @@ router.post(
 						{ idempotencyKey }
 					);
 				});
+			logger.info({
+				service: 'payment',
+				msg: 'Payment create',
+				meta: { payee: user.uhID },
+			});
 		} catch (err) {
 			logger.error(
 				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
@@ -136,6 +141,10 @@ router.post(
 				'Paid Until': user.paidUntil,
 				'Payment Method': 'Stripe',
 				'Phone Number': user.phone,
+			});
+			logger.info({
+				service: 'payment',
+				message: 'Added user to Google Sheets',
 			});
 		} catch (err) {
 			sgMail.setApiKey(process.env.SENDGRID_API_KEY);

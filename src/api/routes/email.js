@@ -24,12 +24,15 @@ router.post(
 		try {
 			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 			const msg = {
-				to: 'info@cougarcs.com',
+				to: 'vyas.r@cougarcs.com',
 				from: email,
 				subject: 'New Message from Contact Form',
 				text: content,
 			};
 			sgMail.send(msg);
+			logger.info(
+				`Service: Contact Form - Email has been sent. From: ${email}`
+			);
 		} catch (err) {
 			logger.error(
 				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
