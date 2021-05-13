@@ -128,7 +128,7 @@ router.post(
 				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
 			);
 
-			await doc.useServiceAccountAuth(require('../../gsheet.json'));
+			await doc.useServiceAccountAuth(require('../../../gsheet.json'));
 			await doc.loadInfo();
 			const sheet = doc.sheetsByIndex[0];
 			await sheet.addRow({
