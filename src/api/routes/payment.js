@@ -149,10 +149,10 @@ router.post(
 		} catch (err) {
 			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 			const msg = {
-				to: 'webmaster@cougarcs.com',
+				to: ['vyas.r@cougarcs.com','webmaster@cougarcs.com'],
 				from: 'info@cougarcs.com',
 				subject: 'GSheet Error on Website Payments',
-				text: toString(err),
+				text: JSON.stringify(err.message),
 			};
 			sgMail.send(msg);
 			logger.error(
