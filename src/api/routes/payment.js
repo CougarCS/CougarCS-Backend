@@ -1,6 +1,3 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-console */
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
@@ -9,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 import moment from 'moment';
+import { logger } from '../../utils/logger';
 
 const router = Router();
 const stripe = new Stripe(process.env.STRIPE_API_KEY);
@@ -53,6 +51,7 @@ router.post(
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
+			logger.info(errors);
 			return res.status(500).json({ errors: errors.array() });
 		}
 
@@ -64,7 +63,10 @@ router.post(
 		const resp = await axios.post(verificationUrl);
 
 		if (!resp.data.success) {
-			return res.status(500).json({ message: 'Failed to validate ReCaptcha' });
+			logger.info('Failed to validate ReCaptcha');
+			return res
+				.status(500)
+				.json({ message: 'Failed to validate ReCaptcha' });
 		}
 
 		const idempotencyKey = uuidv4();
@@ -75,6 +77,7 @@ router.post(
 		} else if (user.paidUntil === 'year') {
 			amount = 1800;
 		} else {
+			logger.info('Invalid paidUntil');
 			return res.status(500).json({ message: 'Bad Request!' });
 		}
 
@@ -105,8 +108,17 @@ router.post(
 						{ idempotencyKey }
 					);
 				});
+			logger.info({
+				service: 'payment',
+				msg: 'Payment create',
+				meta: { payee: user.uhID },
+			});
 		} catch (err) {
-			console.log(err);
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
 
@@ -115,10 +127,7 @@ router.post(
 			const doc = new GoogleSpreadsheet(
 				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
 			);
-			// await doc.useServiceAccountAuth({
-			// 	client_email: process.env.client_email,
-			// 	private_key: process.env.private_key,
-			// });
+
 			await doc.useServiceAccountAuth(require('../../gsheet.json'));
 			await doc.loadInfo();
 			const sheet = doc.sheetsByIndex[0];
@@ -133,6 +142,10 @@ router.post(
 				'Payment Method': 'Stripe',
 				'Phone Number': user.phone,
 			});
+			logger.info({
+				service: 'payment',
+				message: 'Added user to Google Sheets',
+			});
 		} catch (err) {
 			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 			const msg = {
@@ -142,9 +155,13 @@ router.post(
 				text: err,
 			};
 			sgMail.send(msg);
-			console.log(err);
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
 		}
-
+		logger.info('Payment Success');
 		return res.status(200).json({ message: 'OK' });
 	}
 );
