@@ -152,7 +152,7 @@ router.post(
 				to: 'webmaster@cougarcs.com',
 				from: 'info@cougarcs.com',
 				subject: 'GSheet Error on Website Payments',
-				text: err,
+				text: toString(err),
 			};
 			sgMail.send(msg);
 			logger.error(
