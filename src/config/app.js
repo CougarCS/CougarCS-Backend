@@ -15,7 +15,7 @@ const app = express();
 
 const limiter = new RateLimit({
 	windowMs: 1 * 60 * 1000,
-	max: 10,
+	max: 90,
 });
 
 Sentry.init({
