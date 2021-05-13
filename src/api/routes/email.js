@@ -24,7 +24,7 @@ router.post(
 		try {
 			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 			const msg = {
-				to: 'vyas.r@cougarcs.com',
+				to: 'info@cougarcs.com',
 				from: email,
 				subject: 'New Message from Contact Form',
 				text: content,
