@@ -29,7 +29,7 @@ Sentry.init({
 });
 
 const corsOptions = {
-	origin: 'cougarcs.com',
+	origin: 'https://cougarcs.com',
 };
 
 app.use(Sentry.Handlers.requestHandler());
