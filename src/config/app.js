@@ -26,6 +26,7 @@ Sentry.init({
 			app,
 		}),
 	],
+	tracesSampleRate: 1.0,
 });
 
 const corsOptions = {
@@ -48,7 +49,6 @@ app.use('/api/payment', payment);
 app.use('/api/send', email);
 app.use('/api/events', events);
 
-app.use(Sentry.Handlers.errorHandler());
 app.use((req, res) => {
 	res.status(500).send('Error!');
 });
@@ -61,5 +61,7 @@ app.use((err, req, res, next) => {
 	);
 	next(err);
 });
+
+app.use(Sentry.Handlers.errorHandler());
 
 export default app;
