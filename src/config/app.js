@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import RateLimit from 'express-rate-limit';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
+import actuator from 'express-actuator';
 import email from '../api/routes/email';
 import events from '../api/routes/event';
 import payment from '../api/routes/payment';
@@ -33,13 +34,18 @@ const corsOptions = {
 	origin: 'https://cougarcs.com',
 };
 
-app.use(Sentry.Handlers.requestHandler());
+app.use(
+	Sentry.Handlers.requestHandler({
+		ip: true,
+	})
+);
 app.use(Sentry.Handlers.tracingHandler());
 app.use(limiter);
 app.use(cors(corsOptions));
 app.use(httpLogger);
 app.use(helmet());
 app.use(json({ extended: false }));
+app.use(actuator());
 
 app.get('/', (req, res) => {
 	res.json({ welcome: 'CougarCS Backend 🐯' });
@@ -49,19 +55,17 @@ app.use('/api/payment', payment);
 app.use('/api/send', email);
 app.use('/api/events', events);
 
-app.use((req, res) => {
-	res.status(500).send('Error!');
-});
+app.use(Sentry.Handlers.errorHandler());
 
-app.use((err, req, res, next) => {
+app.use(function onError(err, req, res, next) {
 	logger.error(
 		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
 			req.method
 		} - ${req.ip}`
 	);
-	next(err);
-});
 
-app.use(Sentry.Handlers.errorHandler());
+	res.statusCode = 500;
+	res.end(`${res.sentry}\n`);
+});
 
 export default app;
