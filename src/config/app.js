@@ -57,6 +57,7 @@ app.use('/api/events', events);
 
 app.use(Sentry.Handlers.errorHandler());
 
+// eslint-disable-next-line no-unused-vars
 app.use(function onError(err, req, res, next) {
 	logger.error(
 		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
