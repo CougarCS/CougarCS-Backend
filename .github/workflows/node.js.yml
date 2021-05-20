@@ -1,4 +1,4 @@
-name: Test, Install, Build, Deploy
+name: Install, Build
 
 on: [push, pull_request]
 
@@ -29,11 +29,14 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn --frozen-lockfile
 
     - name: Run ESLint
-      run: yarn run eslint-check
-
+      run: yarn eslint-check
+    
+    - name: Build
+      run: yarn build
+      
     - name: Create Sentry release
       if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
       uses: getsentry/action-release@v1
