@@ -28,11 +28,14 @@ router.post(
 			sgMail.setApiKey(SENDGRID_API_KEY);
 			const msg = {
 				to: toEmail,
-				from: email,
+				from: {
+					name: 'CougarCS Website Contact Form',
+					email,
+				},
 				subject: 'New Message from Contact Form',
 				text: content,
 			};
-			sgMail.send(msg);
+			await sgMail.send(msg);
 			logger.info(
 				`Service: Contact Form - Email has been sent. From: ${email}`
 			);
