@@ -5,6 +5,9 @@ import { logger } from '../../utils/logger';
 
 const router = Router();
 
+const toEmail =
+	process.env.NODE_ENV === 'prod' ? 'info@cougarcs.com' : 'test@test.com';
+
 router.post(
 	'/',
 	[
@@ -17,14 +20,14 @@ router.post(
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			logger.info(errors);
-			return res.status(400).json({ msg: errors.array() });
+			return res.status(400).json({ message: errors.array() });
 		}
 		const { firstName, lastName, email, body } = req.body;
 		const content = `Name: ${firstName} ${lastName} \nEmail: ${email} \nMessage: ${body} `;
 		try {
 			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 			const msg = {
-				to: 'info@cougarcs.com',
+				to: toEmail,
 				from: email,
 				subject: 'New Message from Contact Form',
 				text: content,
@@ -43,7 +46,7 @@ router.post(
 			return res.status(500).json(err);
 		}
 		logger.info('Email sent');
-		return res.status(200).send('Email sent.');
+		return res.status(200).json({ message: 'Email sent.' });
 	}
 );
 

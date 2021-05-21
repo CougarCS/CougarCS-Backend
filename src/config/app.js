@@ -42,7 +42,10 @@ app.use(
 app.use(Sentry.Handlers.tracingHandler());
 app.use(limiter);
 app.use(cors(corsOptions));
-app.use(httpLogger);
+
+if (process.env.NODE_ENV === 'dev') {
+	app.use(httpLogger);
+}
 app.use(helmet());
 app.use(json({ extended: false }));
 app.use(actuator());

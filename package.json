@@ -4,9 +4,11 @@
   "description": "CougarCS-Backend",
   "main": "server.js",
   "scripts": {
-    "build": "babel src -d dist",
-    "server": "nodemon --exec babel-node ./src/server.js",
-    "start": "node dist/server.js",
+    "build": "NODE_ENV=prod babel src -d dist",
+    "server": "NODE_ENV=dev nodemon --exec babel-node ./src/server.js",
+    "start": "NODE_ENV=prod node dist/server.js",
+    "test": "NODE_ENV=test mocha --recursive --require @babel/register --exit",
+    "test:dev": "NODE_ENV=test mocha -w --recursive --require @babel/register",
     "eslint-check": "eslint ./src --ext .js",
     "eslint-fix": "eslint src/**/*.js --fix"
   },
@@ -43,13 +45,16 @@
     "@babel/preset-env": "^7.14.2",
     "@babel/register": "^7.13.16",
     "@babel/runtime": "^7.7.2",
+    "chai": "^4.3.4",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-prettier-check": "^1.0.0",
     "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-prettier": "^3.4.0",
+    "mocha": "^8.4.0",
     "nodemon": "^2.0.7",
-    "prettier": "^2.3.0"
+    "prettier": "^2.3.0",
+    "supertest": "^6.1.3"
   }
 }
