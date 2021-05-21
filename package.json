@@ -7,9 +7,9 @@
     "build": "NODE_ENV=prod babel src -d dist",
     "server": "NODE_ENV=dev nodemon --exec babel-node ./src/server.js",
     "start": "NODE_ENV=prod node dist/server.js",
-    "test": "NODE_ENV=test jest",
-    "test:dev": "NODE_ENV=test jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "NODE_ENV=test jest --detectOpenHandles",
+    "test:dev": "NODE_ENV=test jest --watch --detectOpenHandles",
+    "test:coverage": "jest --coverage --detectOpenHandles",
     "eslint-check": "eslint ./src --ext .js && eslint ./test --ext .js",
     "eslint-fix": "eslint src/**/*.js --fix && eslint test/*.js --fix"
   },
@@ -60,6 +60,7 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "clearMocks": true,
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/coverage/",

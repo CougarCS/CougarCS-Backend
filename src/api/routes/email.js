@@ -1,8 +1,8 @@
-import sgMail from '@sendgrid/mail';
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
-import { SENDGRID_API_KEY, SEND_EMAIL } from '../../utils/config';
+import { SEND_EMAIL } from '../../utils/config';
 import { logger } from '../../utils/logger';
+import APICall from '../../utils/thirdParty/calls';
 
 const router = Router();
 
@@ -25,19 +25,14 @@ router.post(
 		const { firstName, lastName, email, body } = req.body;
 		const content = `Name: ${firstName} ${lastName} \nEmail: ${email} \nMessage: ${body} `;
 		try {
-			sgMail.setApiKey(SENDGRID_API_KEY);
-			const msg = {
-				to: toEmail,
-				from: {
+			await APICall.sendEmail(
+				toEmail,
+				{
 					name: 'CougarCS Website Contact Form',
 					email,
 				},
-				subject: 'New Message from Contact Form',
-				text: content,
-			};
-			await sgMail.send(msg);
-			logger.info(
-				`Service: Contact Form - Email has been sent. From: ${email}`
+				'New Message from Contact Form',
+				content
 			);
 		} catch (err) {
 			logger.error(
@@ -46,7 +41,7 @@ router.post(
 				} - ${req.ip}`
 			);
 
-			return res.status(500).json(err);
+			return res.status(500).json({ message: err.message });
 		}
 		logger.info('Email sent');
 		return res.status(200).json({ message: 'Email sent.' });
