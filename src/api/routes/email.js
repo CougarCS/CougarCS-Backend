@@ -1,12 +1,12 @@
 import sgMail from '@sendgrid/mail';
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
+import { SENDGRID_API_KEY, SEND_EMAIL } from '../../utils/config';
 import { logger } from '../../utils/logger';
 
 const router = Router();
 
-const toEmail =
-	process.env.NODE_ENV === 'prod' ? 'info@cougarcs.com' : 'test@test.com';
+const toEmail = SEND_EMAIL;
 
 router.post(
 	'/',
@@ -25,7 +25,7 @@ router.post(
 		const { firstName, lastName, email, body } = req.body;
 		const content = `Name: ${firstName} ${lastName} \nEmail: ${email} \nMessage: ${body} `;
 		try {
-			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+			sgMail.setApiKey(SENDGRID_API_KEY);
 			const msg = {
 				to: toEmail,
 				from: email,

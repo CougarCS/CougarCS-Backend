@@ -1,8 +1,9 @@
 import { createLogger, config, transports } from 'winston';
+import { NODE_ENV } from './config';
 
 let level;
 let silent;
-switch (process.env.NODE_ENV) {
+switch (NODE_ENV) {
 	case 'prod':
 		level = 'warning';
 		silent = false;

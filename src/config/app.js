@@ -11,6 +11,7 @@ import events from '../api/routes/event';
 import payment from '../api/routes/payment';
 import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
+import { SENTRY_URL } from '../utils/config';
 
 const app = express();
 
@@ -20,7 +21,7 @@ const limiter = new RateLimit({
 });
 
 Sentry.init({
-	dsn: process.env.SENTRY_URL,
+	dsn: SENTRY_URL,
 	integrations: [
 		new Sentry.Integrations.Http({ tracing: true }),
 		new Tracing.Integrations.Express({
@@ -42,10 +43,7 @@ app.use(
 app.use(Sentry.Handlers.tracingHandler());
 app.use(limiter);
 app.use(cors(corsOptions));
-
-if (process.env.NODE_ENV === 'dev') {
-	app.use(httpLogger);
-}
+app.use(httpLogger);
 app.use(helmet());
 app.use(json({ extended: false }));
 app.use(actuator());

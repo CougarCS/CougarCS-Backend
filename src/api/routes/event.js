@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Router } from 'express';
 import _ from 'lodash';
 import moment from 'moment';
+import { CALENDAR_API_KEY, CALENDAR_ID } from '../../utils/config';
 import { logger } from '../../utils/logger';
 
 const router = new Router();
@@ -19,7 +20,7 @@ const renameKey = (obj, oldKey, newKey) => {
 router.get('/', async (req, res) => {
 	try {
 		const { data } = await axios.get(
-			`https://www.googleapis.com/calendar/v3/calendars/${process.env.CALENDAR_ID}/events?key=${process.env.CALENDAR_API_KEY}`
+			`https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${CALENDAR_API_KEY}`
 		);
 		const now = moment();
 		let futureEvents = [];

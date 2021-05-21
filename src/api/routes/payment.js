@@ -7,9 +7,14 @@ import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 import moment from 'moment';
 import { logger } from '../../utils/logger';
+import {
+	RECAPTCHA_SECRET_KEY,
+	SENDGRID_API_KEY,
+	STRIPE_API_KEY,
+} from '../../utils/config';
 
 const router = Router();
-const stripe = new Stripe(process.env.STRIPE_API_KEY);
+const stripe = new Stripe(STRIPE_API_KEY);
 
 router.post(
 	'/',
@@ -52,7 +57,7 @@ router.post(
 		const { token, user, recaptchaToken } = req.body;
 
 		// check recaptcha
-		const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.recaptcha_secret_key}&response=${recaptchaToken}`;
+		const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`;
 
 		const resp = await axios.post(verificationUrl);
 
@@ -141,7 +146,7 @@ router.post(
 				message: 'Added user to Google Sheets',
 			});
 		} catch (err) {
-			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+			sgMail.setApiKey(SENDGRID_API_KEY);
 			const msg = {
 				to: ['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
 				from: 'info@cougarcs.com',
