@@ -38,7 +38,8 @@ router.post(
 			);
 		} catch (err) {
 			logger.error(
-				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
 				} - ${req.ip}`
 			);
 
