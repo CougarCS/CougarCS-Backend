@@ -15,11 +15,8 @@ router.post(
 	'/',
 	[
 		check('user.firstName').not().isEmpty().trim().escape(),
-
 		check('user.lastName').not().isEmpty().trim().escape(),
-
 		check('user.email').not().isEmpty().isEmail().normalizeEmail(),
-
 		check('user.uhID')
 			.not()
 			.isEmpty()
@@ -29,7 +26,6 @@ router.post(
 			.withMessage('Bad Request!'),
 
 		check('user.classification').not().isEmpty().trim().escape(),
-
 		check('user.paidUntil')
 			.not()
 			.isEmpty()
@@ -37,7 +33,6 @@ router.post(
 			.escape()
 			.matches(/(semester|year)/)
 			.withMessage('Bad Request!'),
-
 		check('user.phone')
 			.not()
 			.isEmpty()
@@ -45,7 +40,6 @@ router.post(
 			.escape()
 			.matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/)
 			.withMessage('Bad Request!'),
-
 		check('recaptchaToken').not().isEmpty().trim().escape(),
 	],
 	async (req, res) => {

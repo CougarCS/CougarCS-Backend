@@ -4,8 +4,9 @@
   "description": "CougarCS-Backend",
   "main": "server.js",
   "scripts": {
+    "build": "babel src -d dist",
     "server": "nodemon --exec babel-node ./src/server.js",
-    "start": "babel-node ./src/server.js",
+    "start": "node dist/server.js",
     "eslint-check": "eslint ./src --ext .js",
     "eslint-fix": "eslint src/**/*.js --fix"
   },
@@ -38,7 +39,9 @@
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/node": "^7.14.2",
+    "@babel/plugin-transform-runtime": "^7.14.3",
     "@babel/preset-env": "^7.14.2",
+    "@babel/register": "^7.13.16",
     "@babel/runtime": "^7.7.2",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
