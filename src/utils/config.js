@@ -7,6 +7,6 @@ export const {
 	SHEET_API = 'test',
 	RECAPTCHA_SECRET_KEY = 'test',
 	STRIPE_API_KEY = 'test',
-	SENTRY_URL = 'test',
+	SENTRY_URL = '',
 	SEND_EMAIL = 'test@test.com',
 } = process.env;
