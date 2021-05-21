@@ -93,16 +93,4 @@ describe('Email Validation', () => {
 		expect(res.body.message[0].msg).to.equal('Last Name is required');
 		expect(res.body.message[1].msg).to.equal('Email is required');
 	});
-
-	it('Email has send successfully', async () => {
-		const res = await request(app).post('/api/send').send({
-			firstName: 'Test',
-			lastName: 'Test',
-			email: 'test@test.com',
-			body: 'Test',
-		});
-		expect(res.status).to.equal(200);
-		expect(res.body).to.have.property('message');
-		expect(res.body.message).to.equal('Email sent.');
-	});
 });
