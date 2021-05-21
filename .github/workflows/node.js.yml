@@ -1,4 +1,4 @@
-name: Install, Build
+name: Install, Test, Build
 
 on: [push, pull_request]
 
@@ -34,9 +34,12 @@ jobs:
     - name: Run ESLint
       run: yarn eslint-check
     
+    - name: Test
+      run: yarn test      
+      
     - name: Build
       run: yarn build
-      
+
     - name: Create Sentry release
       if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
       uses: getsentry/action-release@v1
