@@ -9,7 +9,7 @@
     "start": "NODE_ENV=prod node dist/server.js",
     "test": "NODE_ENV=test jest",
     "test:dev": "NODE_ENV=test jest --watch",
-    "test:coverage": "jest --coverage --detectOpenHandles",
+    "test:coverage": "jest --coverage",
     "eslint-check": "eslint ./src --ext .js && eslint ./test --ext .js",
     "eslint-fix": "eslint src/**/*.js --fix && eslint test/*.js --fix"
   },
