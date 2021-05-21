@@ -3,7 +3,7 @@ import { describe, it } from 'mocha';
 import request from 'supertest';
 import app from '../src/config/app';
 
-describe('CougarCS Backend Home API', () => {
+describe('Backend Home API', () => {
 	it('GET /', async () => {
 		const res = await request(app).get('/');
 		expect(res.status).to.equal(200);
