@@ -17,3 +17,4 @@ gsheet.json
 logs/
 build/
 dist/
+coverage/
