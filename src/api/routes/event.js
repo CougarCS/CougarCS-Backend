@@ -3,8 +3,11 @@ import _ from 'lodash';
 import moment from 'moment';
 import APICall from '../../utils/api/calls';
 import { logger } from '../../utils/logger';
+import { CACHE_TIME } from '../../utils/config';
+import singletonCache from '../../utils/cache';
 
 const router = new Router();
+const memCache = singletonCache;
 
 const renameKey = (obj, oldKey, newKey) => {
 	if (oldKey !== newKey && !obj.date) {
@@ -17,6 +20,11 @@ const renameKey = (obj, oldKey, newKey) => {
 	}
 };
 router.get('/', async (req, res) => {
+	const key = 'event';
+	const cacheContent = memCache.get(key);
+	if (cacheContent) {
+		return res.status(200).json(cacheContent);
+	}
 	try {
 		const data = await APICall.getEvents();
 		const now = moment();
@@ -60,7 +68,8 @@ router.get('/', async (req, res) => {
 			moment(o.start.date)
 		).reverse();
 		logger.info('Events sent');
-		return res.send({ futureEvents, pastEvents });
+		memCache.put(key, { futureEvents, pastEvents }, CACHE_TIME);
+		return res.status(200).json({ futureEvents, pastEvents });
 	} catch (err) {
 		logger.error(
 			`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${

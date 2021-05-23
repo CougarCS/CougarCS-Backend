@@ -11,7 +11,7 @@ import events from '../api/routes/event';
 import payment from '../api/routes/payment';
 import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
-import { SENTRY_URL } from '../utils/config';
+import { ENABLE_CORS, SENTRY_URL } from '../utils/config';
 
 const app = express();
 
@@ -31,9 +31,11 @@ Sentry.init({
 	tracesSampleRate: 1.0,
 });
 
-const corsOptions = {
-	origin: 'https://cougarcs.com',
-};
+const corsOptions = ENABLE_CORS
+	? {
+			origin: 'https://cougarcs.com',
+	  }
+	: null;
 
 app.use(
 	Sentry.Handlers.requestHandler({

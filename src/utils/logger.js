@@ -3,15 +3,13 @@ import { NODE_ENV } from './config';
 
 let level;
 let silent;
-switch (NODE_ENV) {
-	case 'test':
-		level = 'emerg';
-		silent = true;
-		break;
-	default:
-		level = 'debug';
-		silent = false;
-		break;
+
+if (NODE_ENV === 'test') {
+	level = 'emerg';
+	silent = true;
+} else {
+	level = 'debug';
+	silent = false;
 }
 
 const options = {

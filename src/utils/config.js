@@ -10,3 +10,6 @@ export const {
 	SENTRY_URL = '',
 	SEND_EMAIL = 'test@test.com',
 } = process.env;
+
+export const CACHE_TIME = 1000 * 60 * 60 * 4; // 4 hour
+export const ENABLE_CORS = NODE_ENV !== 'dev' || NODE_ENV !== 'test';

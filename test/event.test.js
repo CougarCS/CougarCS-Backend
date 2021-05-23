@@ -2,10 +2,13 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockEvent from './resources/mockEvent.json';
+import singletonCache from '../src/utils/cache';
 
 let agent;
-beforeEach(async () => {
+const memCache = singletonCache;
+beforeEach(() => {
 	agent = request(app);
+	memCache.clear();
 });
 
 describe('Get events from google calander', () => {
@@ -14,6 +17,17 @@ describe('Get events from google calander', () => {
 			() => mockEvent
 		);
 
+		const res = await agent.get('/api/events');
+		expect(res.status).toEqual(200);
+		expect(res.body).toHaveProperty('futureEvents');
+		expect(res.body).toHaveProperty('pastEvents');
+	});
+
+	it('Get events from cache', async () => {
+		jest.spyOn(apiCall, 'getEvents').mockImplementationOnce(
+			() => mockEvent
+		);
+		await agent.get('/api/events');
 		const res = await agent.get('/api/events');
 		expect(res.status).toEqual(200);
 		expect(res.body).toHaveProperty('futureEvents');
