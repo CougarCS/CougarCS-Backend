@@ -307,6 +307,8 @@ describe('Payment API test', () => {
 			() => true
 		);
 
+		jest.spyOn(apiCall, 'sendEmail').mockImplementationOnce(() => true);
+
 		jest.spyOn(apiCall, 'addToSheets').mockImplementationOnce(() => {
 			throw new Error();
 		});

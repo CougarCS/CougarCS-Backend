@@ -128,7 +128,11 @@ router.post(
 				['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
 				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
 				'GSheet Error on Website Payments',
-				JSON.stringify(err.message)
+				JSON.stringify({
+					name: `${firstName} ${lastName}`,
+					email,
+					err: err.message,
+				})
 			);
 			logger.error(
 				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
