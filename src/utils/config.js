@@ -11,5 +11,5 @@ export const {
 	SEND_EMAIL = 'test@test.com',
 } = process.env;
 
-export const CACHE_TIME = 1000 * 60 * 60 * 4; // 4 hour
+export const CACHE_TIME = NODE_ENV === 'test' ? 30 : 60 * 60 * 4; // 4 hour
 export const ENABLE_CORS = NODE_ENV !== 'dev' || NODE_ENV !== 'test';
