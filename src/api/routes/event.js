@@ -4,12 +4,12 @@ import moment from 'moment';
 import APICall from '../../utils/api/calls';
 import { logger } from '../../utils/logger';
 import { CACHE_TIME } from '../../utils/config';
-import singletonCache from '../../utils/cache';
-import client from '../../utils/cache';
+// import singletonCache from '../../utils/cache';
+// import client from '../../utils/cache';
 import redis from '../../utils/cache';
 
 const router = new Router();
-const memCache = singletonCache;
+// const memCache = singletonCache;
 
 const renameKey = (obj, oldKey, newKey) => {
 	if (oldKey !== newKey && !obj.date) {
