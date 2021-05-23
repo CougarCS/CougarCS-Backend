@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockEvent from './resources/mockEvent.json';
-import singletonCache from '../src/utils/cache';
+// import singletonCache from '../src/utils/cache';
 import redis from '../src/utils/cache';
 
 let agent;
