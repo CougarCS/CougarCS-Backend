@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { Router } from 'express';
 import _ from 'lodash';
 import moment from 'moment';
+import APICall from '../../utils/api/calls';
 import { logger } from '../../utils/logger';
 
 const router = new Router();
@@ -18,9 +18,7 @@ const renameKey = (obj, oldKey, newKey) => {
 };
 router.get('/', async (req, res) => {
 	try {
-		const { data } = await axios.get(
-			`https://www.googleapis.com/calendar/v3/calendars/${process.env.CALENDAR_ID}/events?key=${process.env.CALENDAR_API_KEY}`
-		);
+		const data = await APICall.getEvents();
 		const now = moment();
 		let futureEvents = [];
 		let pastEvents = [];
@@ -62,14 +60,14 @@ router.get('/', async (req, res) => {
 			moment(o.start.date)
 		).reverse();
 		logger.info('Events sent');
-		return res.send({ futureEvents, pastEvents, data });
+		return res.send({ futureEvents, pastEvents });
 	} catch (err) {
 		logger.error(
 			`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
 				req.method
 			} - ${req.ip}`
 		);
-		return res.json({ message: err });
+		return res.status(500).json({ message: err.message });
 	}
 });
 

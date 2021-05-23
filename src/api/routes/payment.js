@@ -1,60 +1,79 @@
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid';
-import sgMail from '@sendgrid/mail';
-import axios from 'axios';
-import moment from 'moment';
 import { logger } from '../../utils/logger';
+import APICall from '../../utils/api/calls';
 
 const router = Router();
-const stripe = new Stripe(process.env.STRIPE_API_KEY);
 
 router.post(
 	'/',
 	[
-		check('user.firstName').not().isEmpty().trim().escape(),
-		check('user.lastName').not().isEmpty().trim().escape(),
-		check('user.email').not().isEmpty().isEmail().normalizeEmail(),
-		check('user.uhID')
+		check('user.firstName', 'First Name is required')
+			.not()
+			.isEmpty()
+			.trim()
+			.escape(),
+		check('user.lastName', 'Last Name is required')
+			.not()
+			.isEmpty()
+			.trim()
+			.escape(),
+		check('user.email', 'Email is required')
+			.not()
+			.isEmpty()
+			.isEmail()
+			.normalizeEmail(),
+		check('user.uhID', 'UHID is required')
 			.not()
 			.isEmpty()
 			.trim()
 			.escape()
-			.isLength({ min: 7, max: 7 })
-			.withMessage('Bad Request!'),
+			.isLength({ min: 7, max: 7 }),
 
-		check('user.classification').not().isEmpty().trim().escape(),
-		check('user.paidUntil')
+		check('user.classification', 'Classification is required')
+			.not()
+			.isEmpty()
+			.trim()
+			.escape(),
+		check('user.paidUntil', 'Paid Until is required')
 			.not()
 			.isEmpty()
 			.trim()
 			.escape()
-			.matches(/(semester|year)/)
-			.withMessage('Bad Request!'),
-		check('user.phone')
+			.matches(/(semester|year)/),
+		check('user.phone', 'Phone Number is required')
 			.not()
 			.isEmpty()
 			.trim()
 			.escape()
-			.matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/)
-			.withMessage('Bad Request!'),
-		check('recaptchaToken').not().isEmpty().trim().escape(),
+			.matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/),
+		check('recaptchaToken', 'Recaptcha Token is required')
+			.not()
+			.isEmpty()
+			.trim()
+			.escape(),
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			logger.info(errors);
-			return res.status(500).json({ errors: errors.array() });
+			return res.status(500).json({ message: errors.array() });
 		}
 
 		const { token, user, recaptchaToken } = req.body;
+		const {
+			firstName,
+			lastName,
+			email,
+			uhID,
+			classification,
+			paidUntil,
+			phone,
+		} = user;
 
 		// check recaptcha
-		const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.recaptcha_secret_key}&response=${recaptchaToken}`;
-
-		const resp = await axios.post(verificationUrl);
+		const resp = await APICall.checkRecaptcha(recaptchaToken);
 
 		if (!resp.data.success) {
 			logger.info('Failed to validate ReCaptcha');
@@ -66,47 +85,24 @@ router.post(
 		const idempotencyKey = uuidv4();
 
 		let amount = 0;
-		if (user.paidUntil === 'semester') {
+		if (paidUntil === 'semester') {
 			amount = 1000;
-		} else if (user.paidUntil === 'year') {
-			amount = 1800;
 		} else {
-			logger.info('Invalid paidUntil');
-			return res.status(500).json({ message: 'Bad Request!' });
+			amount = 1800;
 		}
 
-		// create customer
 		try {
-			stripe.customers
-				.create({
-					email: user.email,
-					phone: user.phone,
-					name: `${user.firstName} ${user.lastName}`,
-					metadata: {
-						'UH ID': user.uhID,
-						'Paid For': user.paidUntil,
-					},
-				})
-				// create payment intent and charge customer
-				.then((customer) => {
-					stripe.paymentIntents.create(
-						{
-							amount,
-							currency: 'USD',
-							description: 'Membership Payment',
-							payment_method: token,
-							customer: customer.id,
-							confirm: true,
-							receipt_email: user.email,
-						},
-						{ idempotencyKey }
-					);
-				});
-			logger.info({
-				service: 'payment',
-				msg: 'Payment create',
-				meta: { payee: user.uhID },
-			});
+			APICall.createStripeCustomer(
+				firstName,
+				lastName,
+				email,
+				uhID,
+				paidUntil,
+				phone,
+				amount,
+				token,
+				idempotencyKey
+			);
 		} catch (err) {
 			logger.error(
 				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
@@ -118,37 +114,26 @@ router.post(
 
 		// GOOGLE SHEETS;
 		try {
-			const doc = new GoogleSpreadsheet(
-				'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
+			await APICall.addToSheets(
+				firstName,
+				lastName,
+				email,
+				uhID,
+				paidUntil,
+				phone,
+				classification
 			);
-
-			await doc.useServiceAccountAuth(require('../../../gsheet.json'));
-			await doc.loadInfo();
-			const sheet = doc.sheetsByIndex[0];
-			await sheet.addRow({
-				Timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
-				Email: user.email,
-				'First Name': user.firstName,
-				'Last Name': user.lastName,
-				PeopleSoft: user.uhID,
-				Classification: user.classification,
-				'Paid Until': user.paidUntil,
-				'Payment Method': 'Stripe',
-				'Phone Number': user.phone,
-			});
-			logger.info({
-				service: 'payment',
-				message: 'Added user to Google Sheets',
-			});
 		} catch (err) {
-			sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-			const msg = {
-				to: ['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
-				from: 'info@cougarcs.com',
-				subject: 'GSheet Error on Website Payments',
-				text: JSON.stringify(err.message),
-			};
-			sgMail.send(msg);
+			await APICall.sendEmail(
+				['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
+				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
+				'GSheet Error on Website Payments',
+				JSON.stringify({
+					name: `${firstName} ${lastName}`,
+					email,
+					err: err.message,
+				})
+			);
 			logger.error(
 				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
 					req.method

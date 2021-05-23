@@ -1,0 +1,166 @@
+{
+    "items": [
+        {
+            "kind": "calendar#event",
+            "etag": "test",
+            "id": "75srqejf3hq7i7g20miqqq7r58",
+            "status": "confirmed",
+            "htmlLink": "test",
+            "created": "2021-04-27T13:26:42.000Z",
+            "updated": "2021-04-27T13:26:43.029Z",
+            "summary": "Fall 2021 Semester Ends",
+            "creator": {
+                "email": "test@test.com"
+            },
+            "organizer": {
+                "email": "test@group.calendar.google.com",
+                "displayName": "CougarCS",
+                "self": true
+            },
+            "transparency": "transparent",
+            "iCalUID": "test@google.com",
+            "sequence": 0,
+            "eventType": "default"
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "test",
+            "id": "75srqejf3hq7i7g20miqqq7r58",
+            "status": "confirmed",
+            "htmlLink": "test",
+            "created": "2021-04-27T13:26:42.000Z",
+            "updated": "2021-04-27T13:26:43.029Z",
+            "summary": "Fall 2021 Semester Ends",
+            "creator": {
+                "email": "test@test.com"
+            },
+            "organizer": {
+                "email": "test@group.calendar.google.com",
+                "displayName": "CougarCS",
+                "self": true
+            },
+            "start": {
+                "date": "2999-12-15"
+            },
+            "end": {
+                "date": "2999-12-16"
+            },
+            "transparency": "transparent",
+            "iCalUID": "test@google.com",
+            "sequence": 0,
+            "eventType": "default"
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "test",
+            "id": "75srqejf3hq7i7g20miqqq7r58",
+            "status": "confirmed",
+            "htmlLink": "test",
+            "created": "2021-04-27T13:26:42.000Z",
+            "updated": "2021-04-27T13:26:43.029Z",
+            "summary": "Fall 2021 Semester Ends",
+            "creator": {
+                "email": "test@test.com"
+            },
+            "organizer": {
+                "email": "test@group.calendar.google.com",
+                "displayName": "CougarCS",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2999-12-15"
+            },
+            "end": {
+                "dateTime": "2999-12-16"
+            },
+            "transparency": "transparent",
+            "iCalUID": "test@google.com",
+            "sequence": 0,
+            "eventType": "default"
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "test",
+            "id": "75srqejf3hq7i7g20miqqq7r58",
+            "status": "confirmed",
+            "htmlLink": "test",
+            "created": "2021-04-27T13:25:03.000Z",
+            "updated": "2021-04-27T13:25:03.977Z",
+            "summary": "Spring 2021 Semester Ends",
+            "creator": {
+                "email": "test@cougarcs.com"
+            },
+            "organizer": {
+                "email": "test@group.calendar.google.com",
+                "displayName": "CougarCS",
+                "self": true
+            },
+            "start": {
+                "date": "2021-05-13"
+            },
+            "end": {
+                "date": "2021-05-14"
+            },
+            "transparency": "transparent",
+            "iCalUID": "test@google.com",
+            "sequence": 0,
+            "eventType": "default"
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "3236348180066000",
+            "id": "1so5lo2qk3csf2lm6s4b712ubt",
+            "status": "confirmed",
+            "htmlLink": "test",
+            "created": "2021-04-11T20:48:03.000Z",
+            "updated": "2021-04-11T20:48:10.033Z",
+            "summary": "CougarCS Elections",
+            "creator": {
+                "email": "test@cougarcs.com"
+            },
+            "organizer": {
+                "email": "test@group.calendar.google.com",
+                "displayName": "CougarCS",
+                "self": true
+            },
+            "start": {
+                "date": "2021-04-24"
+            },
+            "end": {
+                "date": "2021-04-25"
+            },
+            "transparency": "transparent",
+            "iCalUID": "test@google.com",
+            "sequence": 0,
+            "eventType": "default"
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "3236348180066000",
+            "id": "1so5lo2qk3csf2lm6s4b712ubt",
+            "status": "confirmed",
+            "htmlLink": "test",
+            "created": "2021-04-11T20:48:03.000Z",
+            "updated": "2021-04-11T20:48:10.033Z",
+            "summary": "CougarCS Elections",
+            "creator": {
+                "email": "test@cougarcs.com"
+            },
+            "organizer": {
+                "email": "test@group.calendar.google.com",
+                "displayName": "CougarCS",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2021-04-24"
+            },
+            "end": {
+                "dateTime": "2021-04-25"
+            },
+            "transparency": "transparent",
+            "iCalUID": "test@google.com",
+            "sequence": 0,
+            "eventType": "default"
+        }
+    ]
+}
