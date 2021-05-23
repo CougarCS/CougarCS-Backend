@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../src/config/app';
-import apiCall from '../src/utils/thirdParty/calls';
+import apiCall from '../src/utils/api/calls';
 
 let agent;
 beforeEach(async () => {
@@ -37,6 +37,18 @@ describe('Email Validation', () => {
 			firstName: 'Test',
 			lastName: 'Test',
 			email: '',
+			body: 'test',
+		});
+		expect(res.status).toEqual(400);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message[0].msg).toEqual('Email is required');
+	});
+
+	test('Email invalid', async () => {
+		const res = await agent.post('/api/send').send({
+			firstName: 'Test',
+			lastName: 'Test',
+			email: 'test.com',
 			body: 'test',
 		});
 		expect(res.status).toEqual(400);

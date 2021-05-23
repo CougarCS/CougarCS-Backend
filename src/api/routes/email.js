@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
 import { SEND_EMAIL } from '../../utils/config';
 import { logger } from '../../utils/logger';
-import APICall from '../../utils/thirdParty/calls';
+import APICall from '../../utils/api/calls';
 
 const router = Router();
 
