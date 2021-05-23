@@ -4,10 +4,6 @@ import { NODE_ENV } from './config';
 let level;
 let silent;
 switch (NODE_ENV) {
-	case 'prod':
-		level = 'warning';
-		silent = false;
-		break;
 	case 'test':
 		level = 'emerg';
 		silent = true;
