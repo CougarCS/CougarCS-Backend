@@ -28,4 +28,8 @@ redis.on('error', (error) => {
 	logger.error(error);
 });
 
+redis.on('end', () => {
+	logger.info('Redis Connection closed');
+});
+
 export default redis;

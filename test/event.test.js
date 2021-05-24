@@ -2,18 +2,22 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockEvent from './resources/mockEvent.json';
-// import singletonCache from '../src/utils/cache';
 import redis from '../src/utils/cache';
 
-let agent;
-const memCache = redis;
-beforeEach(async () => {
-	agent = request(app);
-	await memCache.flushall();
-});
-
 describe('Get events from google calander', () => {
-	it('Get events', async () => {
+	let agent;
+
+	beforeEach(() => {
+		agent = request(app);
+		redis.flushall();
+	});
+
+	afterAll(async () => {
+		redis.disconnect(false);
+		await redis.quit();
+	});
+
+	test('Get events', async () => {
 		jest.spyOn(apiCall, 'getEvents').mockImplementationOnce(
 			() => mockEvent
 		);
@@ -24,7 +28,7 @@ describe('Get events from google calander', () => {
 		expect(res.body).toHaveProperty('pastEvents');
 	});
 
-	it('Get events from cache', async () => {
+	test('Get events from cache', async () => {
 		jest.spyOn(apiCall, 'getEvents').mockImplementationOnce(
 			() => mockEvent
 		);
@@ -35,7 +39,7 @@ describe('Get events from google calander', () => {
 		expect(res.body).toHaveProperty('pastEvents');
 	});
 
-	it('Get events failure', async () => {
+	test('Get events failure', async () => {
 		jest.spyOn(apiCall, 'getEvents').mockImplementationOnce(() => {
 			throw new Error('Unable to get events');
 		});
