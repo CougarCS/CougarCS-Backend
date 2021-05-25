@@ -1,10 +1,10 @@
-name: Test, Install, Build, Deploy
+name: Install, Test, Build
 
 on: [push, pull_request]
 
 jobs:
 
-  lint:
+  run:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,10 +29,16 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn --frozen-lockfile
 
     - name: Run ESLint
-      run: yarn run eslint-check
+      run: yarn eslint-check
+    
+    - name: Test
+      run: yarn test      
+      
+    - name: Build
+      run: yarn build
 
     - name: Create Sentry release
       if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}

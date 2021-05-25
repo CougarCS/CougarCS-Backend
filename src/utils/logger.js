@@ -1,4 +1,18 @@
 import { createLogger, config, transports } from 'winston';
+import { NODE_ENV } from './config';
+
+let level;
+let silent;
+switch (NODE_ENV) {
+	case 'test':
+		level = 'emerg';
+		silent = true;
+		break;
+	default:
+		level = 'debug';
+		silent = false;
+		break;
+}
 
 const options = {
 	file: {
@@ -9,7 +23,8 @@ const options = {
 		colorize: true,
 	},
 	console: {
-		level: 'debug',
+		level,
+		silent,
 		handleExceptions: true,
 		json: false,
 		colorize: true,

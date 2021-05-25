@@ -16,3 +16,5 @@ gsheet.json
 .history/
 logs/
 build/
+dist/
+coverage/
