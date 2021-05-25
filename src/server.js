@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import app from './config/app';
-import redis from './utils/cache';
+import cache from './utils/cache';
 import { PORT } from './utils/config';
 import { logger } from './utils/logger';
 
@@ -18,9 +18,8 @@ const handleShutdownGracefully = () => {
 	logger.info('SERVER: Closing server gracefully...');
 	server.close(() => {
 		logger.info('SERVER: Server closed.');
-		redis.quit().then(() => {
-			logger.info('SERVER: Redis Connection Closed');
-		});
+		cache.clear();
+		logger.info('Cache Cleared');
 	});
 };
 process.on('SIGINT', handleShutdownGracefully);

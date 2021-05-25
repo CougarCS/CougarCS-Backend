@@ -1,10 +1,10 @@
-// import { Cache } from 'memory-cache';
+import { Cache } from 'memory-cache';
 
-// const singletonCache = new Cache();
+const cache = new Cache();
 
-// Object.freeze(singletonCache);
+Object.freeze(cache);
 
-// export default singletonCache;
+export default cache;
 
 // import { createClient } from 'redis';
 
@@ -15,21 +15,21 @@
 
 // export default client;
 
-import Redis from 'ioredis';
-import { logger } from './logger';
+// import Redis from 'ioredis';
+// import { logger } from './logger';
 
-const redis = new Redis();
+// const redis = new Redis();
 
-redis.on('connect', () => {
-	logger.info(`Redis Client connected`);
-});
+// redis.on('connect', () => {
+// 	logger.info(`Redis Client connected`);
+// });
 
-redis.on('error', (error) => {
-	logger.error(error);
-});
+// redis.on('error', (error) => {
+// 	logger.error(error);
+// });
 
-redis.on('end', () => {
-	logger.info('Redis Connection closed');
-});
+// redis.on('end', () => {
+// 	logger.info('Redis Connection closed');
+// });
 
-export default redis;
+// export default redis;

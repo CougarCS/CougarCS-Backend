@@ -19,7 +19,7 @@ const limiter = new RateLimit({
 	windowMs: 1 * 60 * 1000,
 	max: 90,
 });
-logger.info(SENTRY_URL);
+
 Sentry.init({
 	dsn: SENTRY_URL,
 	integrations: [

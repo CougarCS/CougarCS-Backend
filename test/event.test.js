@@ -2,19 +2,18 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockEvent from './resources/mockEvent.json';
-import redis from '../src/utils/cache';
+import cache from '../src/utils/cache';
 
 describe('Get events from google calander', () => {
 	let agent;
 
 	beforeEach(() => {
 		agent = request(app);
-		redis.flushall();
+		cache.clear();
 	});
 
 	afterAll(async () => {
-		redis.disconnect(false);
-		await redis.quit();
+		cache.clear();
 	});
 
 	test('Get events', async () => {
