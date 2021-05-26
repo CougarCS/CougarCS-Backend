@@ -2,14 +2,21 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockEvent from './resources/mockEvent.json';
-
-let agent;
-beforeEach(async () => {
-	agent = request(app);
-});
+import cache from '../src/utils/cache';
 
 describe('Get events from google calander', () => {
-	it('Get events', async () => {
+	let agent;
+
+	beforeEach(() => {
+		agent = request(app);
+		cache.clear();
+	});
+
+	afterAll(async () => {
+		cache.clear();
+	});
+
+	test('Get events', async () => {
 		jest.spyOn(apiCall, 'getEvents').mockImplementationOnce(
 			() => mockEvent
 		);
@@ -20,7 +27,18 @@ describe('Get events from google calander', () => {
 		expect(res.body).toHaveProperty('pastEvents');
 	});
 
-	it('Get events failure', async () => {
+	test('Get events from cache', async () => {
+		jest.spyOn(apiCall, 'getEvents').mockImplementationOnce(
+			() => mockEvent
+		);
+		await agent.get('/api/events');
+		const res = await agent.get('/api/events');
+		expect(res.status).toEqual(200);
+		expect(res.body).toHaveProperty('futureEvents');
+		expect(res.body).toHaveProperty('pastEvents');
+	});
+
+	test('Get events failure', async () => {
 		jest.spyOn(apiCall, 'getEvents').mockImplementationOnce(() => {
 			throw new Error('Unable to get events');
 		});
