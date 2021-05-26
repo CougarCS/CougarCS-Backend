@@ -5,11 +5,8 @@ import APICall from '../../utils/api/calls';
 import { logger } from '../../utils/logger';
 import { CACHE_TIME } from '../../utils/config';
 import cache from '../../utils/cache';
-// import client from '../../utils/cache';
-// import redis from '../../utils/cache';
 
 const router = new Router();
-// const memCache = singletonCache;
 
 const renameKey = (obj, oldKey, newKey) => {
 	if (oldKey !== newKey && !obj.date) {
@@ -26,22 +23,10 @@ router.get('/', async (req, res) => {
 	const key = 'event';
 	const cacheContent = cache.get(key);
 	if (cacheContent) {
+		logger.info('Events sent from cache');
 		return res.status(200).json(cacheContent);
 	}
 	try {
-		// client.get(key, async (err, eventData) => {
-		// 	if (err) {
-		// 		throw new Error(err.message);
-		// 	}
-		// 	if (eventData) {
-		// 		logger.info('Fetch events from cache');
-		// 		return res.status(200).json(JSON.parse(eventData));
-		// 	}
-		// const eventCache = await redis.get(key);
-		// if (eventCache) {
-		// 	logger.info('Fetch events from cache');
-		// 	return res.status(200).json(JSON.parse(eventCache));
-		// }
 		const data = await APICall.getEvents();
 		const now = moment();
 		let futureEvents = [];
@@ -84,17 +69,6 @@ router.get('/', async (req, res) => {
 			moment(o.start.date)
 		).reverse();
 		logger.info('Events sent');
-		// await redis.set(
-		// 	key,
-		// 	JSON.stringify({ futureEvents, pastEvents }),
-		// 	'EX',
-		// 	CACHE_TIME
-		// );
-		// client.setex(
-		// 	key,
-		// 	30,
-		// 	JSON.stringify({ futureEvents, pastEvents })
-		// );
 		cache.put(key, { futureEvents, pastEvents }, CACHE_TIME);
 		logger.info('Stored events in cache');
 		return res.status(200).json({ futureEvents, pastEvents });
