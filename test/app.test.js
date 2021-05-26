@@ -2,11 +2,35 @@ import request from 'supertest';
 import app from '../src/config/app';
 
 describe('Backend Home API', () => {
-	it('GET /', async () => {
+	test('GET /', async () => {
 		const res = await request(app).get('/');
 		expect(res.status).toEqual(200);
 		expect(res.body).toBeInstanceOf(Object);
 		expect(res.body).toHaveProperty('welcome');
 		expect(res.body.welcome).toEqual('CougarCS Backend 🐯');
+	});
+
+	test('Invalid GET endpoint should throw error', async () => {
+		const res = await request(app).get('/invaild');
+
+		expect(res.status).toEqual(500);
+		expect(res.body).toBeInstanceOf(Object);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message).toEqual(
+			'Invaild Request - Endpoint: /invaild'
+		);
+	});
+
+	test('Invalid POST endpoint should throw error', async () => {
+		const res = await request(app).post('/invaild').send({
+			test: 'test',
+		});
+
+		expect(res.status).toEqual(500);
+		expect(res.body).toBeInstanceOf(Object);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message).toEqual(
+			'Invaild Request - Endpoint: /invaild'
+		);
 	});
 });

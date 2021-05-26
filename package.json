@@ -9,7 +9,7 @@
     "start": "NODE_ENV=prod node dist/server.js",
     "test": "NODE_ENV=test jest --runInBand --detectOpenHandles",
     "test:dev": "NODE_ENV=test jest --watch --runInBand --detectOpenHandles",
-    "test:coverage": "jest --coverage --runInBand --detectOpenHandles --forceExit",
+    "test:coverage": "NODE_ENV=test jest --coverage --runInBand --detectOpenHandles --forceExit",
     "eslint-check": "eslint ./src --ext .js && eslint ./test --ext .js",
     "eslint-fix": "eslint src/**/*.js --fix && eslint test/*.js --fix"
   },
@@ -66,11 +66,9 @@
       "/node_modules/",
       "/coverage/",
       "/src/server.js",
-      "/src/config/",
+      "src/utils/api/calls.js",
       "src/utils/logger.js",
       "src/utils/httpLogger.js",
-      "src/utils/api/calls.js",
-      "src/utils/config.js",
       "/dist/",
       ".eslint.js"
     ],
