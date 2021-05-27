@@ -3,6 +3,8 @@ import _ from 'lodash';
 import moment from 'moment';
 import APICall from '../../utils/api/calls';
 import { logger } from '../../utils/logger';
+import { CACHE_TIME } from '../../utils/config';
+import cache from '../../utils/cache';
 
 const router = new Router();
 
@@ -16,7 +18,14 @@ const renameKey = (obj, oldKey, newKey) => {
 		delete obj[oldKey];
 	}
 };
+
 router.get('/', async (req, res) => {
+	const key = 'event';
+	const cacheContent = cache.get(key);
+	if (cacheContent) {
+		logger.info('Events sent from cache');
+		return res.status(200).json(cacheContent);
+	}
 	try {
 		const data = await APICall.getEvents();
 		const now = moment();
@@ -60,7 +69,9 @@ router.get('/', async (req, res) => {
 			moment(o.start.date)
 		).reverse();
 		logger.info('Events sent');
-		return res.send({ futureEvents, pastEvents });
+		cache.put(key, { futureEvents, pastEvents }, CACHE_TIME);
+		logger.info('Stored events in cache');
+		return res.status(200).json({ futureEvents, pastEvents });
 	} catch (err) {
 		logger.error(
 			`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${

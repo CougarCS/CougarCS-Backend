@@ -38,8 +38,7 @@ exports.getEvents = async function getEvents() {
 
 exports.checkRecaptcha = async function checkRecaptcha(recaptchaToken) {
 	const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`;
-	const res = await axios.post(verificationUrl);
-	return res;
+	return axios.post(verificationUrl);
 };
 
 exports.createStripeCustomer = function createStripeCustomer(

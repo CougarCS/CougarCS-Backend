@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import cors from 'cors';
 import 'dotenv/config';
 import express, { json } from 'express';
@@ -11,7 +12,7 @@ import events from '../api/routes/event';
 import payment from '../api/routes/payment';
 import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
-import { SENTRY_URL } from '../utils/config';
+import { ENABLE_CORS, SENTRY_URL } from '../utils/config';
 
 const app = express();
 
@@ -31,9 +32,12 @@ Sentry.init({
 	tracesSampleRate: 1.0,
 });
 
-const corsOptions = {
-	origin: 'https://cougarcs.com',
-};
+const corsOptions = ENABLE_CORS
+	? {
+			origin: 'https://cougarcs.com',
+			methods: ['GET', 'POST'],
+	  }
+	: '*';
 
 app.use(
 	Sentry.Handlers.requestHandler({
@@ -56,18 +60,20 @@ app.use('/api/payment', payment);
 app.use('/api/send', email);
 app.use('/api/events', events);
 
+app.use((req, res) => {
+	throw new Error(`Invaild Request - Endpoint: ${req.originalUrl}`);
+});
+
 app.use(Sentry.Handlers.errorHandler());
 
-// eslint-disable-next-line no-unused-vars
-app.use(function onError(err, req, res, next) {
-	logger.error(
+app.use((err, req, res, next) => {
+	logger.info(
 		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
 			req.method
 		} - ${req.ip}`
 	);
 
-	res.statusCode = 500;
-	res.end(`${res.sentry}\n`);
+	res.status(500).json({ message: err.message });
 });
 
 export default app;
