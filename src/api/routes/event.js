@@ -48,7 +48,6 @@ router.get('/', async (req, res) => {
 			});
 
 		logger.info('Events sent');
-
 		cache.put(key, { futureEvents, pastEvents }, CACHE_TIME);
 		logger.info('Stored events in cache');
 		return res.status(200).json({ futureEvents, pastEvents });
