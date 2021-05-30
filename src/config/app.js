@@ -12,7 +12,7 @@ import events from '../api/routes/event';
 import payment from '../api/routes/payment';
 import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
-import { ENABLE_CORS, SENTRY_URL } from '../utils/config';
+import { ENABLE_CORS, PROD, SENTRY_URL } from '../utils/config';
 
 const app = express();
 
@@ -21,16 +21,18 @@ const limiter = new RateLimit({
 	max: 90,
 });
 
-Sentry.init({
-	dsn: SENTRY_URL,
-	integrations: [
-		new Sentry.Integrations.Http({ tracing: true }),
-		new Tracing.Integrations.Express({
-			app,
-		}),
-	],
-	tracesSampleRate: 1.0,
-});
+if (PROD) {
+	Sentry.init({
+		dsn: SENTRY_URL,
+		integrations: [
+			new Sentry.Integrations.Http({ tracing: true }),
+			new Tracing.Integrations.Express({
+				app,
+			}),
+		],
+		tracesSampleRate: 1.0,
+	});
+}
 
 const corsOptions = ENABLE_CORS
 	? {
