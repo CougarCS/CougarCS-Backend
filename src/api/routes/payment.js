@@ -86,9 +86,9 @@ router.post(
 
 		let amount = 0;
 		if (paidUntil === 'semester') {
-			amount = 1000;
+			amount = 2500;
 		} else {
-			amount = 1800;
+			amount = 4000;
 		}
 
 		try {
