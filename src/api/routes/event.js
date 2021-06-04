@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import _ from 'lodash';
 import moment from 'moment';
 import APICall from '../../utils/api/calls';
 import { logger } from '../../utils/logger';
@@ -29,46 +28,27 @@ router.get('/', async (req, res) => {
 	try {
 		const data = await APICall.getEvents();
 		const now = moment();
-		let futureEvents = [];
-		let pastEvents = [];
+		const futureEvents = [];
+		const pastEvents = [];
+		data.items
+			.filter((obj) => obj?.start?.date || obj?.start?.dateTime)
+			.forEach((obj) => {
+				renameKey(obj.start, 'dateTime', 'date');
+				renameKey(obj.end, 'dateTime', 'date');
 
-		data.items.forEach((item) => {
-			if (item.start === undefined) {
-				return;
-			}
-			if (item.start.date !== undefined) {
-				if (moment(item.start.date) > now) {
-					futureEvents.push(item);
+				if (moment(obj.start.date) > now) {
+					futureEvents.push(obj);
 				}
 				if (
-					moment(item.start.date) < now &&
-					moment(item.start.date) > moment().subtract(1, 'year')
+					moment(obj.start.date) < now &&
+					moment(obj.start.date) > moment().subtract(1, 'year')
 				) {
-					pastEvents.push(item);
+					pastEvents.push(obj);
 				}
-			} else {
-				if (moment(item.start.dateTime) > now) {
-					futureEvents.push(item);
-				}
-				if (
-					moment(item.start.dateTime) < now &&
-					moment(item.start.dateTime) > moment().subtract(1, 'year')
-				) {
-					pastEvents.push(item);
-				}
-			}
-		});
+			});
 
-		futureEvents.forEach((obj) => renameKey(obj.start, 'dateTime', 'date'));
-		futureEvents.forEach((obj) => renameKey(obj.end, 'dateTime', 'date'));
-		pastEvents.forEach((obj) => renameKey(obj.start, 'dateTime', 'date'));
-		pastEvents.forEach((obj) => renameKey(obj.end, 'dateTime', 'date'));
-
-		futureEvents = _.sortBy(futureEvents, (o) => moment(o.start.date));
-		pastEvents = _.sortBy(pastEvents, (o) =>
-			moment(o.start.date)
-		).reverse();
 		logger.info('Events sent');
+
 		cache.put(key, { futureEvents, pastEvents }, CACHE_TIME);
 		logger.info('Stored events in cache');
 		return res.status(200).json({ futureEvents, pastEvents });

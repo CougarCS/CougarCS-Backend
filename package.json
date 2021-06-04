@@ -2,7 +2,7 @@
   "name": "cougarcs-backend",
   "version": "1.0.0",
   "description": "CougarCS-Backend",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "build": "NODE_ENV=prod babel src -d dist",
     "server": "NODE_ENV=dev nodemon --exec babel-node ./src/server.js",
