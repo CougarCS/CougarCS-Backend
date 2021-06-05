@@ -1,10 +1,10 @@
 import { createLogger, config, transports } from 'winston';
-import { NODE_ENV } from './config';
+import { TEST } from './config';
 
 let level;
 let silent;
 
-if (NODE_ENV === 'test') {
+if (TEST) {
 	level = 'emerg';
 	silent = true;
 } else {

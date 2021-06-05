@@ -1,6 +1,6 @@
 import morgan from 'morgan';
 import json from 'morgan-json';
-import { NODE_ENV } from './config';
+import { TEST } from './config';
 import { logger } from './logger';
 
 const format = json({
@@ -27,7 +27,7 @@ const httpLogger = morgan(format, {
 			});
 		},
 	},
-	skip: () => NODE_ENV === 'test',
+	skip: () => TEST,
 });
 
 export { httpLogger };
