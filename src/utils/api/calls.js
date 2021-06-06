@@ -11,6 +11,7 @@ import {
 	SENDGRID_API_KEY,
 	STRIPE_API_KEY,
 	NOTION_TOKEN,
+	NOTION_TUTOR_DB,
 } from '../config';
 import { logger } from '../logger';
 
@@ -123,9 +124,8 @@ exports.getTutors = async function getTutors() {
 		auth: NOTION_TOKEN,
 	});
 
-	const databaseId = '5ae16117-d5e1-43f9-8fab-7782938ec557';
 	const payload = {
-		path: `databases/${databaseId}/query`,
+		path: `databases/${NOTION_TUTOR_DB}/query`,
 		method: 'POST',
 		body: {
 			sorts: [
