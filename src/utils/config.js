@@ -17,4 +17,4 @@ export const DEV = NODE_ENV === 'dev';
 export const TEST = NODE_ENV === 'test';
 
 export const ENABLE_CORS = PROD;
-export const CACHE_TIME = TEST ? 30 : 1000 * 60 * 60 * 4; // 4 hour
+export const CACHE_TIME = PROD ? 1000 * 60 * 60 * 4 : 30; // 4 hours or 30 sec
