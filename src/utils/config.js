@@ -9,7 +9,7 @@ export const {
 	STRIPE_API_KEY = 'test',
 	SENTRY_URL = '',
 	SEND_EMAIL = 'test@test.com',
-	NOTION_TOKEN = '',
+	NOTION_TOKEN = 'secret',
 } = process.env;
 
 export const PROD = NODE_ENV === 'prod';
