@@ -2047,7 +2047,7 @@ cacheable-request@^6.0.0:
     http-cache-semantics "^4.0.0"
     keyv "^3.0.0"
     lowercase-keys "^2.0.0"
-    normalize-url "^4.1.0"
+    normalize-url "4.5.1"
     responselike "^1.0.2"
 
 cacheable-request@^7.0.1:
@@ -2060,7 +2060,7 @@ cacheable-request@^7.0.1:
     http-cache-semantics "^4.0.0"
     keyv "^4.0.0"
     lowercase-keys "^2.0.0"
-    normalize-url "^4.1.0"
+    normalize-url "4.5.1"
     responselike "^2.0.0"
 
 call-bind@^1.0.0, call-bind@^1.0.2:
