@@ -37,7 +37,7 @@ if (PROD) {
 
 const corsOptions = ENABLE_CORS
 	? {
-			origin: 'https://cougarcs.com',
+			origin: ['https://cougarcs.com', 'http://localhost:45678'],
 			methods: ['GET', 'POST'],
 	  }
 	: '*';
