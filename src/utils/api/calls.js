@@ -2,6 +2,7 @@ import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 import Stripe from 'stripe';
 import moment from 'moment';
+import { Client } from '@notionhq/client';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import {
 	CALENDAR_API_KEY,
@@ -9,6 +10,7 @@ import {
 	RECAPTCHA_SECRET_KEY,
 	SENDGRID_API_KEY,
 	STRIPE_API_KEY,
+	NOTION_TOKEN,
 } from '../config';
 import { logger } from '../logger';
 
@@ -114,4 +116,26 @@ exports.addToSheets = async function addToSheets(
 		service: 'payment',
 		message: 'Added user to Google Sheets',
 	});
+};
+
+exports.getTutors = async function getTutors() {
+	const notion = new Client({
+		auth: NOTION_TOKEN,
+	});
+
+	const databaseId = '5ae16117-d5e1-43f9-8fab-7782938ec557';
+	const payload = {
+		path: `databases/${databaseId}/query`,
+		method: 'POST',
+		body: {
+			sorts: [
+				{
+					property: 'Name',
+					direction: 'ascending',
+				},
+			],
+		},
+	};
+
+	return notion.request(payload);
 };

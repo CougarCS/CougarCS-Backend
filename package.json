@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@notionhq/client": "^0.1.8",
     "@sendgrid/mail": "^7.4.4",
     "@sentry/node": "^6.4.1",
     "@sentry/tracing": "^6.4.1",
