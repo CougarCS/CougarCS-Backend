@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
 	const key = 'tutors';
 	const cacheContent = cache.get(key);
 	if (cacheContent) {
-		logger.info('Events sent from cache');
+		logger.info('Tutors sent from cache');
 		return res.status(200).json(cacheContent);
 	}
 	try {
@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 			});
 
 		// Store in Cache
-		cache.put(key, { data }, CACHE_TIME);
+		cache.put(key, { tutors }, CACHE_TIME);
 		logger.info('Stored tutors in cache');
 
 		return res.status(200).json({ tutors });
@@ -41,7 +41,7 @@ router.get('/', async (req, res) => {
 				req.method
 			} - ${req.ip}`
 		);
-		return res.status(500).json({ message: 'Unable to get tutors' });
+		return res.status(500).json({ err, message: 'Unable to get tutors' });
 	}
 });
 
