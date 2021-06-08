@@ -23,8 +23,11 @@ describe('Get events from google calander', () => {
 
 		const res = await agent.get('/api/events');
 		expect(res.status).toEqual(200);
-		expect(res.body).toHaveProperty('futureEvents');
-		expect(res.body).toHaveProperty('pastEvents');
+		expect(res.body).toHaveProperty('events');
+		expect(res.body.events[0]).toHaveProperty('start');
+		expect(res.body.events[0]).toHaveProperty('end');
+		expect(res.body.events[0]).toHaveProperty('title');
+		expect(res.body.events[0]).toHaveProperty('desc');
 	});
 
 	test('Get events from cache', async () => {
@@ -34,8 +37,11 @@ describe('Get events from google calander', () => {
 		await agent.get('/api/events');
 		const res = await agent.get('/api/events');
 		expect(res.status).toEqual(200);
-		expect(res.body).toHaveProperty('futureEvents');
-		expect(res.body).toHaveProperty('pastEvents');
+		expect(res.body).toHaveProperty('events');
+		expect(res.body.events[0]).toHaveProperty('start');
+		expect(res.body.events[0]).toHaveProperty('end');
+		expect(res.body.events[0]).toHaveProperty('title');
+		expect(res.body.events[0]).toHaveProperty('desc');
 	});
 
 	test('Get events failure', async () => {

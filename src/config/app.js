@@ -9,6 +9,7 @@ import * as Tracing from '@sentry/tracing';
 import actuator from 'express-actuator';
 import email from '../api/routes/email';
 import events from '../api/routes/event';
+import tutors from '../api/routes/tutors';
 import payment from '../api/routes/payment';
 import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
@@ -36,7 +37,7 @@ if (PROD) {
 
 const corsOptions = ENABLE_CORS
 	? {
-			origin: 'https://cougarcs.com',
+			origin: ['https://cougarcs.com', 'http://localhost:45678'],
 			methods: ['GET', 'POST'],
 	  }
 	: '*';
@@ -61,6 +62,7 @@ app.get('/', (req, res) => {
 app.use('/api/payment', payment);
 app.use('/api/send', email);
 app.use('/api/events', events);
+app.use('/api/tutors', tutors);
 
 app.use((req, res) => {
 	throw new Error(`Invaild Request - Endpoint: ${req.originalUrl}`);

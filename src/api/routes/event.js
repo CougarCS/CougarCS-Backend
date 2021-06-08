@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import moment from 'moment';
+import _ from 'lodash';
 import APICall from '../../utils/api/calls';
 import { logger } from '../../utils/logger';
 import { CACHE_TIME } from '../../utils/config';
@@ -27,31 +28,26 @@ router.get('/', async (req, res) => {
 	}
 	try {
 		const data = await APICall.getEvents();
-		const now = moment();
-		const futureEvents = [];
-		const pastEvents = [];
+		let events = [];
 		data.items
 			.filter((obj) => obj?.start?.date || obj?.start?.dateTime)
 			.forEach((obj) => {
 				renameKey(obj.start, 'dateTime', 'date');
 				renameKey(obj.end, 'dateTime', 'date');
-
-				if (moment(obj.start.date) > now) {
-					futureEvents.push(obj);
-				}
-				if (
-					moment(obj.start.date) < now &&
-					moment(obj.start.date) > moment().subtract(1, 'year')
-				) {
-					pastEvents.push(obj);
-				}
+				events.push({
+					start: obj.start.date,
+					end: obj.end.date,
+					title: obj.summary,
+					desc: obj?.description ? obj.description : 'TBD',
+				});
 			});
 
+		events = _.sortBy(events, (o) => moment(o.start));
 		logger.info('Events sent');
 
-		cache.put(key, { futureEvents, pastEvents }, CACHE_TIME);
+		cache.put(key, { events }, CACHE_TIME);
 		logger.info('Stored events in cache');
-		return res.status(200).json({ futureEvents, pastEvents });
+		return res.status(200).json({ events });
 	} catch (err) {
 		logger.error(
 			`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
