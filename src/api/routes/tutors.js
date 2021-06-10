@@ -36,7 +36,8 @@ router.get('/', async (req, res) => {
 	} catch (err) {
 		// Error Management
 		logger.error(
-			`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
+			`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+				req.method
 			} - ${req.ip}`
 		);
 		return res.status(500).json({ err, message: 'Unable to get tutors' });
