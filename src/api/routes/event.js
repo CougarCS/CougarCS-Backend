@@ -4,9 +4,10 @@ import _ from 'lodash';
 import APICall from '../../utils/api/calls';
 import { logger } from '../../utils/logger';
 import { CACHE_TIME } from '../../utils/config';
-import cache from '../../utils/cache';
+import { getCache, setCache } from '../../utils/cacheData';
 
 const router = new Router();
+const key = 'event';
 
 const renameKey = (obj, oldKey, newKey) => {
 	if (oldKey !== newKey && !obj.date) {
@@ -20,8 +21,7 @@ const renameKey = (obj, oldKey, newKey) => {
 };
 
 router.get('/', async (req, res) => {
-	const key = 'event';
-	const cacheContent = cache.get(key);
+	const cacheContent = getCache(key);
 	if (cacheContent) {
 		logger.info('Events sent from cache');
 		return res.status(200).json(cacheContent);
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
 		events = _.sortBy(events, (o) => moment(o.start));
 		logger.info('Events sent');
 
-		cache.put(key, { events }, CACHE_TIME);
+		setCache(key, { events }, CACHE_TIME);
 		logger.info('Stored events in cache');
 		return res.status(200).json({ events });
 	} catch (err) {
