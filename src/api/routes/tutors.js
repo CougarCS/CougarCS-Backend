@@ -2,14 +2,13 @@ import { Router } from 'express';
 import { logger } from '../../utils/logger';
 import APICall from '../../utils/api/calls';
 import { CACHE_TIME } from '../../utils/config';
-import cache from '../../utils/cache';
+import { getCache, setCache } from '../../utils/cacheData';
 
 const router = Router();
+const key = 'tutor';
 
 router.get('/', async (req, res) => {
-	// Check Cache
-	const key = 'tutors';
-	const cacheContent = cache.get(key);
+	const cacheContent = getCache(key);
 	if (cacheContent) {
 		logger.info('Tutors sent from cache');
 		return res.status(200).json(cacheContent);
@@ -30,7 +29,7 @@ router.get('/', async (req, res) => {
 			});
 
 		// Store in Cache
-		cache.put(key, { tutors }, CACHE_TIME);
+		setCache(key, { tutors }, CACHE_TIME);
 		logger.info('Stored tutors in cache');
 
 		return res.status(200).json({ tutors });
