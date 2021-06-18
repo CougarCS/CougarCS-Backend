@@ -1,45 +1,11 @@
 {
-  "results": [
+  "tutors": [
     {
-      "object": "page",
-      "id": "1234",
-      "created_time": "2021-06-06T01:18:00.000Z",
-      "last_edited_time": "2021-06-06T01:19:00.000Z",
-      "parent": {
-        "type": "database_id",
-        "database_id": "12345-abcd"
-      },
-      "archived": false,
-      "properties": {
-        "LinkedIn": {
-          "id": "fhcJ",
-          "type": "url",
-          "url": "https://test.com"
-        },
-        "Name": {
-          "id": "title",
-          "type": "title",
-          "title": [
-            {
-              "type": "text",
-              "text": {
-                "content": "My Name",
-                "link": null
-              },
-              "annotations": {
-                "bold": false,
-                "italic": false,
-                "strikethrough": false,
-                "underline": false,
-                "code": false,
-                "color": "default"
-              },
-              "plain_text": "My Name",
-              "href": null
-            }
-          ]
-        }
-      }
+      "name": "John"
+    },
+    {
+      "name": "Mack",
+      "linkedin": "https://www.test.com"
     }
   ]
 }
