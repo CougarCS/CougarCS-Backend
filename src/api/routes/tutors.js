@@ -14,27 +14,14 @@ router.get('/', async (req, res) => {
 		return res.status(200).json(cacheContent);
 	}
 	try {
-		// API Request
-		const data = await APICall.getTutors();
-		logger.info('Tutors sent');
-		const tutors = data.results
-			// remove empty data
-			.filter((obj) => obj?.properties?.Name?.title[0]?.text.content)
-			// remove extra properties
-			.map((obj) => {
-				return {
-					name: obj.properties.Name.title[0].text.content,
-					linkedin: obj.properties?.LinkedIn?.url,
-				};
-			});
+		const { tutors } = await APICall.getTutors();
 
-		// Store in Cache
 		setCache(key, { tutors }, CACHE_TIME);
 		logger.info('Stored tutors in cache');
 
+		logger.info('Tutors sent');
 		return res.status(200).json({ tutors });
 	} catch (err) {
-		// Error Management
 		logger.error(
 			`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
 				req.method

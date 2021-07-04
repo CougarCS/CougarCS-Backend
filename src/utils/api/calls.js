@@ -2,6 +2,7 @@ import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 import Stripe from 'stripe';
 import moment from 'moment';
+import _ from 'lodash';
 import { Client } from '@notionhq/client';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import {
@@ -16,6 +17,17 @@ import {
 import { logger } from '../logger';
 
 const stripe = new Stripe(STRIPE_API_KEY);
+
+const renameKey = (obj, oldKey, newKey) => {
+	if (oldKey !== newKey && !obj.date) {
+		Object.defineProperty(
+			obj,
+			newKey,
+			Object.getOwnPropertyDescriptor(obj, oldKey)
+		);
+		delete obj[oldKey];
+	}
+};
 
 exports.sendEmail = async function sendEmail(toEmail, email, subject, content) {
 	sgMail.setApiKey(SENDGRID_API_KEY);
@@ -36,7 +48,23 @@ exports.getEvents = async function getEvents() {
 	const { data } = await axios.get(
 		`https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${CALENDAR_API_KEY}`
 	);
-	return data;
+
+	let events = [];
+	data.items
+		.filter((obj) => obj?.start?.date || obj?.start?.dateTime)
+		.forEach((obj) => {
+			renameKey(obj.start, 'dateTime', 'date');
+			renameKey(obj.end, 'dateTime', 'date');
+			events.push({
+				start: obj.start.date,
+				end: obj.end.date,
+				title: obj.summary,
+				desc: obj?.description ? obj.description : 'TBD',
+			});
+		});
+
+	events = _.sortBy(events, (o) => moment(o.start));
+	return { events };
 };
 
 exports.checkRecaptcha = async function checkRecaptcha(recaptchaToken) {
@@ -137,5 +165,16 @@ exports.getTutors = async function getTutors() {
 		},
 	};
 
-	return notion.request(payload);
+	const data = await notion.request(payload);
+
+	const tutors = data.results
+		.filter((obj) => obj?.properties?.Name?.title[0]?.text.content)
+		.map((obj) => {
+			return {
+				name: obj.properties.Name.title[0].text.content,
+				linkedin: obj.properties?.LinkedIn?.url,
+			};
+		});
+
+	return { tutors };
 };
