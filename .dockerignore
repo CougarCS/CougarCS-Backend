@@ -1,6 +1,3 @@
 node_modules
-logs
-dist
-coverage
 .vscode
 .env.local
