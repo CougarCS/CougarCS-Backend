@@ -7,6 +7,7 @@ import RateLimit from 'express-rate-limit';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import actuator from 'express-actuator';
+import compression from 'compression';
 import email from '../api/routes/email';
 import events from '../api/routes/event';
 import tutors from '../api/routes/tutors';
@@ -46,6 +47,7 @@ const corsOptions = ENABLE_CORS
 	  }
 	: '*';
 
+app.use(compression());
 app.use(
 	Sentry.Handlers.requestHandler({
 		ip: true,
