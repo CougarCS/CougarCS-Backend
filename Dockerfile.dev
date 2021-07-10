@@ -1,0 +1,15 @@
+FROM node:erbium-alpine3.11 AS development
+
+WORKDIR /app
+
+COPY package.json .babelrc ./
+
+COPY yarn.lock .
+
+RUN yarn
+
+COPY . .
+
+EXPOSE 4000
+
+CMD [ "yarn", "server" ]

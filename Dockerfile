@@ -1,4 +1,6 @@
-FROM node:erbium-alpine3.11
+FROM node:erbium-alpine3.11 AS build
+
+ENV NODE_ENV prod
 
 WORKDIR /app
 
