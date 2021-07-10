@@ -16,9 +16,13 @@ RUN npm prune --production
 
 FROM node:12.9.1-alpine
 
-USER 1000
-
 WORKDIR /app
+
+RUN chown -R 1000:1000 /app
+
+RUN chmod 755 /app
+
+USER 1000
 
 COPY --from=build /app/node_modules ./node_modules
 
