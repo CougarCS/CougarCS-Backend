@@ -38,11 +38,7 @@ if (PROD) {
 
 const corsOptions = ENABLE_CORS
 	? {
-			origin: [
-				'https://cougarcs.com',
-				'http://localhost:45678',
-				'https://test-local-cougarcs.vercel.app',
-			],
+			origin: ['https://cougarcs.com', 'http://localhost:45678'],
 			methods: ['GET', 'POST'],
 	  }
 	: '*';
