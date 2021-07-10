@@ -1,5 +1,7 @@
 FROM node:erbium-alpine3.11 AS development
 
+ENV NODE_ENV dev
+
 WORKDIR /app
 
 COPY package.json .babelrc ./
