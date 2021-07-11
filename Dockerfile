@@ -1,4 +1,6 @@
-FROM node:erbium-alpine3.11
+FROM node:erbium-alpine3.11 AS build
+
+ENV NODE_ENV prod
 
 WORKDIR /app
 
@@ -18,9 +20,13 @@ FROM node:erbium-alpine3.11
 
 
 
-USER 1000
-
 WORKDIR /app
+
+RUN chown -R 1000:1000 /app
+
+RUN chmod 755 /app
+
+USER 1000
 
 COPY --from=build /app/node_modules ./node_modules
 

@@ -11,7 +11,6 @@ coverage
 dist
 logs
 node_modules
-yarn.lock
 Dockerfile
 npm-debug.log
 README.md

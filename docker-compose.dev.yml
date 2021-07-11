@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  api:
+    container_name: cougarcs-api
+    image: cougarcs-api
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+    ports:
+      - '4000:4000'
+    env_file:
+      - .env
+volumes:
+  logs:
