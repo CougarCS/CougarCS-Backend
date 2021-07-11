@@ -12,7 +12,11 @@ RUN npm run build
 
 RUN npm prune --production
 
+
 FROM node:erbium-alpine3.11
+
+
+
 
 USER 1000
 
