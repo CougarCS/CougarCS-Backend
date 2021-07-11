@@ -12,7 +12,7 @@ RUN npm run build
 
 RUN npm prune --production
 
-FROM node:12.9.1-alpine
+FROM node:12.22.1-alpine
 
 USER 1000
 
