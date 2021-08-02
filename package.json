@@ -19,7 +19,7 @@
   "dependencies": {
     "@notionhq/client": "^0.2.1",
     "@sendgrid/mail": "^7.4.5",
-    "@sentry/node": "^6.8.0",
+    "@sentry/node": "^6.9.0",
     "@sentry/tracing": "^6.8.0",
     "axios": "^0.21.1",
     "compression": "^1.7.4",
