@@ -38,7 +38,7 @@
     "moment": "^2.24.0",
     "morgan": "^1.10.0",
     "morgan-json": "^1.1.0",
-    "stripe": "^8.160.0",
+    "stripe": "^8.162.0",
     "uuid": "^8.3.0",
     "winston": "^3.3.3",
     "@babel/runtime": "^7.14.6"
