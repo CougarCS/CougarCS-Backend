@@ -178,3 +178,56 @@ exports.getTutors = async function getTutors() {
 
 	return { tutors };
 };
+
+const CougarCloud =
+	'https://pxgy8jxap6.execute-api.us-east-1.amazonaws.com/dev';
+
+async function getAccessToken() {
+	const accessKeyID = '';
+	const secretAccessKey = '';
+	const url = `${CougarCloud}/login`;
+	const data = { accessKeyID, secretAccessKey };
+
+	const res = await axios.post(url, data);
+	console.log(res);
+	return res.data.token;
+}
+
+// const Cougarc = require('express')();
+// const PORT = 8080
+
+exports.postContact = async function postContact({
+	transaction,
+	uhID,
+	email,
+	firstName,
+	lastName,
+	phone,
+	shirtsize,
+	membershipStart,
+	paidUntil,
+}) {
+	const token = await getAccessToken();
+	console.log(token);
+
+	const data = {
+		// eslint-disable-next-line object-shorthand
+		transaction: transaction,
+		psid: uhID,
+		email,
+		firstName,
+		lastName,
+		phone,
+		shirtsize,
+		membershipStart,
+		paidUntil,
+	};
+	console.log(JSON.stringify(data));
+
+	logger.info(`POST to CougarCloud Api: api for: ${uhID}`);
+	const { resp } = await axios.post(`${CougarCloud}/contact`, data, {
+		headers: { Authorization: `Bearer ${token}` },
+	});
+	console.log(resp);
+	return resp;
+};

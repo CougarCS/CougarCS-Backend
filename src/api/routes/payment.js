@@ -62,15 +62,7 @@ router.post(
 		}
 
 		const { token, user, recaptchaToken } = req.body;
-		const {
-			firstName,
-			lastName,
-			email,
-			uhID,
-			classification,
-			paidUntil,
-			phone,
-		} = user;
+		const { firstName, lastName, email, uhID, paidUntil, phone } = user;
 
 		// check recaptcha
 		const resp = await APICall.checkRecaptcha(recaptchaToken);
@@ -112,7 +104,33 @@ router.post(
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
 
+		// const contact = {...user}
+
+		// CALL COUGARCS API
+		try {
+			await APICall.postContact(user);
+		} catch (err) {
+			await APICall.sendEmail(
+				['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
+				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
+				'GSheet Error on Website Payments',
+				JSON.stringify({
+					name: `${firstName} ${lastName}`,
+					email,
+					err: err.message,
+				})
+			);
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
+		}
+		logger.info('Payment Success');
+		return res.status(200).json({ message: 'OK' });
+
 		// GOOGLE SHEETS;
+		/* 
 		try {
 			await APICall.addToSheets(
 				firstName,
@@ -141,7 +159,7 @@ router.post(
 			);
 		}
 		logger.info('Payment Success');
-		return res.status(200).json({ message: 'OK' });
+		return res.status(200).json({ message: 'OK' }); */
 	}
 );
 

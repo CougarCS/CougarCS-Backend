@@ -15,6 +15,7 @@ import payment from '../api/routes/payment';
 import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
 import { ENABLE_CORS, PROD, SENTRY_URL } from '../utils/config';
+import test from '../api/routes/cougarAPI';
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.get('/', (req, res) => {
 	res.json({ welcome: 'CougarCS Backend 🐯' });
 });
 
+app.use('/api/test', test);
 app.use('/api/payment', payment);
 app.use('/api/send', email);
 app.use('/api/events', events);
