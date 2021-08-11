@@ -15,9 +15,12 @@ import {
 	COUGARCS_CLOUD_URL,
 	COUGARCS_CLOUD_ACCESS_KEY,
 	COUGARCS_CLOUD_SECRET_KEY,
+	CACHE_TIME,
 } from '../config';
 import { logger } from '../logger';
+import { getCache, setCache } from '../cacheData';
 
+const key = 'token';
 const stripe = new Stripe(STRIPE_API_KEY);
 
 const renameKey = (obj, oldKey, newKey) => {
@@ -149,10 +152,17 @@ exports.getTutors = async function getTutors() {
 };
 
 async function getAccessToken() {
+	const cacheContent = getCache(key);
+	if (cacheContent) {
+		logger.info('Fetched Access token from cache');
+		return cacheContent.token;
+	}
 	const url = `${COUGARCS_CLOUD_URL}/login`;
 	const data = { COUGARCS_CLOUD_ACCESS_KEY, COUGARCS_CLOUD_SECRET_KEY };
 	logger.info('Fetching access token.');
 	const res = await axios.post(url, data);
+	logger.info('Stored token in cache');
+	setCache(key, { token: res.data.token }, CACHE_TIME);
 	return res.data.token;
 }
 
