@@ -11,6 +11,9 @@ export const {
 	SEND_EMAIL = 'test@test.com',
 	NOTION_TOKEN = 'secret',
 	NOTION_TUTOR_DB = 'none',
+	COUGARCS_CLOUD_URL = '',
+	COUGARCS_CLOUD_ACCESS_KEY = '',
+	COUGARCS_CLOUD_SECRET_KEY = '',
 } = process.env;
 
 export const PROD = NODE_ENV === 'prod';

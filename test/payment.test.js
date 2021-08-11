@@ -269,7 +269,7 @@ describe('Payment API test', () => {
 		expect(res.body.message).toEqual('Payment Error!');
 	});
 
-	test('Google Sheet insert', async () => {
+	test('Add user to DB', async () => {
 		jest.spyOn(apiCall, 'checkRecaptcha').mockImplementationOnce(() => {
 			return { data: { success: 'Success' } };
 		});
@@ -278,7 +278,7 @@ describe('Payment API test', () => {
 			() => true
 		);
 
-		jest.spyOn(apiCall, 'addToSheets').mockImplementationOnce(() => true);
+		jest.spyOn(apiCall, 'postContact').mockImplementationOnce(() => true);
 
 		const res = await agent.post('/api/payment').send({
 			user: {
@@ -298,7 +298,7 @@ describe('Payment API test', () => {
 		expect(res.body.message).toEqual('OK');
 	});
 
-	test('Google Sheet insert fail', async () => {
+	test('DB insert fails', async () => {
 		jest.spyOn(apiCall, 'checkRecaptcha').mockImplementationOnce(() => {
 			return { data: { success: 'Success' } };
 		});
@@ -309,7 +309,7 @@ describe('Payment API test', () => {
 
 		jest.spyOn(apiCall, 'sendEmail').mockImplementationOnce(() => true);
 
-		jest.spyOn(apiCall, 'addToSheets').mockImplementationOnce(() => {
+		jest.spyOn(apiCall, 'postContact').mockImplementationOnce(() => {
 			throw new Error();
 		});
 
