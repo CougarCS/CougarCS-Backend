@@ -151,7 +151,7 @@ exports.getTutors = async function getTutors() {
 async function getAccessToken() {
 	const url = `${COUGARCS_CLOUD_URL}/login`;
 	const data = { COUGARCS_CLOUD_ACCESS_KEY, COUGARCS_CLOUD_SECRET_KEY };
-
+	logger.info('Fetching access token.');
 	const res = await axios.post(url, data);
 	return res.data.token;
 }
