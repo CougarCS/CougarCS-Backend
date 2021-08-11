@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
 import { v4 as uuidv4 } from 'uuid';
@@ -104,8 +105,6 @@ router.post(
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
 
-		// const contact = {...user}
-
 		// CALL COUGARCS API
 		try {
 			await APICall.postContact(user);
@@ -128,38 +127,6 @@ router.post(
 		}
 		logger.info('Payment Success');
 		return res.status(200).json({ message: 'OK' });
-
-		// GOOGLE SHEETS;
-		/* 
-		try {
-			await APICall.addToSheets(
-				firstName,
-				lastName,
-				email,
-				uhID,
-				paidUntil,
-				phone,
-				classification
-			);
-		} catch (err) {
-			await APICall.sendEmail(
-				['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
-				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
-				'GSheet Error on Website Payments',
-				JSON.stringify({
-					name: `${firstName} ${lastName}`,
-					email,
-					err: err.message,
-				})
-			);
-			logger.error(
-				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-					req.method
-				} - ${req.ip}`
-			);
-		}
-		logger.info('Payment Success');
-		return res.status(200).json({ message: 'OK' }); */
 	}
 );
 

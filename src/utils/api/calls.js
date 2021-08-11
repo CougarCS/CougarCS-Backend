@@ -4,7 +4,6 @@ import Stripe from 'stripe';
 import moment from 'moment';
 import _ from 'lodash';
 import { Client } from '@notionhq/client';
-import { GoogleSpreadsheet } from 'google-spreadsheet';
 import {
 	CALENDAR_API_KEY,
 	CALENDAR_ID,
@@ -13,6 +12,9 @@ import {
 	STRIPE_API_KEY,
 	NOTION_TOKEN,
 	NOTION_TUTOR_DB,
+	COUGARCS_CLOUD_URL,
+	COUGARCS_CLOUD_ACCESS_KEY,
+	COUGARCS_CLOUD_SECRET_KEY,
 } from '../config';
 import { logger } from '../logger';
 
@@ -114,39 +116,6 @@ exports.createStripeCustomer = function createStripeCustomer(
 	});
 };
 
-exports.addToSheets = async function addToSheets(
-	firstName,
-	lastName,
-	email,
-	uhID,
-	paidUntil,
-	phone,
-	classification
-) {
-	const doc = new GoogleSpreadsheet(
-		'1fXguE-6AwXAihOkA39Ils28zn1ZkpClaFGUrJpNHodI'
-	);
-
-	await doc.useServiceAccountAuth(require('../../../gsheet.json'));
-	await doc.loadInfo();
-	const sheet = doc.sheetsByIndex[0];
-	await sheet.addRow({
-		Timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
-		Email: email,
-		'First Name': firstName,
-		'Last Name': lastName,
-		PeopleSoft: uhID,
-		Classification: classification,
-		'Paid Until': paidUntil,
-		'Payment Method': 'Stripe',
-		'Phone Number': phone,
-	});
-	logger.info({
-		service: 'payment',
-		message: 'Added user to Google Sheets',
-	});
-};
-
 exports.getTutors = async function getTutors() {
 	const notion = new Client({
 		auth: NOTION_TOKEN,
@@ -179,22 +148,13 @@ exports.getTutors = async function getTutors() {
 	return { tutors };
 };
 
-const CougarCloud =
-	'https://pxgy8jxap6.execute-api.us-east-1.amazonaws.com/dev';
-
 async function getAccessToken() {
-	const accessKeyID = '';
-	const secretAccessKey = '';
-	const url = `${CougarCloud}/login`;
-	const data = { accessKeyID, secretAccessKey };
+	const url = `${COUGARCS_CLOUD_URL}/login`;
+	const data = { COUGARCS_CLOUD_ACCESS_KEY, COUGARCS_CLOUD_SECRET_KEY };
 
 	const res = await axios.post(url, data);
-	console.log(res);
 	return res.data.token;
 }
-
-// const Cougarc = require('express')();
-// const PORT = 8080
 
 exports.postContact = async function postContact({
 	transaction,
@@ -207,12 +167,10 @@ exports.postContact = async function postContact({
 	membershipStart,
 	paidUntil,
 }) {
-	const token = await getAccessToken();
-	console.log(token);
+	const token = getAccessToken();
 
 	const data = {
-		// eslint-disable-next-line object-shorthand
-		transaction: transaction,
+		transaction,
 		psid: uhID,
 		email,
 		firstName,
@@ -222,12 +180,10 @@ exports.postContact = async function postContact({
 		membershipStart,
 		paidUntil,
 	};
-	console.log(JSON.stringify(data));
 
 	logger.info(`POST to CougarCloud Api: api for: ${uhID}`);
-	const { resp } = await axios.post(`${CougarCloud}/contact`, data, {
+	const res = await axios.post(`${COUGARCS_CLOUD_URL}/contact`, data, {
 		headers: { Authorization: `Bearer ${token}` },
 	});
-	console.log(resp);
-	return resp;
+	return res.data;
 };
