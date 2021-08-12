@@ -185,8 +185,8 @@ exports.postContact = async function postContact({
 		lastName,
 		phoneNumber: phone,
 		shirtSize,
-		membershipStart,
-		paidUntil,
+		membershipStart: '',
+		paidUntil: '',
 	};
 
 	logger.info(`POST to CougarCloud Api: api for: ${uhID}`);
