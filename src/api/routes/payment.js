@@ -63,7 +63,15 @@ router.post(
 		}
 
 		const { token, user, recaptchaToken } = req.body;
-		const { firstName, lastName, email, uhID, paidUntil, phone } = user;
+		const {
+			firstName,
+			lastName,
+			email,
+			uhID,
+			paidUntil,
+			phone,
+			shirtSize,
+		} = user;
 
 		// check recaptcha
 		const resp = await APICall.checkRecaptcha(recaptchaToken);
@@ -107,7 +115,7 @@ router.post(
 
 		// CALL COUGARCS API
 		try {
-			await APICall.postContact(user);
+			await APICall.postContact({ ...user, transaction: 'Stripe' });
 		} catch (err) {
 			await APICall.sendEmail(
 				['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],

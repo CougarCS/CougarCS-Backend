@@ -173,9 +173,7 @@ exports.postContact = async function postContact({
 	firstName,
 	lastName,
 	phone,
-	shirtsize,
-	membershipStart,
-	paidUntil,
+	shirtSize,
 }) {
 	const token = getAccessToken();
 
@@ -185,8 +183,8 @@ exports.postContact = async function postContact({
 		email,
 		firstName,
 		lastName,
-		phone,
-		shirtsize,
+		phoneNumber: phone,
+		shirtSize,
 		membershipStart,
 		paidUntil,
 	};
