@@ -115,7 +115,11 @@ router.post(
 
 		// CALL COUGARCS API
 		try {
-			await APICall.postContact({ ...user, transaction: 'Stripe' });
+			await APICall.postContact({
+				...user,
+				transaction: 'Stripe',
+				shirtSize,
+			});
 		} catch (err) {
 			await APICall.sendEmail(
 				['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
