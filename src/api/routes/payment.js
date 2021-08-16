@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../utils/logger';
 import APICall from '../../utils/api/calls';
 
-// Hello World
-
 const router = Router();
 
 router.post(
@@ -144,7 +142,7 @@ router.post(
 
 		try {
 			await APICall.postContact({
-				transaction: `Payment via Stripe on ${ new Date().toLocaleDateString() }`,
+				transaction: `Payment via Stripe on ${new Date().toLocaleDateString()}`,
 				firstName,
 				lastName,
 				email,
