@@ -13,9 +13,16 @@ import {
 	STRIPE_API_KEY,
 	NOTION_TOKEN,
 	NOTION_TUTOR_DB,
+	COUGARCS_CLOUD_URL,
+	COUGARCS_CLOUD_ACCESS_KEY,
+	COUGARCS_CLOUD_SECRET_KEY,
+	CCSCLOUD_TOKEN_CACHE_TIME,
 } from '../config';
 import { logger } from '../logger';
+import { getCache, setCache } from '../cacheData';
+import { getMembershipDates } from '../membershipDate';
 
+const key = 'token';
 const stripe = new Stripe(STRIPE_API_KEY);
 
 const renameKey = (obj, oldKey, newKey) => {
@@ -177,4 +184,57 @@ exports.getTutors = async function getTutors() {
 		});
 
 	return { tutors };
+};
+
+async function getAccessToken() {
+	const cacheContent = getCache(key);
+	if (cacheContent) {
+		logger.info('Fetched Access Token from Cache');
+		return cacheContent.token;
+	}
+
+	const URL = `${COUGARCS_CLOUD_URL}/login`;
+	const data = {
+		accessKeyID: COUGARCS_CLOUD_ACCESS_KEY,
+		secretAccessKey: COUGARCS_CLOUD_SECRET_KEY,
+	};
+	logger.info('Fetching access token...');
+	const res = await axios.post(URL, data);
+
+	logger.info('Stored Access Token in Cache');
+	setCache(key, { token: res.data.token }, CCSCLOUD_TOKEN_CACHE_TIME); // We need to reduce the cache time to 5 minutes (access token expires in 5)
+
+	return res.data.token;
+}
+
+exports.postContact = async function postContact({
+	transaction,
+	uhID,
+	email,
+	firstName,
+	lastName,
+	phone,
+	shirtSize,
+	paidUntil,
+}) {
+	const { membershipStart, membershipEnd } = getMembershipDates(paidUntil);
+
+	const token = await getAccessToken();
+	const URL = `${COUGARCS_CLOUD_URL}/contact`;
+	const data = {
+		transaction,
+		psid: uhID,
+		email,
+		firstName,
+		lastName,
+		phoneNumber: phone,
+		shirtSize,
+		membershipStart,
+		membershipEnd,
+	};
+	const headers = { Authorization: `Bearer ${token}` };
+	logger.info(`POST to CougarCS Cloud API for UHID=${uhID}`);
+	const res = await axios.post(URL, data, { headers });
+
+	return res.data;
 };
