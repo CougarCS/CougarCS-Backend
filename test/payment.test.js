@@ -10,6 +10,7 @@ beforeEach(async () => {
 describe('Payment API test', () => {
 	test('Test', () => {
 		expect(true).toEqual(true);
+		// test
 	});
 
 	// test('Missing first name', async () => {
