@@ -1,14 +1,14 @@
-import request from 'supertest';
-import app from '../src/config/app';
-import apiCall from '../src/utils/api/calls';
+// import request from 'supertest';
+// import app from '../src/config/app';
+// import apiCall from '../src/utils/api/calls';
 
-let agent;
-beforeEach(async () => {
-	agent = request(app);
-});
+// let agent;
+// beforeEach(async () => {
+// 	agent = request(app);
+// });
 
 describe('Payment API test', () => {
-	test('Test', () => {
+	test('TestABC', () => {
 		expect(true).toEqual(true);
 		// test
 	});
