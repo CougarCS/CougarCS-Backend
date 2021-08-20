@@ -30,8 +30,7 @@ router.post(
 			.trim()
 			.escape()
 			.isLength({ min: 7, max: 7 }),
-
-		check('user.classification', 'Classification is required')
+		check('user.shirtSize', 'Shirt Size is required')
 			.not()
 			.isEmpty()
 			.trim()
@@ -67,7 +66,7 @@ router.post(
 			lastName,
 			email,
 			uhID,
-			classification,
+			shirtSize,
 			paidUntil,
 			phone,
 		} = user;
@@ -112,25 +111,59 @@ router.post(
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
 
-		// GOOGLE SHEETS;
+		// // GOOGLE SHEETS;
+		// try {
+		// 	await APICall.addToSheets(
+		// 		firstName,
+		// 		lastName,
+		// 		email,
+		// 		uhID,
+		// 		paidUntil,
+		// 		phone,
+		// 		shirtSize
+		// 	);
+		// } catch (err) {
+		// 	await APICall.sendEmail(
+		// 		['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
+		// 		{ name: 'Payment Failure', email: 'info@cougarcs.com' },
+		// 		'GSheet Error on Website Payments',
+		// 		JSON.stringify({
+		// 			name: `${firstName} ${lastName}`,
+		// 			email,
+		// 			err: err.message,
+		// 		})
+		// 	);
+		// 	logger.error(
+		// 		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+		// 			req.method
+		// 		} - ${req.ip}`
+		// 	);
+		// }
+
 		try {
-			await APICall.addToSheets(
+			await APICall.postContact({
+				transaction: `Payment via Stripe on ${new Date().toLocaleDateString()}`,
 				firstName,
 				lastName,
 				email,
 				uhID,
-				paidUntil,
 				phone,
-				classification
-			);
+				shirtSize,
+				paidUntil,
+			});
 		} catch (err) {
 			await APICall.sendEmail(
-				['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
+				[
+					'vyas.r@cougarcs.com',
+					'webmaster@cougarcs.com',
+					'president@cougarcs.com',
+				],
 				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
-				'GSheet Error on Website Payments',
+				'CougarCS Cloud API - postContact Failed',
 				JSON.stringify({
 					name: `${firstName} ${lastName}`,
 					email,
+					uhID,
 					err: err.message,
 				})
 			);
@@ -140,6 +173,7 @@ router.post(
 				} - ${req.ip}`
 			);
 		}
+
 		logger.info('Payment Success');
 		return res.status(200).json({ message: 'OK' });
 	}
