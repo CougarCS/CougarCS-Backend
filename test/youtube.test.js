@@ -30,7 +30,7 @@ describe('Get videos from YouTube', () => {
 		jest.spyOn(apiCall, 'getYoutubeVideos').mockImplementationOnce(
 			() => mockVideos
 		);
-		await agent.get('/api/videos');
+		await agent.get('/api/youtube');
 		const res = await agent.get('/api/youtube');
 		expect(res.status).toEqual(200);
 		expect(res.body).toHaveProperty('videos');
