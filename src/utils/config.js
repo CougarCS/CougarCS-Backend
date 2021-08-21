@@ -11,6 +11,8 @@ export const {
 	SEND_EMAIL = 'test@test.com',
 	NOTION_TOKEN = 'secret',
 	NOTION_TUTOR_DB = 'none',
+	YOUTUBE_PLAYLIST_ID = '',
+	YOUTUBE_API_KEY = '',
 } = process.env;
 
 export const PROD = NODE_ENV === 'prod';

@@ -13,6 +13,8 @@ import {
 	STRIPE_API_KEY,
 	NOTION_TOKEN,
 	NOTION_TUTOR_DB,
+	YOUTUBE_PLAYLIST_ID,
+	YOUTUBE_API_KEY,
 } from '../config';
 import { logger } from '../logger';
 
@@ -177,4 +179,23 @@ exports.getTutors = async function getTutors() {
 		});
 
 	return { tutors };
+};
+
+exports.getYoutubeVideos = async function getYoutubeVideos() {
+	const { data } = await axios.get(
+		`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${YOUTUBE_PLAYLIST_ID}&key=${YOUTUBE_API_KEY}`
+	);
+
+	let videos = [];
+	data.items
+		.forEach((obj) => {
+			videos.push({
+				videoId: obj.snippet.resourceId.videoId,
+				title: obj.title,
+				description: obj.description,
+				thumbnail: obj.thumbnails.standard.url
+			});
+		});
+
+	return { videos };	
 };
