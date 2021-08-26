@@ -74,6 +74,7 @@
       "src/utils/api/calls.js",
       "src/utils/logger.js",
       "src/utils/httpLogger.js",
+      "src/utils/prometheus.js",
       "/dist/",
       ".eslint.js"
     ],
