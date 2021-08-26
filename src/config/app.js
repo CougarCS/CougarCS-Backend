@@ -14,7 +14,8 @@ import tutors from '../api/routes/tutors';
 import payment from '../api/routes/payment';
 import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
-import { ENABLE_CORS, PROD, SENTRY_URL } from '../utils/config';
+import { ENABLE_CORS, PROD, SENTRY_URL, TEST } from '../utils/config';
+import { bundle } from '../utils/prometheus';
 
 const app = express();
 
@@ -38,15 +39,14 @@ if (PROD) {
 
 const corsOptions = ENABLE_CORS
 	? {
-			origin: [
-				'https://cougarcs.com',
-				'http://localhost:45678',
-				'https://test-local-cougarcs.vercel.app',
-			],
+			origin: ['https://cougarcs.com', 'http://localhost:45678'],
 			methods: ['GET', 'POST'],
 	  }
 	: '*';
 
+if (!TEST) {
+	app.use(bundle);
+}
 app.use(compression());
 app.use(
 	Sentry.Handlers.requestHandler({
@@ -64,7 +64,6 @@ app.use(actuator());
 app.get('/', (req, res) => {
 	res.json({ welcome: 'CougarCS Backend 🐯' });
 });
-
 app.use('/api/payment', payment);
 app.use('/api/send', email);
 app.use('/api/events', events);

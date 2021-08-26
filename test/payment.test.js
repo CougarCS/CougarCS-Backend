@@ -15,7 +15,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -34,7 +34,7 @@ describe('Payment API test', () => {
 				lastName: '',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -53,7 +53,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: '',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -72,7 +72,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -91,7 +91,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -110,7 +110,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '123',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -122,14 +122,14 @@ describe('Payment API test', () => {
 		expect(res.body.message[0].msg).toEqual('UHID is required');
 	});
 
-	test('Classification missing', async () => {
+	test('Shirt Size missing', async () => {
 		const res = await agent.post('/api/payment').send({
 			user: {
 				firstName: 'Test',
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: '',
+				shirtSize: '',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -138,7 +138,7 @@ describe('Payment API test', () => {
 
 		expect(res.status).toEqual(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Classification is required');
+		expect(res.body.message[0].msg).toEqual('Shirt Size is required');
 	});
 
 	test('Paid Until missing', async () => {
@@ -148,7 +148,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: '',
 				phone: '123-456-7890',
 			},
@@ -167,7 +167,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '',
 			},
@@ -186,7 +186,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456',
 			},
@@ -205,7 +205,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -228,7 +228,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -257,7 +257,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
@@ -269,7 +269,7 @@ describe('Payment API test', () => {
 		expect(res.body.message).toEqual('Payment Error!');
 	});
 
-	test('Google Sheet insert', async () => {
+	test('CCS Cloud Post Contact', async () => {
 		jest.spyOn(apiCall, 'checkRecaptcha').mockImplementationOnce(() => {
 			return { data: { success: 'Success' } };
 		});
@@ -278,15 +278,15 @@ describe('Payment API test', () => {
 			() => true
 		);
 
-		jest.spyOn(apiCall, 'addToSheets').mockImplementationOnce(() => true);
+		jest.spyOn(apiCall, 'postContact').mockImplementationOnce(() => true);
 
 		const res = await agent.post('/api/payment').send({
 			user: {
 				firstName: 'Test',
 				lastName: 'Test',
 				email: 'test@test.com',
-				uhID: '1234567',
-				classification: 'freshmen',
+				uhID: '7777777',
+				shirtSize: 'M',
 				paidUntil: 'semester',
 				phone: '123-456-7890',
 			},
@@ -298,7 +298,7 @@ describe('Payment API test', () => {
 		expect(res.body.message).toEqual('OK');
 	});
 
-	test('Google Sheet insert fail', async () => {
+	test('CCS Cloud Post Contact Fail', async () => {
 		jest.spyOn(apiCall, 'checkRecaptcha').mockImplementationOnce(() => {
 			return { data: { success: 'Success' } };
 		});
@@ -309,7 +309,7 @@ describe('Payment API test', () => {
 
 		jest.spyOn(apiCall, 'sendEmail').mockImplementationOnce(() => true);
 
-		jest.spyOn(apiCall, 'addToSheets').mockImplementationOnce(() => {
+		jest.spyOn(apiCall, 'postContact').mockImplementationOnce(() => {
 			throw new Error();
 		});
 
@@ -319,7 +319,7 @@ describe('Payment API test', () => {
 				lastName: 'Test',
 				email: 'test@test.com',
 				uhID: '1234567',
-				classification: 'freshmen',
+				shirtSize: 'M',
 				paidUntil: 'year',
 				phone: '123-456-7890',
 			},
