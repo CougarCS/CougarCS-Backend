@@ -39,9 +39,9 @@ if (PROD) {
 
 const corsOptions = ENABLE_CORS
 	? {
-		origin: ['https://cougarcs.com', 'http://localhost:45678'],
-		methods: ['GET', 'POST'],
-	}
+			origin: ['https://cougarcs.com', 'http://localhost:45678'],
+			methods: ['GET', 'POST'],
+	  }
 	: '*';
 
 if (!TEST) {
@@ -77,7 +77,8 @@ app.use(Sentry.Handlers.errorHandler());
 
 app.use((err, req, res, next) => {
 	logger.info(
-		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
+		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+			req.method
 		} - ${req.ip}`
 	);
 
