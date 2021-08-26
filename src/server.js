@@ -18,7 +18,7 @@ const server = app.listen(PORT, (err) => {
 const handleShutdownGracefully = () => {
 	logger.info('SERVER: Closing server gracefully...');
 	server.close(() => {
-		logger.info('SERVER: Server closed.');
+		logger.info('SERVER: Server closed');
 		cache.clear();
 		logger.info('Cache Cleared');
 		logger.transports.map((t) => t.close());
