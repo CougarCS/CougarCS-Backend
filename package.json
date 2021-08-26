@@ -17,7 +17,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/runtime": "^7.14.6",
     "@notionhq/client": "^0.2.2",
     "@sendgrid/mail": "^7.4.5",
     "@sentry/node": "^6.9.0",
