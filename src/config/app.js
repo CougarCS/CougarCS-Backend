@@ -15,7 +15,7 @@ import payment from '../api/routes/payment';
 import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
 import { ENABLE_CORS, PROD, SENTRY_URL, TEST } from '../utils/config';
-import prometheus from '../utils/prometheus';
+import { bundle } from '../utils/prometheus';
 
 const app = express();
 
@@ -45,7 +45,7 @@ const corsOptions = ENABLE_CORS
 	: '*';
 
 if (!TEST) {
-	app.use(prometheus);
+	app.use(bundle);
 }
 app.use(compression());
 app.use(
