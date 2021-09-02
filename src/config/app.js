@@ -8,6 +8,9 @@ import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import actuator from 'express-actuator';
 import compression from 'compression';
+import tracing from '@opencensus/nodejs';
+import { B3Format } from '@opencensus/propagation-b3';
+import { ZipkinTraceExporter } from '@opencensus/exporter-zipkin';
 import email from '../api/routes/email';
 import events from '../api/routes/event';
 import tutors from '../api/routes/tutors';
@@ -16,6 +19,21 @@ import { logger } from '../utils/logger';
 import { httpLogger } from '../utils/httpLogger';
 import { ENABLE_CORS, PROD, SENTRY_URL, TEST } from '../utils/config';
 import { bundle } from '../utils/prometheus';
+
+const exporter = new ZipkinTraceExporter({
+	url: 'http://localhost:9411/api/v2/spans',
+	serviceName: 'cougarcs',
+});
+
+// NOTE: Please ensure that you start the tracer BEFORE initializing express app
+// Starts tracing and set sampling rate, exporter and propagation
+const { tracer } = tracing.start({
+	samplingRate: 1, // For demo purposes, always sample
+	propagation: new B3Format(),
+	logLevel: 1, // show errors, if any
+});
+
+tracer.registerSpanEventListener(exporter);
 
 const app = express();
 
@@ -39,9 +57,9 @@ if (PROD) {
 
 const corsOptions = ENABLE_CORS
 	? {
-			origin: ['https://cougarcs.com', 'http://localhost:45678'],
-			methods: ['GET', 'POST'],
-	  }
+		origin: ['https://cougarcs.com', 'http://localhost:45678'],
+		methods: ['GET', 'POST'],
+	}
 	: '*';
 
 if (!TEST) {
@@ -77,8 +95,7 @@ app.use(Sentry.Handlers.errorHandler());
 
 app.use((err, req, res, next) => {
 	logger.info(
-		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-			req.method
+		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
 		} - ${req.ip}`
 	);
 
