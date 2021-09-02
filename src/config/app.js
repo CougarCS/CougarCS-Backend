@@ -16,12 +16,10 @@ import { logger } from '../utils/logger/logger';
 import { httpLogger } from '../utils/logger/httpLogger';
 import { ENABLE_CORS, PROD, SENTRY_URL, TEST } from '../utils/config';
 import { bundle } from '../utils/monitoring/prometheus';
-import { addTraceId, shutdownTracer } from '../utils/tracing/tracer';
+import { addTraceId } from '../utils/tracing/tracer';
 
 const app = express();
-if (TEST) {
-	shutdownTracer();
-}
+
 const limiter = new RateLimit({
 	windowMs: 1 * 60 * 1000,
 	max: 90,
