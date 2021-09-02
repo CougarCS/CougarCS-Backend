@@ -2,7 +2,8 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockTutors from './resources/mockTutors.json';
-import cache from '../src/utils/cache';
+import cache from '../src/utils/caching/cache';
+import { shutdownTracer } from '../src/utils/tracing/tracer';
 
 describe('Get tutors from notion', () => {
 	let agent;
@@ -14,6 +15,7 @@ describe('Get tutors from notion', () => {
 
 	afterAll(async () => {
 		cache.clear();
+		shutdownTracer();
 	});
 
 	test('Get tutors', async () => {

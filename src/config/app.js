@@ -8,35 +8,20 @@ import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import actuator from 'express-actuator';
 import compression from 'compression';
-import tracing from '@opencensus/nodejs';
-import { B3Format } from '@opencensus/propagation-b3';
-import { ZipkinTraceExporter } from '@opencensus/exporter-zipkin';
 import email from '../api/routes/email';
 import events from '../api/routes/event';
 import tutors from '../api/routes/tutors';
 import payment from '../api/routes/payment';
-import { logger } from '../utils/logger';
-import { httpLogger } from '../utils/httpLogger';
+import { logger } from '../utils/logger/logger';
+import { httpLogger } from '../utils/logger/httpLogger';
 import { ENABLE_CORS, PROD, SENTRY_URL, TEST } from '../utils/config';
-import { bundle } from '../utils/prometheus';
-
-const exporter = new ZipkinTraceExporter({
-	url: 'http://localhost:9411/api/v2/spans',
-	serviceName: 'cougarcs',
-});
-
-// NOTE: Please ensure that you start the tracer BEFORE initializing express app
-// Starts tracing and set sampling rate, exporter and propagation
-const { tracer } = tracing.start({
-	samplingRate: 1, // For demo purposes, always sample
-	propagation: new B3Format(),
-	logLevel: 1, // show errors, if any
-});
-
-tracer.registerSpanEventListener(exporter);
+import { bundle } from '../utils/monitoring/prometheus';
+import { addTraceId, shutdownTracer } from '../utils/tracing/tracer';
 
 const app = express();
-
+if (TEST) {
+	shutdownTracer();
+}
 const limiter = new RateLimit({
 	windowMs: 1 * 60 * 1000,
 	max: 90,
@@ -57,9 +42,9 @@ if (PROD) {
 
 const corsOptions = ENABLE_CORS
 	? {
-		origin: ['https://cougarcs.com', 'http://localhost:45678'],
-		methods: ['GET', 'POST'],
-	}
+			origin: ['https://cougarcs.com', 'http://localhost:45678'],
+			methods: ['GET', 'POST'],
+	  }
 	: '*';
 
 if (!TEST) {
@@ -75,6 +60,7 @@ app.use(Sentry.Handlers.tracingHandler());
 app.use(limiter);
 app.use(cors(corsOptions));
 app.use(httpLogger);
+app.use(addTraceId);
 app.use(helmet());
 app.use(json({ extended: false }));
 app.use(actuator());
@@ -95,7 +81,8 @@ app.use(Sentry.Handlers.errorHandler());
 
 app.use((err, req, res, next) => {
 	logger.info(
-		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
+		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+			req.method
 		} - ${req.ip}`
 	);
 

@@ -23,9 +23,3 @@ export const TEST = NODE_ENV === 'test';
 export const ENABLE_CORS = PROD;
 export const CACHE_TIME = PROD ? 1000 * 60 * 60 * 4 : 30 * 1000; // 30secs or 4 hours
 export const CCSCLOUD_TOKEN_CACHE_TIME = PROD ? 1000 * 60 * 5 : 1000 * 30;
-
-export const ZIPKIN = {
-	host: 'localhost',
-	port: 9411,
-	serviceName: 'cougarcs-backend',
-};

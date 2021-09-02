@@ -1,5 +1,5 @@
 import { createLogger, config, transports } from 'winston';
-import { TEST } from './config';
+import { TEST } from '../config';
 
 let level;
 let silent;

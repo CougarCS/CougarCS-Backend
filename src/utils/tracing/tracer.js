@@ -1,63 +1,41 @@
-// const opentelemetry = require('@opentelemetry/api');
+import opentelemetry, { context } from '@opentelemetry/api';
+import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
+import { registerInstrumentations } from '@opentelemetry/instrumentation';
+import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
+import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
+import { ExpressInstrumentation } from '@aspecto/opentelemetry-instrumentation-express';
+import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
+import { Resource } from '@opentelemetry/resources';
+import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { logger } from '../logger/logger';
 
-// // Not functionally required but gives some insight what happens behind the scenes
-// const { diag, DiagConsoleLogger, DiagLogLevel } = opentelemetry;
-// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
+const SERVICE_NAME = 'cougarcs-service';
+const tracerProvider = new NodeTracerProvider({
+	resource: new Resource({
+		[SemanticResourceAttributes.SERVICE_NAME]: SERVICE_NAME,
+	}),
+});
+const exporter = new JaegerExporter();
+registerInstrumentations({
+	tracerProvider,
+	instrumentations: [new ExpressInstrumentation(), new HttpInstrumentation()],
+});
 
-// const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-// const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
-// const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
-// const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin');
-// const { Resource } = require('@opentelemetry/resources');
-// const {
-// 	SemanticResourceAttributes: ResourceAttributesSC,
-// } = require('@opentelemetry/semantic-conventions');
+tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter));
 
-// const Exporter = ZipkinExporter;
+tracerProvider.register();
 
-// const {
-// 	ExpressInstrumentation,
-// } = require('@opentelemetry/instrumentation-express');
-// const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
+export const tracer = opentelemetry.trace.getTracer(SERVICE_NAME);
 
-// module.exports = (serviceName) => {
-// 	const provider = new NodeTracerProvider({
-// 		resource: new Resource({
-// 			[ResourceAttributesSC.SERVICE_NAME]: serviceName,
-// 		}),
-// 	});
-// 	registerInstrumentations({
-// 		tracerProvider: provider,
-// 		instrumentations: [
-// 			// Express instrumentation expects HTTP layer to be instrumented
-// 			HttpInstrumentation,
-// 			ExpressInstrumentation,
-// 		],
-// 	});
+export const addTraceId = (req, res, next) => {
+	const spanContext = opentelemetry.trace.getSpanContext(context.active());
+	req.traceId = spanContext && spanContext.traceId;
+	next();
+};
 
-// 	const exporter = new Exporter({
-// 		serviceName,
-// 	});
+export const shutdownTracer = () => {
+	exporter.shutdown();
+	tracerProvider.shutdown();
+};
 
-// 	provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
-
-// 	// Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
-// 	provider.register();
-
-// 	return opentelemetry.trace.getTracer('express-example');
-// };
-
-// import tracing from '@opencensus/nodejs';
-// import { ZipkinTraceExporter } from '@opencensus/exporter-zipkin';
-
-// const { tracer } = tracing.start({ samplingRate: 1 });
-
-// // 3. Configure exporter to export traces to Zipkin.
-// tracer.registerSpanEventListener(
-// 	new ZipkinTraceExporter({
-// 		url: 'http://localhost:9411/api/v2/spans',
-// 		serviceName: 'cougarcs',
-// 	})
-// );
-
-// export default tracer;
+logger.info(`Tracing initialized for ${SERVICE_NAME}`);
