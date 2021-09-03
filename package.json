@@ -19,7 +19,7 @@
   "dependencies": {
     "@babel/runtime": "^7.15.3",
     "@notionhq/client": "^0.2.2",
-    "@sendgrid/mail": "^7.4.5",
+    "@sendgrid/mail": "^7.4.6",
     "@sentry/node": "^6.9.0",
     "@sentry/tracing": "^6.9.0",
     "axios": "^0.21.1",
