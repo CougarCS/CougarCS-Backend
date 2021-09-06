@@ -1,0 +1,16 @@
+{
+	"videos": [
+		{
+			"videoId": "9Aoj7KbaUCA",
+			"title": "DevOps Workshop",
+			"description": "Interested in learning about a hot new methodology that is taking the business world by storm? DevOps is one of the fastest growing practices across the IT space. Here, we will walk you through everything you need to know about DevOps and demonstrate some practical examples.\n\nFind the slides here: https://bit.ly/35v8isz\n\nPresented on Tuesday, November 10th 2020\n\nHosted By\nNykolas Farhangi, Director of Tutoring\nhttps://linkedin.com/in/nykolas-farhangi\nhttps://github.com/crudemandarin\nhttps://nykolas.me\n\nVyas Ramankulangara, Secretary\nhttps://www.linkedin.com/in/vyas0189/\nhttps://github.com/vyas0189/",
+			"thumbnail": "https://i.ytimg.com/vi/9Aoj7KbaUCA/sddefault.jpg"
+		},
+		{
+			"videoId": "oBP4GVOPyAU",
+			"title": "React Workshop: The Next Level",
+			"description": "Have some basic ReactJS experience and would like to take it to the next level? Come join us where we will hop into the meat and bones of React, discussing its core concepts at an intermediate level.\n\nFind the slides here: https://rb.gy/1jz6bo\n\nPresented on Thursday, November 12th 2020\n\nHosted By\nNykolas Farhangi, Director of Tutoring\nhttps://www.linkedin.com/in/nykolasfarhangi/\nhttps://github.com/crudemandarin\nhttps://nykolas.me\n\nShubh Sheth, Webmaster\nhttps://linkedin.com/in/sheth-shubh/\nhttps://github.com/shubhsheth\nhttps://iamshubh.com\n\nHasan Qureshi\nhttps://linkedin.com/in/hasanaq\nhttps://github.com/hasanq1",
+			"thumbnail": "https://i.ytimg.com/vi/oBP4GVOPyAU/sddefault.jpg"
+		}
+	]
+}
