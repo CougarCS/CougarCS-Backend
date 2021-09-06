@@ -17,6 +17,8 @@ import {
 	COUGARCS_CLOUD_ACCESS_KEY,
 	COUGARCS_CLOUD_SECRET_KEY,
 	CCSCLOUD_TOKEN_CACHE_TIME,
+	YOUTUBE_PLAYLIST_ID,
+	YOUTUBE_API_KEY,
 } from '../config';
 import { logger } from '../logger';
 import { getCache, setCache } from '../cacheData';
@@ -237,4 +239,21 @@ exports.postContact = async function postContact({
 	const res = await axios.post(URL, data, { headers });
 
 	return res.data;
+};
+
+exports.getYoutubeVideos = async function getYoutubeVideos() {
+	const { data } = await axios.get(
+		`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${YOUTUBE_PLAYLIST_ID}&key=${YOUTUBE_API_KEY}`
+	);
+	const videos = [];
+	data.items.forEach((obj) => {
+		videos.push({
+			videoId: obj.snippet.resourceId.videoId,
+			title: obj.snippet.title,
+			description: obj.snippet.description,
+			thumbnail: obj.snippet.thumbnails.standard.url,
+		});
+	});
+
+	return { videos };
 };
