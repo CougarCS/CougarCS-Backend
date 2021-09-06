@@ -3205,10 +3205,10 @@ expect@^27.0.6:
     jest-message-util "^27.0.6"
     jest-regex-util "^27.0.6"
 
-express-actuator@^1.7.0:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/express-actuator/-/express-actuator-1.7.1.tgz#b1fc6b3f94dcb4ca1e8c86abb6db9fc81d150d90"
-  integrity sha512-RLWsk89FZsXhFqUneS8IVCcKKzFwWTIcqvJMPXYPLz8nY/0OveKlWQuHtlfcklCQWJbypwVdWArQrdU9rbQsfg==
+express-actuator@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/express-actuator/-/express-actuator-1.8.0.tgz#a3929e1203f4629ce14929164cda1c63d01ea387"
+  integrity sha512-2pgqB2lSvE79lxPCWwe+Fn4lQ7QBMZKOe1HTuZPFv8k46oXUBSttFr1y8Y77fyDsC/hr4ER41dCbdpqnolX1Ig==
   dependencies:
     express "^4.17.1"
     moment "^2.29.1"
