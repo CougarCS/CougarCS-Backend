@@ -8,6 +8,7 @@ import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { logger } from '../logger/logger';
+import { JAEGER_URL } from '../config';
 
 const SERVICE_NAME = 'cougarcs-service';
 const tracerProvider = new NodeTracerProvider({
@@ -15,7 +16,9 @@ const tracerProvider = new NodeTracerProvider({
 		[SemanticResourceAttributes.SERVICE_NAME]: SERVICE_NAME,
 	}),
 });
-const exporter = new JaegerExporter();
+const exporter = new JaegerExporter({
+	endpoint: JAEGER_URL,
+});
 registerInstrumentations({
 	tracerProvider,
 	instrumentations: [new ExpressInstrumentation(), new HttpInstrumentation()],
