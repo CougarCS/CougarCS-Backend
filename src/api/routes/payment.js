@@ -91,7 +91,7 @@ router.post(
 		}
 
 		try {
-			APICall.createStripeCustomer(
+			await APICall.createStripeCustomer(
 				firstName,
 				lastName,
 				email,
@@ -103,6 +103,22 @@ router.post(
 				idempotencyKey
 			);
 		} catch (err) {
+			await APICall.sendEmail(
+				[
+					'vyas.r@cougarcs.com',
+					'webmaster@cougarcs.com',
+					'president@cougarcs.com',
+					'vice.president@cougarcs.com',
+				],
+				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
+				'Stripe Payment Failed',
+				JSON.stringify({
+					name: `${firstName} ${lastName}`,
+					email,
+					uhID,
+					err: err.message,
+				})
+			);
 			logger.error(
 				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
 					req.method
@@ -110,35 +126,6 @@ router.post(
 			);
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
-
-		// // GOOGLE SHEETS;
-		// try {
-		// 	await APICall.addToSheets(
-		// 		firstName,
-		// 		lastName,
-		// 		email,
-		// 		uhID,
-		// 		paidUntil,
-		// 		phone,
-		// 		shirtSize
-		// 	);
-		// } catch (err) {
-		// 	await APICall.sendEmail(
-		// 		['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
-		// 		{ name: 'Payment Failure', email: 'info@cougarcs.com' },
-		// 		'GSheet Error on Website Payments',
-		// 		JSON.stringify({
-		// 			name: `${firstName} ${lastName}`,
-		// 			email,
-		// 			err: err.message,
-		// 		})
-		// 	);
-		// 	logger.error(
-		// 		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-		// 			req.method
-		// 		} - ${req.ip}`
-		// 	);
-		// }
 
 		try {
 			await APICall.postContact({
@@ -157,6 +144,7 @@ router.post(
 					'vyas.r@cougarcs.com',
 					'webmaster@cougarcs.com',
 					'president@cougarcs.com',
+					'vice.president@cougarcs.com',
 				],
 				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
 				'CougarCS Cloud API - postContact Failed',

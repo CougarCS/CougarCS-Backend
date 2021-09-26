@@ -81,7 +81,7 @@ exports.checkRecaptcha = async function checkRecaptcha(recaptchaToken) {
 	return axios.post(verificationUrl);
 };
 
-exports.createStripeCustomer = function createStripeCustomer(
+exports.createStripeCustomer = async function createStripeCustomer(
 	firstName,
 	lastName,
 	email,
@@ -92,7 +92,7 @@ exports.createStripeCustomer = function createStripeCustomer(
 	token,
 	idempotencyKey
 ) {
-	stripe.customers
+	await stripe.customers
 		.create({
 			email,
 			phone,
@@ -102,19 +102,26 @@ exports.createStripeCustomer = function createStripeCustomer(
 				'Paid For': paidUntil,
 			},
 		})
-		.then((customer) => {
-			stripe.paymentIntents.create(
-				{
-					amount,
-					currency: 'USD',
-					description: 'Membership Payment',
-					payment_method: token,
-					customer: customer.id,
-					confirm: true,
-					receipt_email: email,
-				},
-				{ idempotencyKey }
-			);
+		.then(async (customer) => {
+			await stripe.paymentIntents
+				.create(
+					{
+						amount,
+						currency: 'USD',
+						description: 'Membership Payment',
+						payment_method: token,
+						customer: customer.id,
+						confirm: true,
+						receipt_email: email,
+					},
+					{ idempotencyKey }
+				)
+				.catch((err) => {
+					throw new Error(err);
+				});
+		})
+		.catch((err) => {
+			throw new Error(err);
 		});
 	logger.info({
 		service: 'payment',
