@@ -111,35 +111,6 @@ router.post(
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
 
-		// // GOOGLE SHEETS;
-		// try {
-		// 	await APICall.addToSheets(
-		// 		firstName,
-		// 		lastName,
-		// 		email,
-		// 		uhID,
-		// 		paidUntil,
-		// 		phone,
-		// 		shirtSize
-		// 	);
-		// } catch (err) {
-		// 	await APICall.sendEmail(
-		// 		['vyas.r@cougarcs.com', 'webmaster@cougarcs.com'],
-		// 		{ name: 'Payment Failure', email: 'info@cougarcs.com' },
-		// 		'GSheet Error on Website Payments',
-		// 		JSON.stringify({
-		// 			name: `${firstName} ${lastName}`,
-		// 			email,
-		// 			err: err.message,
-		// 		})
-		// 	);
-		// 	logger.error(
-		// 		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-		// 			req.method
-		// 		} - ${req.ip}`
-		// 	);
-		// }
-
 		try {
 			await APICall.postContact({
 				transaction: `Payment via Stripe on ${new Date().toLocaleDateString()}`,

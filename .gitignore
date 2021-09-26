@@ -18,3 +18,4 @@ logs/
 build/
 dist/
 coverage/
+grafana/grafana.ini
