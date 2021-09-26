@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import app from './config/app';
 import cache from './utils/cache';
-import { PORT } from './utils/config';
+import { DEV, PORT, PROD, TEST } from './utils/config';
 import { logger } from './utils/logger';
 
 const APP_PORT = PORT || 4000;
@@ -9,6 +9,7 @@ const server = app.listen(PORT, (err) => {
 	try {
 		if (err) throw err;
 		logger.info(`Running on port ${APP_PORT}`);
+		logger.info({ env: { PROD, TEST, DEV } });
 	} catch (e) {
 		logger.error(e);
 	}
@@ -17,7 +18,7 @@ const server = app.listen(PORT, (err) => {
 const handleShutdownGracefully = () => {
 	logger.info('SERVER: Closing server gracefully...');
 	server.close(() => {
-		logger.info('SERVER: Server closed.');
+		logger.info('SERVER: Server closed');
 		cache.clear();
 		logger.info('Cache Cleared');
 		logger.transports.map((t) => t.close());
