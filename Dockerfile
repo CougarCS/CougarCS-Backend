@@ -17,9 +17,6 @@ RUN npm prune --production
 
 FROM node:erbium-alpine3.11
 
-
-
-
 WORKDIR /app
 
 RUN chown -R 1000:1000 /app
@@ -32,6 +29,6 @@ COPY --from=build /app/node_modules ./node_modules
 
 COPY --from=build /app/dist ./dist
 
-EXPOSE 4000
+EXPOSE ${PORT}
 
 CMD ["node", "./dist/server.js"]
