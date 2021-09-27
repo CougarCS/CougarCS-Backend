@@ -20,7 +20,7 @@ services:
     networks:
       - monitoring
   prometheus:
-    image: prom/prometheus:v2.29.2
+    image: prom/prometheus:v2.30.0
     container_name: prometheus
     depends_on:
       - api
