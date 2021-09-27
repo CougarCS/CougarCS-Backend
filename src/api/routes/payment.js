@@ -91,7 +91,7 @@ router.post(
 		}
 
 		try {
-			APICall.createStripeCustomer(
+			await APICall.createStripeCustomer(
 				firstName,
 				lastName,
 				email,
@@ -128,6 +128,7 @@ router.post(
 					'vyas.r@cougarcs.com',
 					'webmaster@cougarcs.com',
 					'president@cougarcs.com',
+					'vice.president@cougarcs.com',
 				],
 				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
 				'CougarCS Cloud API - postContact Failed',
