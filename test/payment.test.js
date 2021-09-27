@@ -244,7 +244,7 @@ describe('Payment API test', () => {
 		jest.spyOn(apiCall, 'checkRecaptcha').mockImplementationOnce(() => {
 			return { data: { success: 'Success' } };
 		});
-
+		jest.spyOn(apiCall, 'sendEmail').mockImplementationOnce(() => true);
 		jest.spyOn(apiCall, 'createStripeCustomer').mockImplementationOnce(
 			() => {
 				throw new Error();
