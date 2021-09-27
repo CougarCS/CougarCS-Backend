@@ -102,6 +102,9 @@ exports.createStripeCustomer = async function createStripeCustomer(
 				'Paid For': paidUntil,
 			},
 		})
+		.catch((err) => {
+			throw new Error(err);
+		})
 		.then(async (customer) => {
 			await stripe.paymentIntents
 				.create(
@@ -119,9 +122,6 @@ exports.createStripeCustomer = async function createStripeCustomer(
 				.catch((err) => {
 					throw new Error(err);
 				});
-		})
-		.catch((err) => {
-			throw new Error(err);
 		});
 	logger.info({
 		service: 'payment',

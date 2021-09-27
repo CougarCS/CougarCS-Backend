@@ -103,22 +103,6 @@ router.post(
 				idempotencyKey
 			);
 		} catch (err) {
-			await APICall.sendEmail(
-				[
-					'vyas.r@cougarcs.com',
-					'webmaster@cougarcs.com',
-					'president@cougarcs.com',
-					'vice.president@cougarcs.com',
-				],
-				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
-				'Stripe Payment Failed',
-				JSON.stringify({
-					name: `${firstName} ${lastName}`,
-					email,
-					uhID,
-					err: err.message,
-				})
-			);
 			logger.error(
 				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
 					req.method
