@@ -40,7 +40,7 @@
     "moment": "^2.24.0",
     "morgan": "^1.10.0",
     "morgan-json": "^1.1.0",
-    "prom-client": "^13.2.0",
+    "prom-client": "^14.0.0",
     "stripe": "^8.169.0",
     "uuid": "^8.3.0",
     "winston": "^3.3.3"
