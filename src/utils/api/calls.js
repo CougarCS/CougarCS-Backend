@@ -17,6 +17,8 @@ import {
 	COUGARCS_CLOUD_ACCESS_KEY,
 	COUGARCS_CLOUD_SECRET_KEY,
 	CCSCLOUD_TOKEN_CACHE_TIME,
+	YOUTUBE_PLAYLIST_ID,
+	YOUTUBE_API_KEY,
 } from '../config';
 import { logger } from '../logger/logger';
 import { getCache, setCache } from '../caching/cacheData';
@@ -80,7 +82,7 @@ exports.checkRecaptcha = async function checkRecaptcha(recaptchaToken) {
 	return axios.post(verificationUrl);
 };
 
-exports.createStripeCustomer = function createStripeCustomer(
+exports.createStripeCustomer = async function createStripeCustomer(
 	firstName,
 	lastName,
 	email,
@@ -91,7 +93,7 @@ exports.createStripeCustomer = function createStripeCustomer(
 	token,
 	idempotencyKey
 ) {
-	stripe.customers
+	await stripe.customers
 		.create({
 			email,
 			phone,
@@ -101,19 +103,26 @@ exports.createStripeCustomer = function createStripeCustomer(
 				'Paid For': paidUntil,
 			},
 		})
-		.then((customer) => {
-			stripe.paymentIntents.create(
-				{
-					amount,
-					currency: 'USD',
-					description: 'Membership Payment',
-					payment_method: token,
-					customer: customer.id,
-					confirm: true,
-					receipt_email: email,
-				},
-				{ idempotencyKey }
-			);
+		.catch((err) => {
+			throw new Error(err);
+		})
+		.then(async (customer) => {
+			await stripe.paymentIntents
+				.create(
+					{
+						amount,
+						currency: 'USD',
+						description: 'Membership Payment',
+						payment_method: token,
+						customer: customer.id,
+						confirm: true,
+						receipt_email: email,
+					},
+					{ idempotencyKey }
+				)
+				.catch((err) => {
+					throw new Error(err);
+				});
 		});
 	logger.info({
 		service: 'payment',
@@ -217,4 +226,21 @@ exports.postContact = async function postContact({
 	const res = await axios.post(URL, data, { headers });
 
 	return res.data;
+};
+
+exports.getYoutubeVideos = async function getYoutubeVideos() {
+	const { data } = await axios.get(
+		`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${YOUTUBE_PLAYLIST_ID}&key=${YOUTUBE_API_KEY}`
+	);
+	const videos = [];
+	data.items.forEach((obj) => {
+		videos.push({
+			videoId: obj.snippet.resourceId.videoId,
+			title: obj.snippet.title,
+			description: obj.snippet.description,
+			thumbnail: obj.snippet.thumbnails.standard.url,
+		});
+	});
+
+	return { videos };
 };

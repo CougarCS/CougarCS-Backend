@@ -15,6 +15,8 @@ export const {
 	COUGARCS_CLOUD_ACCESS_KEY = '',
 	COUGARCS_CLOUD_SECRET_KEY = '',
 	JAEGER_URL = '',
+	YOUTUBE_PLAYLIST_ID = '',
+	YOUTUBE_API_KEY = '',
 } = process.env;
 
 export const PROD = NODE_ENV === 'prod';

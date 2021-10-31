@@ -11,6 +11,7 @@ import compression from 'compression';
 import email from '../api/routes/email';
 import events from '../api/routes/event';
 import tutors from '../api/routes/tutors';
+import youtube from '../api/routes/youtube';
 import payment from '../api/routes/payment';
 import { logger } from '../utils/logger/logger';
 import { httpLogger } from '../utils/logger/httpLogger';
@@ -70,6 +71,7 @@ app.use('/api/payment', payment);
 app.use('/api/send', email);
 app.use('/api/events', events);
 app.use('/api/tutors', tutors);
+app.use('/api/youtube', youtube);
 
 app.use((req, res) => {
 	throw new Error(`Invaild Request - Endpoint: ${req.originalUrl}`);
