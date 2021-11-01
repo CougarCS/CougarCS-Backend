@@ -1,4 +1,5 @@
-import { createLogger, config, transports } from 'winston';
+import newrelicFormatter from '@newrelic/winston-enricher';
+import winston, { createLogger, config, transports } from 'winston';
 import { TEST } from '../config';
 
 let level;
@@ -31,6 +32,7 @@ const options = {
 
 const logger = createLogger({
 	levels: config.npm.levels,
+	format: winston.format.combine(newrelicFormatter()),
 	transports: [
 		new transports.File({
 			...options.file,
