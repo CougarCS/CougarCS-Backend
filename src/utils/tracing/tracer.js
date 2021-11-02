@@ -7,8 +7,9 @@ import { ExpressInstrumentation } from '@aspecto/opentelemetry-instrumentation-e
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston';
 import { logger } from '../logger/logger';
-import { JAEGER_URL } from '../config';
+import { JAEGER_URL, TEST } from '../config';
 
 const SERVICE_NAME = 'cougarcs-service';
 const tracerProvider = new NodeTracerProvider({
@@ -19,9 +20,22 @@ const tracerProvider = new NodeTracerProvider({
 const exporter = new JaegerExporter({
 	endpoint: JAEGER_URL,
 });
+
+const winstonProvider = new WinstonInstrumentation({
+	enabled: !TEST,
+	logHook: (span, record) => {
+		record['resource.service.name'] =
+			tracerProvider.resource.attributes['service.name'];
+	},
+});
+
 registerInstrumentations({
 	tracerProvider,
-	instrumentations: [new ExpressInstrumentation(), new HttpInstrumentation()],
+	instrumentations: [
+		winstonProvider,
+		new ExpressInstrumentation(),
+		new HttpInstrumentation(),
+	],
 });
 
 tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter));

@@ -1,6 +1,6 @@
-import newrelicFormatter from '@newrelic/winston-enricher';
 import winston, { createLogger, config, transports } from 'winston';
 import { TEST } from '../config';
+import { getSpanWrapper } from '../tracing/tracerWrapper';
 
 let level;
 let silent;
@@ -30,9 +30,21 @@ const options = {
 	},
 };
 
+const tracingFormat = () => {
+	return winston.format((info) => {
+		const span = getSpanWrapper();
+		if (span) {
+			const context = span.spanContext();
+			info.trace_id = context.traceId;
+			info.span_id = context.spanId;
+		}
+		return info;
+	})();
+};
+
 const logger = createLogger({
 	levels: config.npm.levels,
-	format: winston.format.combine(newrelicFormatter()),
+	format: winston.format.combine(tracingFormat(), winston.format.json()),
 	transports: [
 		new transports.File({
 			...options.file,

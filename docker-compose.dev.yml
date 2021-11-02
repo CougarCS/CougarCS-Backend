@@ -38,6 +38,7 @@ services:
     container_name: grafana
     depends_on:
       - prometheus
+      - loki
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning
@@ -86,6 +87,8 @@ services:
       - '9080:9080'
     networks:
       - monitoring
+    depends_on:
+      - loki
 volumes:
   logs:
   prometheus-data:
