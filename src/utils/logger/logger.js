@@ -1,4 +1,4 @@
-import winston, { createLogger, config, transports } from 'winston';
+import winston, { createLogger, config, transports, format } from 'winston';
 import { TEST } from '../config';
 import { getSpanWrapper } from '../tracing/tracerWrapper';
 
@@ -27,6 +27,7 @@ const options = {
 		handleExceptions: true,
 		json: false,
 		colorize: true,
+		timestamp: true,
 	},
 };
 
@@ -44,7 +45,11 @@ const tracingFormat = () => {
 
 const logger = createLogger({
 	levels: config.npm.levels,
-	format: winston.format.combine(tracingFormat(), winston.format.json()),
+	format: winston.format.combine(
+		format.timestamp({ format: 'MM-DD-YYYY hh:mm:ss' }),
+		tracingFormat(),
+		winston.format.json()
+	),
 	transports: [
 		new transports.File({
 			...options.file,
