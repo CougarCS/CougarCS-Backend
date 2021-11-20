@@ -3,30 +3,23 @@ import { logger } from '../../utils/logger/logger';
 import APICall from '../../utils/api/calls';
 import { CACHE_TIME } from '../../utils/config';
 import { getCache, setCache } from '../../utils/caching/cacheData';
-import {
-	endSpanWrapper,
-	getSpanWrapper,
-} from '../../utils/tracing/tracerWrapper';
 
 const router = Router();
 const key = 'tutor';
 
 router.get('/', async (req, res) => {
-	const parentSpan = getSpanWrapper();
-	const cacheContent = getCache(key, parentSpan);
+	const cacheContent = getCache(key);
 	if (cacheContent) {
 		logger.info('Tutors sent from cache');
-		endSpanWrapper(parentSpan);
 		return res.status(200).json(cacheContent);
 	}
 	try {
-		const { tutors } = await APICall.getTutors(parentSpan);
+		const { tutors } = await APICall.getTutors();
 
-		setCache(key, { tutors }, CACHE_TIME, parentSpan);
+		setCache(key, { tutors }, CACHE_TIME);
 		logger.info('Stored tutors in cache');
 
 		logger.info('Tutors sent');
-		endSpanWrapper(parentSpan);
 		return res.status(200).json({ tutors });
 	} catch (err) {
 		logger.error(
@@ -34,7 +27,6 @@ router.get('/', async (req, res) => {
 				req.method
 			} - ${req.ip}`
 		);
-		endSpanWrapper(parentSpan);
 		return res.status(500).json({ err, message: 'Unable to get tutors' });
 	}
 });
