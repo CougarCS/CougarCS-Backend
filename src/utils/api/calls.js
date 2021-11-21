@@ -130,7 +130,6 @@ exports.createStripeCustomer = async function createStripeCustomer(
 };
 
 exports.getTutors = async function getTutors() {
-
 	const notion = new Client({
 		auth: NOTION_TOKEN,
 	});
