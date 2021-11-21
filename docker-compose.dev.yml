@@ -19,6 +19,8 @@ services:
       - .env
     networks:
       - monitoring
+    depends_on:
+      - jaeger
   prometheus:
     image: prom/prometheus:v2.31.1
     container_name: prometheus
@@ -36,9 +38,11 @@ services:
     container_name: grafana
     depends_on:
       - prometheus
+      - loki
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
       - GF_AUTH_DISABLE_LOGIN_FORM=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -47,6 +51,44 @@ services:
       - 3000:3000
     networks:
       - monitoring
+  jaeger:
+    image: jaegertracing/all-in-one
+    container_name: jaeger
+    restart: on-failure
+    ports:
+      - 5775:5775/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 9411:9411
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    networks:
+      - monitoring
+  loki:
+    image: grafana/loki
+    container_name: loki
+    ports:
+      - '3100:3100'
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring
+
+  promtail:
+    image: grafana/promtail
+    container_name: promtail
+    volumes:
+      - ./loki/config.yaml:/etc/promtail/config.yaml
+      - ./logs:/var/log
+    command: -config.file=/etc/promtail/config.yml
+    ports:
+      - '9080:9080'
+    networks:
+      - monitoring
+    depends_on:
+      - loki
 volumes:
   logs:
   prometheus-data:

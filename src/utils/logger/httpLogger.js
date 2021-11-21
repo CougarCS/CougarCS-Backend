@@ -1,6 +1,6 @@
 import morgan from 'morgan';
 import json from 'morgan-json';
-import { TEST } from './config';
+import { TEST } from '../config';
 import { logger } from './logger';
 
 const format = json({

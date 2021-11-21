@@ -62,7 +62,9 @@ jobs:
       run: yarn --frozen-lockfile  
       
     - name: Test
-      run: yarn test:coverage      
+      run: yarn test:coverage
+      env:
+        NEW_RELIC_ENABLED: false 
 
     - name: Coveralls
       uses: coverallsapp/github-action@master
