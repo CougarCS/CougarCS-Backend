@@ -84,6 +84,7 @@
       "src/utils/logger/",
       "src/utils/monitoring/",
       "src/utils/tracing/",
+      "src/utils/config.js",
       "/dist/",
       ".eslint.js"
     ],

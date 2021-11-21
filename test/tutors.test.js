@@ -15,7 +15,6 @@ describe('Get tutors from notion', () => {
 
 	afterAll(async () => {
 		cache.clear();
-		shutdownTracer();
 	});
 
 	test('Get tutors', async () => {
