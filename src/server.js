@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import 'newrelic';
 import app from './config/app';
 import cache from './utils/caching/cache';
 import { DEV, PORT, PROD, TEST } from './utils/config';
