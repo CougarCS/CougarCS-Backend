@@ -3,7 +3,6 @@ import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockTutors from './resources/mockTutors.json';
 import cache from '../src/utils/caching/cache';
-import { shutdownTracer } from '../src/utils/tracing/tracer';
 
 describe('Get tutors from notion', () => {
 	let agent;
