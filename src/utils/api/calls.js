@@ -2,7 +2,6 @@ import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 import Stripe from 'stripe';
 import moment from 'moment';
-import opentelemetry, { context } from '@opentelemetry/api';
 import _ from 'lodash';
 import { Client } from '@notionhq/client';
 import {
@@ -23,7 +22,6 @@ import {
 import { logger } from '../logger/logger';
 import { getCache, setCache } from '../caching/cacheData';
 import { getMembershipDates } from '../membershipDate';
-import { tracer } from '../tracing/tracer';
 
 const key = 'token';
 const stripe = new Stripe(STRIPE_API_KEY);
@@ -131,18 +129,7 @@ exports.createStripeCustomer = async function createStripeCustomer(
 	});
 };
 
-exports.getTutors = async function getTutors(parentSpan) {
-	const ctx = opentelemetry.trace.setSpan(context.active(), parentSpan);
-	const childSpan = tracer.startSpan(
-		'getTutors',
-		{
-			attributes: { 'code.function': 'getTutors' },
-		},
-		ctx
-	);
-
-	childSpan.setAttribute('code.filepath', 'calls.js');
-
+exports.getTutors = async function getTutors() {
 	const notion = new Client({
 		auth: NOTION_TOKEN,
 	});
@@ -170,7 +157,6 @@ exports.getTutors = async function getTutors(parentSpan) {
 				linkedin: obj.properties?.LinkedIn?.url,
 			};
 		});
-	childSpan.end();
 
 	return { tutors };
 };
