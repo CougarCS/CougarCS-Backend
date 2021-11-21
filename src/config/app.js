@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import actuator from 'express-actuator';
 import compression from 'compression';
+import { addTraceId } from '../utils/tracing/tracer';
 import email from '../api/routes/email';
 import events from '../api/routes/event';
 import tutors from '../api/routes/tutors';
@@ -17,7 +18,6 @@ import { logger } from '../utils/logger/logger';
 import { httpLogger } from '../utils/logger/httpLogger';
 import { ENABLE_CORS, PROD, SENTRY_URL, TEST } from '../utils/config';
 import { bundle } from '../utils/monitoring/prometheus';
-import { addTraceId } from '../utils/tracing/tracer';
 
 const app = express();
 
@@ -55,11 +55,11 @@ app.use(
 		ip: true,
 	})
 );
+app.use(addTraceId);
 app.use(Sentry.Handlers.tracingHandler());
 app.use(limiter);
 app.use(cors(corsOptions));
 app.use(httpLogger);
-app.use(addTraceId);
 app.use(helmet());
 app.use(json({ extended: false }));
 app.use(actuator());
