@@ -4,7 +4,6 @@ import app from './config/app';
 import cache from './utils/caching/cache';
 import { DEV, PORT, PROD, TEST } from './utils/config';
 import { logger } from './utils/logger/logger';
-import { shutdownTracer } from './utils/tracing/tracer';
 
 const APP_PORT = PORT || 4000;
 const server = app.listen(PORT, (err) => {
@@ -22,7 +21,6 @@ const handleShutdownGracefully = () => {
 	server.close(() => {
 		logger.info('SERVER: Server closed');
 		cache.clear();
-		shutdownTracer();
 		logger.info('Cache Cleared');
 		logger.transports.map((t) => t.close());
 	});
