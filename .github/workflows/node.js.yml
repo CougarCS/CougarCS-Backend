@@ -89,7 +89,7 @@ jobs:
         environment: production
   
   coverage:
-    needs: test-build
+    needs: [lint,test-build]
     runs-on: ubuntu-latest
 
     steps:
