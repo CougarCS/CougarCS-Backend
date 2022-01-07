@@ -136,6 +136,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+        
+    - name: Checkout Repo
+      uses: actions/checkout@v2
       
     - name: Create Sentry release
       if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
