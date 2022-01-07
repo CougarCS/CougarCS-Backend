@@ -36,7 +36,7 @@ jobs:
     - name: Run ESLint
       run: yarn eslint-check
 
-  test-build-release:
+  test-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -68,6 +68,37 @@ jobs:
       env:
         NEW_RELIC_ENABLED: false
 
+    - name: Upload a Coverage Artifact
+      uses: actions/upload-artifact@v2.3.1
+      with:
+        name: code-coverage
+        path: coverage/
+        retention-days: 1   
+
+    - name: Build
+      run: yarn build
+
+    - name: Create Sentry release
+      if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
+      uses: getsentry/action-release@v1
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+        SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      with:
+        environment: production
+  
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: code-coverage
     - name: Analyze with SonarCloud
       uses: sonarsource/sonarcloud-github-action@master
       with:
@@ -90,16 +121,3 @@ jobs:
       with:
         path-to-lcov: ./coverage/lcov.info
         github-token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Build
-      run: yarn build
-
-    - name: Create Sentry release
-      if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
-      uses: getsentry/action-release@v1
-      env:
-        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-        SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-      with:
-        environment: production
