@@ -71,7 +71,7 @@ jobs:
     - name: Upload a Coverage Artifact
       uses: actions/upload-artifact@v2.3.1
       with:
-        name: code-coverage
+        name: coverage
         path: coverage/
         retention-days: 1   
 
@@ -99,7 +99,7 @@ jobs:
 
     - uses: actions/download-artifact@v2
       with:
-        name: code-coverage
+        name: coverage
     - name: Analyze with SonarCloud
       uses: sonarsource/sonarcloud-github-action@master
       with:
