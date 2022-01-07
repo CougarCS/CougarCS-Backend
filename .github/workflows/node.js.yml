@@ -14,6 +14,8 @@ jobs:
 
     - name: Checkout Repo
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Use Node.js 12.x
       uses: actions/setup-node@master
@@ -69,7 +71,6 @@ jobs:
     - name: Analyze with SonarCloud
       uses: sonarsource/sonarcloud-github-action@master
       with:
-        fetch-depth: 0
         args: >
           -Dsonar.organization=${{ secrets.SONAR_ORG }}
           -Dsonar.projectKey=${{ secrets.SONAR_PROJ_KEY }}
