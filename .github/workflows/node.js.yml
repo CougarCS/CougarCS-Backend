@@ -114,6 +114,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
+    - name: Checkout Repo
+      uses: actions/checkout@v2
 
     - name: Download Coverage Artifact
       uses: actions/download-artifact@v2
