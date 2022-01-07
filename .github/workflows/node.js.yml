@@ -74,6 +74,7 @@ jobs:
           -Dsonar.projectKey=${{ secrets.SONAR_PROJ_KEY }}
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
           -Dsonar.sources=src/
+          -Dsonar.coverage.exclusions=src/server.js,src/utils/api/**,rc/utils/caching/**,src/utils/logger/**,src/utils/monitoring/**,src/utils/config.js
           -Dsonar.test.exclusions=test/**
           -Dsonar.tests=test/
           -Dsonar.verbose=true
