@@ -64,7 +64,20 @@ jobs:
     - name: Test
       run: yarn test:coverage
       env:
-        NEW_RELIC_ENABLED: false 
+        NEW_RELIC_ENABLED: false
+
+    - name: Analyze with SonarCloud
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: CougarCS-Backend
+        args: >
+          -Dsonar.organization=${{ secrets.SONAR_ORG }}
+          -Dsonar.projectKey=${{ secrets.SONAR_PROJ_KEY }}
+          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+          -Dsonar.sources=src/
+          -Dsonar.test.exclusions=test/**
+          -Dsonar.tests=test/
+          -Dsonar.verbose=true
 
     - name: Coveralls
       uses: coverallsapp/github-action@master
