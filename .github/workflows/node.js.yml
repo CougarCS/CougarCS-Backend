@@ -80,6 +80,7 @@ jobs:
   
   sonar-coverage:
     needs: [lint,test-build]
+
     runs-on: ubuntu-latest
 
     steps:
@@ -100,7 +101,7 @@ jobs:
           -Dsonar.organization=${{ secrets.SONAR_ORG }}
           -Dsonar.projectKey=${{ secrets.SONAR_PROJ_KEY }}
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-          -Dsonar.sources=src/
+          -Dsonar.sources=.
           -Dsonar.coverage.exclusions=src/server.js,src/utils/config.js,src/utils/api/**,src/utils/caching/**,src/utils/logger/**,src/utils/monitoring/**,src/utils/tracing/**
           -Dsonar.test.exclusions=test/**
           -Dsonar.tests=test/
@@ -111,6 +112,7 @@ jobs:
 
   coveralls:
     needs: [lint,test-build]
+
     runs-on: ubuntu-latest
 
     steps:
@@ -136,11 +138,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
         
     - name: Checkout Repo
       uses: actions/checkout@v2
-      
+
     - name: Create Sentry release
       if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
       uses: getsentry/action-release@v1
