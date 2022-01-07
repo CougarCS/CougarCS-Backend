@@ -77,7 +77,60 @@ jobs:
 
     - name: Build
       run: yarn build
+  
+  sonar-coverage:
+    needs: [lint,test-build]
+    runs-on: ubuntu-latest
 
+    steps:
+    
+    - name: Download Coverage Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: coverage
+        path: coverage
+
+    - name: Analyze with SonarCloud
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        args: >
+          -Dsonar.organization=${{ secrets.SONAR_ORG }}
+          -Dsonar.projectKey=${{ secrets.SONAR_PROJ_KEY }}
+          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+          -Dsonar.sources=src/
+          -Dsonar.coverage.exclusions=src/server.js,src/utils/config.js,src/utils/api/**,src/utils/caching/**,src/utils/logger/**,src/utils/monitoring/**,src/utils/tracing/**
+          -Dsonar.test.exclusions=test/**
+          -Dsonar.tests=test/
+          -Dsonar.verbose=true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  coveralls:
+    needs: [lint,test-build]
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Download Coverage Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: coverage
+        path: coverage
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        path-to-lcov: ./coverage/lcov.info
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  sentry-release:
+    needs: [lint,test-build]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      
     - name: Create Sentry release
       if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
       uses: getsentry/action-release@v1
@@ -87,43 +140,3 @@ jobs:
         SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
       with:
         environment: production
-  
-  sonar-coverage:
-    needs: [lint,test-build]
-    runs-on: ubuntu-latest
-
-    steps:
-    
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-
-    - uses: actions/download-artifact@v2
-      with:
-        name: coverage
-        path: coverage
-
-    - name: Display structure of downloaded files
-      run: ls -R
-
-    # - name: Analyze with SonarCloud
-    #   uses: sonarsource/sonarcloud-github-action@master
-    #   with:
-    #     args: >
-    #       -Dsonar.organization=${{ secrets.SONAR_ORG }}
-    #       -Dsonar.projectKey=${{ secrets.SONAR_PROJ_KEY }}
-    #       -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-    #       -Dsonar.sources=src/
-    #       -Dsonar.coverage.exclusions=src/server.js,src/utils/config.js,src/utils/api/**,src/utils/caching/**,src/utils/logger/**,src/utils/monitoring/**,src/utils/tracing/**
-    #       -Dsonar.test.exclusions=test/**
-    #       -Dsonar.tests=test/
-    #       -Dsonar.verbose=true
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-    # - name: Coveralls
-    #   uses: coverallsapp/github-action@master
-    #   with:
-    #     path-to-lcov: ./coverage/lcov.info
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
