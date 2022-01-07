@@ -89,6 +89,7 @@ jobs:
         environment: production
   
   coverage:
+    needs: test-build
     runs-on: ubuntu-latest
 
     steps:
