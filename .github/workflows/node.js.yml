@@ -108,7 +108,6 @@ jobs:
           -Dsonar.test.exclusions=test/**
           -Dsonar.tests=test/
           -Dsonar.verbose=false
-          -Dsonar.scm.revision=${{ github.event.pull_request.head.sha }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
