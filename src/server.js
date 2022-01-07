@@ -24,7 +24,7 @@ const handleShutdownGracefully = () => {
 		cache.clear();
 		shutdownTracer();
 		logger.info('Cache Cleared');
-		logger.transports.map((t) => t.close());
+		logger.transports.forEach((t) => t.close());
 	});
 };
 process.on('SIGINT', handleShutdownGracefully);
