@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
   pull_request_target:
-    types: [opened]
+    types: [assigned, opened, synchronize]
 
 jobs:
 
