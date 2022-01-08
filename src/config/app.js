@@ -15,7 +15,7 @@ import youtube from '../api/routes/youtube';
 import payment from '../api/routes/payment';
 import { logger } from '../utils/logger/logger';
 import { httpLogger } from '../utils/logger/httpLogger';
-import { ENABLE_CORS, PROD, SENTRY_URL, TEST } from '../utils/config';
+import { ENABLE_CORS, PROD, SENTRY_URL } from '../utils/config';
 
 const app = express();
 
