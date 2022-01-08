@@ -80,6 +80,7 @@ jobs:
   
   sonar-coverage:
     needs: [lint,test-build]
+    if: ${{ github.repository_owner == 'CougarCS'}}
     
     runs-on: ubuntu-latest
 
