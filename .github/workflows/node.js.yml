@@ -3,6 +3,23 @@ name: Install, Test, Build
 on: [push, pull_request]
 
 jobs:
+  echo:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Base Ref
+      run: echo {{github.base_ref}}
+
+    - name: Head Ref
+      run: echo {{github.head_ref}}
+
+    - name: Ref
+      run: echo {{github.ref}}
+    
+    - name: Ref Name
+      run: echo {{github.ref_name}}
 
   lint:
     runs-on: ubuntu-latest

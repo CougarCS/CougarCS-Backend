@@ -8,7 +8,13 @@ Offical backend of CougarCS.
 
 ![Known Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/CougarCS/CougarCS-Backend?style=for-the-badge)
 ![Coverage](https://img.shields.io/coveralls/github/CougarCS/CougarCS-Backend/master?style=for-the-badge)
-
+<br>
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=bugs)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
 # Libraries
 
 - Email : [SendGrid](https://sendgrid.com)
@@ -27,7 +33,7 @@ Offical backend of CougarCS.
   - Start local server: `yarn server`
   - The local server will start on [http://localhost:4000](http://localhost:4000)
 - ## ENV Setup:
-  - If you want to test out the payment or the reCAPTCHA, create a `.env` file in the root project folder. 
+  - If you want to test out the payment or the reCAPTCHA, create a `.env` file in the root project folder.
   - You must have a [Stripe](https://stripe.com/), [Google's reCAPTCHA](https://www.google.com/recaptcha/about/), and [SendGrid](https://sendgrid.com) accounts.
   - In the `.env` file include these:
   ```
