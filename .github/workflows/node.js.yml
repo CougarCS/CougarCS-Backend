@@ -10,16 +10,16 @@ jobs:
     steps:
 
     - name: Base Ref
-      run: echo {{github.base_ref}}
+      run: echo ${{github.base_ref}}
 
     - name: Head Ref
-      run: echo {{github.head_ref}}
+      run: echo ${{github.head_ref}}
 
     - name: Ref
-      run: echo {{github.ref}}
+      run: echo ${{github.ref}}
     
     - name: Ref Name
-      run: echo {{github.ref_name}}
+      run: echo ${{github.ref_name}}
 
   lint:
     runs-on: ubuntu-latest
