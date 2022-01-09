@@ -21,6 +21,9 @@ jobs:
     - name: Ref Name
       run: echo ${{github.ref_name}}
 
+    - name: Repository
+      run: echo ${{github.repository}}
+
   lint:
     runs-on: ubuntu-latest
 
