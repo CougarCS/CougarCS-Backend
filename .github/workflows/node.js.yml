@@ -3,32 +3,6 @@ name: Install, Test, Build
 on: [push, pull_request]
 
 jobs:
-  echo:
-
-    runs-on: ubuntu-latest
-
-    steps:
-
-    - name: Base Ref
-      run: echo ${{github.base_ref}}
-
-    - name: Head Ref
-      run: echo ${{github.head_ref}}
-
-    - name: Ref
-      run: echo ${{github.ref}}
-    
-    - name: Ref Name
-      run: echo ${{github.ref_name}}
-
-    - name: Repository
-      run: echo ${{github.repository}}
-
-    - name: repository_owner
-      run: echo ${{github.repository_owner}}
-
-    - name: actor
-      run: echo ${{github.actor}}
 
   lint:
     runs-on: ubuntu-latest
@@ -106,7 +80,7 @@ jobs:
   
   sonar-coverage:
     needs: [lint,test-build]
-    if: ${{contains(github.repository_owner, github.actor)}}
+    if: ${{github.base_ref != 'dev'}}
     
     runs-on: ubuntu-latest
 
