@@ -24,6 +24,9 @@ jobs:
     - name: Repository
       run: echo ${{github.repository}}
 
+    - name: repository_owner
+      run: echo ${{github.repository_owner}}
+
   lint:
     runs-on: ubuntu-latest
 
