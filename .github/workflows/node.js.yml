@@ -27,6 +27,9 @@ jobs:
     - name: repository_owner
       run: echo ${{github.repository_owner}}
 
+    - name: actor
+      run: echo ${{github.actor}}
+
   lint:
     runs-on: ubuntu-latest
 
