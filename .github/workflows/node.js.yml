@@ -106,7 +106,7 @@ jobs:
   
   sonar-coverage:
     needs: [lint,test-build]
-    if: ${{ github.repository_owner == 'CougarCS'}}
+    if: ${{contains(github.repository_owner, github.actor)}}
     
     runs-on: ubuntu-latest
 
