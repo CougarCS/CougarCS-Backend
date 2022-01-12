@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '../src/config/app';
-import apiCall from '../src/utils/api/calls';
+import app from '../../src/config/app';
+import apiCall from '../../src/utils/api/calls';
 
 let agent;
 beforeEach(async () => {

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../src/config/app';
+import app from '../../src/config/app';
 
 describe('Backend Home API', () => {
 	test('GET /', async () => {
