@@ -72,6 +72,7 @@ jobs:
       run: yarn test:mutation
       env:
         NEW_RELIC_ENABLED: false
+        STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
 
     - name: Upload a Coverage Artifact
       uses: actions/upload-artifact@v2.3.1
