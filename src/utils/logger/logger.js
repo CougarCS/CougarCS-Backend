@@ -1,5 +1,6 @@
-import { createLogger, config, transports } from 'winston';
-import { TEST } from './config';
+import newrelicFormatter from '@newrelic/winston-enricher';
+import winston, { createLogger, config, transports, format } from 'winston';
+import { TEST } from '../config';
 
 let level;
 let silent;
@@ -26,11 +27,17 @@ const options = {
 		handleExceptions: true,
 		json: false,
 		colorize: true,
+		timestamp: true,
 	},
 };
 
 const logger = createLogger({
 	levels: config.npm.levels,
+	format: winston.format.combine(
+		format.timestamp({ format: 'MM-DD-YYYY hh:mm:ss' }),
+		newrelicFormatter(),
+		winston.format.json()
+	),
 	transports: [
 		new transports.File({
 			...options.file,
