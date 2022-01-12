@@ -63,8 +63,13 @@ jobs:
     - name: Install dependencies
       run: yarn --frozen-lockfile  
       
-    - name: Test
+    - name: Unit and Integration Test
       run: yarn test:coverage
+      env:
+        NEW_RELIC_ENABLED: false
+
+    - name: Mutation Test
+      run: yarn test:mutation
       env:
         NEW_RELIC_ENABLED: false
 
