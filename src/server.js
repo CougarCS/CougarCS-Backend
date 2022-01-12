@@ -1,8 +1,9 @@
 import 'dotenv/config';
+import 'newrelic';
 import app from './config/app';
-import cache from './utils/cache';
+import cache from './utils/caching/cache';
 import { DEV, PORT, PROD, TEST } from './utils/config';
-import { logger } from './utils/logger';
+import { logger } from './utils/logger/logger';
 
 const APP_PORT = PORT || 4000;
 const server = app.listen(PORT, (err) => {
@@ -21,7 +22,7 @@ const handleShutdownGracefully = () => {
 		logger.info('SERVER: Server closed');
 		cache.clear();
 		logger.info('Cache Cleared');
-		logger.transports.map((t) => t.close());
+		logger.transports.forEach((t) => t.close());
 	});
 };
 process.on('SIGINT', handleShutdownGracefully);

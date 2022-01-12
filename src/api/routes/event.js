@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import APICall from '../../utils/api/calls';
-import { logger } from '../../utils/logger';
+import { logger } from '../../utils/logger/logger';
 import { CACHE_TIME } from '../../utils/config';
-import { getCache, setCache } from '../../utils/cacheData';
+import { getCache, setCache } from '../../utils/caching/cacheData';
 
 const router = new Router();
 const key = 'event';

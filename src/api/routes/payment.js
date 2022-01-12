@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
 import { v4 as uuidv4 } from 'uuid';
-import { logger } from '../../utils/logger';
+import { logger } from '../../utils/logger/logger';
 import APICall from '../../utils/api/calls';
 
 const router = Router();

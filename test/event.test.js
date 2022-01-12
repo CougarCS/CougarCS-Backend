@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockEvent from './resources/mockEvent.json';
-import cache from '../src/utils/cache';
+import cache from '../src/utils/caching/cache';
 
 describe('Get events from google calander', () => {
 	let agent;

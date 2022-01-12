@@ -13,10 +13,9 @@ import events from '../api/routes/event';
 import tutors from '../api/routes/tutors';
 import youtube from '../api/routes/youtube';
 import payment from '../api/routes/payment';
-import { logger } from '../utils/logger';
-import { httpLogger } from '../utils/httpLogger';
-import { ENABLE_CORS, PROD, SENTRY_URL, TEST } from '../utils/config';
-import { bundle } from '../utils/prometheus';
+import { logger } from '../utils/logger/logger';
+import { httpLogger } from '../utils/logger/httpLogger';
+import { ENABLE_CORS, PROD, SENTRY_URL } from '../utils/config';
 
 const app = express();
 
@@ -45,9 +44,6 @@ const corsOptions = ENABLE_CORS
 	  }
 	: '*';
 
-if (!TEST) {
-	app.use(bundle);
-}
 app.use(compression());
 app.use(
 	Sentry.Handlers.requestHandler({
