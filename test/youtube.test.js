@@ -22,7 +22,7 @@ describe('Get videos from YouTube', () => {
 		);
 
 		const res = await agent.get('/api/youtube');
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('videos');
 	});
 
@@ -32,7 +32,7 @@ describe('Get videos from YouTube', () => {
 		);
 		await agent.get('/api/youtube');
 		const res = await agent.get('/api/youtube');
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('videos');
 	});
 
@@ -42,8 +42,8 @@ describe('Get videos from YouTube', () => {
 		});
 
 		const res = await agent.get('/api/youtube');
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('Unable to get videos');
+		expect(res.body.message).toBe('Unable to get videos');
 	});
 });
