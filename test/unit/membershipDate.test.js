@@ -87,7 +87,7 @@ describe('Date Member Unit Test', () => {
 	// ---
 
 	test('August 1: Semester', () => {
-		const date = new Date(YEAR, 6, 15);
+		const date = new Date(YEAR, 7, 1);
 		const { membershipStart, membershipEnd } = getMembershipDates(
 			SEMESTER_TERM,
 			date
@@ -99,7 +99,7 @@ describe('Date Member Unit Test', () => {
 	});
 
 	test('August 1: Year', () => {
-		const date = new Date(YEAR, 6, 15);
+		const date = new Date(YEAR, 7, 1);
 		const { membershipStart, membershipEnd } = getMembershipDates(
 			YEAR_TERM,
 			date
@@ -158,6 +158,18 @@ describe('Date Member Unit Test', () => {
 		);
 		expect(membershipStart.Term).toEqual(FALL);
 		expect(membershipStart.Year).toEqual(YEAR);
+		expect(membershipEnd.Term).toEqual(SPRING);
+		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
+	});
+
+	test('Dec 16: Semester', () => {
+		const date = new Date(YEAR, 11, 16);
+		const { membershipStart, membershipEnd } = getMembershipDates(
+			SEMESTER_TERM,
+			date
+		);
+		expect(membershipStart.Term).toEqual(SPRING);
+		expect(membershipStart.Year).toEqual(NEXT_YEAR);
 		expect(membershipEnd.Term).toEqual(SPRING);
 		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
 	});

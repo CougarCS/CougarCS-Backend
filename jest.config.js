@@ -1,18 +1,16 @@
-// Sync object
-/** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
     verbose: true,
     testEnvironment: "node",
     clearMocks: true,
     coveragePathIgnorePatterns: [
-        "/node_modules/",
-        "/coverage/",
+        "node_modules/",
+        "coverage/",
         "src/server.js",
-        "src/utils/api/",
+        "src/utils/api/calls.js",
         "src/utils/caching/",
         "src/utils/logger/",
         "src/utils/config.js",
-        "/dist/",
+        "dist/",
         ".eslint.js"
     ],
     collectCoverageFrom: [

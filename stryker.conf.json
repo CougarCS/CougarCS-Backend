@@ -13,6 +13,12 @@
   },
   "coverageAnalysis": "perTest",
   "mutate": [
+    "src/utils/api/utils/utils.js",
     "src/utils/membershipDate.js"
-  ]
+  ],
+  "thresholds": {
+    "high": 95,
+    "low": 85,
+    "break": 56
+  }
 }
