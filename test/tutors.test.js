@@ -22,7 +22,7 @@ describe('Get tutors from notion', () => {
 		);
 
 		const res = await agent.get('/api/tutors');
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('tutors');
 	});
 
@@ -32,7 +32,7 @@ describe('Get tutors from notion', () => {
 		);
 		await agent.get('/api/tutors');
 		const res = await agent.get('/api/tutors');
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('tutors');
 	});
 
@@ -42,8 +42,8 @@ describe('Get tutors from notion', () => {
 		});
 
 		const res = await agent.get('/api/tutors');
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('Unable to get tutors');
+		expect(res.body.message).toBe('Unable to get tutors');
 	});
 });
