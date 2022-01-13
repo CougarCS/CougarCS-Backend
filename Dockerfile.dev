@@ -1,4 +1,4 @@
-FROM node:14.17.4-alpine3.14 AS development
+FROM node:14.18.1-alpine3.14 AS development
 
 ENV NODE_ENV dev
 
