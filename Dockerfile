@@ -1,4 +1,4 @@
-FROM node:14.18.1-alpine3.14 AS build
+FROM node:14.18.3-alpine3.14 AS build
 
 ENV NODE_ENV prod
 
@@ -15,7 +15,7 @@ RUN npm run build
 RUN npm prune --production
 
 
-FROM node:14.18.1-alpine3.14
+FROM node:14.18.3-alpine3.14
 
 WORKDIR /app
 
