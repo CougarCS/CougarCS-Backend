@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockTutors from './resources/mockTutors.json';
-import cache from '../src/utils/cache';
+import cache from '../src/utils/caching/cache';
 
 describe('Get tutors from notion', () => {
 	let agent;

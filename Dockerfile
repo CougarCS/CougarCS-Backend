@@ -1,4 +1,4 @@
-FROM node:erbium-alpine3.11 AS build
+FROM node:14.17.4-alpine3.14 AS build
 
 ENV NODE_ENV prod
 
@@ -15,10 +15,7 @@ RUN npm run build
 RUN npm prune --production
 
 
-FROM node:erbium-alpine3.11
-
-
-
+FROM node:14.17.4-alpine3.14
 
 WORKDIR /app
 
@@ -32,6 +29,6 @@ COPY --from=build /app/node_modules ./node_modules
 
 COPY --from=build /app/dist ./dist
 
-EXPOSE 4000
+EXPOSE ${PORT}
 
 CMD ["node", "./dist/server.js"]

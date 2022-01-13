@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../src/config/app';
 import apiCall from '../src/utils/api/calls';
 import mockVideos from './resources/mockVideos.json';
-import cache from '../src/utils/cache';
+import cache from '../src/utils/caching/cache';
 
 describe('Get videos from YouTube', () => {
 	let agent;
