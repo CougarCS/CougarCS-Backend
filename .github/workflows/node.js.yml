@@ -25,7 +25,28 @@ jobs:
     - name: Run ESLint
       run: yarn eslint-check
 
-  test-build:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.17.4
+
+    - name: Install dependencies
+      run: yarn --prefer-offline --frozen-lockfile  
+      
+    - name: Build
+      run: yarn build
+
+
+  unit-integration-test:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -52,12 +73,9 @@ jobs:
         name: coverage
         path: coverage/
         retention-days: 1   
-
-    - name: Build
-      run: yarn build
   
   mutation-test:
-    needs: lint
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -80,7 +98,7 @@ jobs:
         STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
 
   sonar-coverage:
-    needs: [lint,test-build]
+    needs: unit-integration-test
     if: ${{github.base_ref != 'dev'}}
     
     runs-on: ubuntu-latest
@@ -115,7 +133,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   coveralls:
-    needs: [lint,test-build]
+    needs: unit-integration-test
 
     runs-on: ubuntu-latest
 
@@ -137,7 +155,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
   sentry-release:
-    needs: [lint,test-build]
+    needs: [lint, build, unit-integration-test]
 
     runs-on: ubuntu-latest
 
