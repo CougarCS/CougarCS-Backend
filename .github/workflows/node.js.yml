@@ -74,28 +74,28 @@ jobs:
         path: coverage/
         retention-days: 1   
   
-  mutation-test:
-    needs: build
-    runs-on: ubuntu-latest
+  # mutation-test:
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    steps:
+  #   steps:
 
-    - name: Checkout Repo
-      uses: actions/checkout@v2
+  #   - name: Checkout Repo
+  #     uses: actions/checkout@v2
 
-    - name: Use Node.js 14.x
-      uses: actions/setup-node@v2
-      with:
-        node-version: 14.17.4
+  #   - name: Use Node.js 14.x
+  #     uses: actions/setup-node@v2
+  #     with:
+  #       node-version: 14.17.4
 
-    - name: Install dependencies
-      run: yarn --prefer-offline --frozen-lockfile  
+  #   - name: Install dependencies
+  #     run: yarn --prefer-offline --frozen-lockfile  
 
-    - name: Mutation Test
-      run: yarn test:mutation
-      env:
-        NEW_RELIC_ENABLED: false
-        STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+  #   - name: Mutation Test
+  #     run: yarn test:mutation
+  #     env:
+  #       NEW_RELIC_ENABLED: false
+  #       STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
 
   sonar-coverage:
     needs: unit-integration-test
