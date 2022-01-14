@@ -22,9 +22,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('First Name is required');
+		expect(res.body.message[0].msg).toBe('First Name is required');
 	});
 
 	test('Missing last name', async () => {
@@ -41,9 +41,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Last Name is required');
+		expect(res.body.message[0].msg).toBe('Last Name is required');
 	});
 
 	test('Missing email address', async () => {
@@ -60,9 +60,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Email is required');
+		expect(res.body.message[0].msg).toBe('Email is required');
 	});
 
 	test('Invalid email address', async () => {
@@ -79,9 +79,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Email is required');
+		expect(res.body.message[0].msg).toBe('Email is required');
 	});
 
 	test('UHID missing', async () => {
@@ -98,9 +98,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('UHID is required');
+		expect(res.body.message[0].msg).toBe('UHID is required');
 	});
 
 	test('UHID invalid', async () => {
@@ -117,9 +117,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('UHID is required');
+		expect(res.body.message[0].msg).toBe('UHID is required');
 	});
 
 	test('Shirt Size missing', async () => {
@@ -136,9 +136,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Shirt Size is required');
+		expect(res.body.message[0].msg).toBe('Shirt Size is required');
 	});
 
 	test('Paid Until missing', async () => {
@@ -155,9 +155,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Paid Until is required');
+		expect(res.body.message[0].msg).toBe('Paid Until is required');
 	});
 
 	test('Phone number missing', async () => {
@@ -174,9 +174,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Phone Number is required');
+		expect(res.body.message[0].msg).toBe('Phone Number is required');
 	});
 
 	test('Phone number invalid', async () => {
@@ -193,9 +193,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Phone Number is required');
+		expect(res.body.message[0].msg).toBe('Phone Number is required');
 	});
 
 	test('Recaptcha Token Missing', async () => {
@@ -212,9 +212,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Recaptcha Token is required');
+		expect(res.body.message[0].msg).toBe('Recaptcha Token is required');
 	});
 
 	test('Recaptcha Testing verification Url Fail', async () => {
@@ -235,9 +235,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('Failed to validate ReCaptcha');
+		expect(res.body.message).toBe('Failed to validate ReCaptcha');
 	});
 
 	test('Stripe payment Fail', async () => {
@@ -264,9 +264,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('Payment Error!');
+		expect(res.body.message).toBe('Payment Error!');
 	});
 
 	test('CCS Cloud Post Contact', async () => {
@@ -293,9 +293,9 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('OK');
+		expect(res.body.message).toBe('OK');
 	});
 
 	test('CCS Cloud Post Contact Fail', async () => {
@@ -326,8 +326,8 @@ describe('Payment API test', () => {
 			recaptchaToken: '123456abc',
 		});
 
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('OK');
+		expect(res.body.message).toBe('OK');
 	});
 });

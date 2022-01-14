@@ -22,7 +22,7 @@ describe('Get events from google calander', () => {
 		);
 
 		const res = await agent.get('/api/events');
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('events');
 		expect(res.body.events[0]).toHaveProperty('start');
 		expect(res.body.events[0]).toHaveProperty('end');
@@ -36,7 +36,7 @@ describe('Get events from google calander', () => {
 		);
 		await agent.get('/api/events');
 		const res = await agent.get('/api/events');
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('events');
 		expect(res.body.events[0]).toHaveProperty('start');
 		expect(res.body.events[0]).toHaveProperty('end');
@@ -50,8 +50,8 @@ describe('Get events from google calander', () => {
 		});
 
 		const res = await agent.get('/api/events');
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('Unable to get events');
+		expect(res.body.message).toBe('Unable to get events');
 	});
 });

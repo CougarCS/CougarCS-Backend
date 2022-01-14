@@ -14,10 +14,10 @@ describe('Date Member Unit Test', () => {
 			SEMESTER_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(SPRING);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(SPRING);
-		expect(membershipEnd.Year).toEqual(YEAR);
+		expect(membershipStart.Term).toBe(SPRING);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(SPRING);
+		expect(membershipEnd.Year).toBe(YEAR);
 	});
 
 	test('Jan 1: Year', () => {
@@ -26,10 +26,10 @@ describe('Date Member Unit Test', () => {
 			YEAR_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(SPRING);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(FALL);
-		expect(membershipEnd.Year).toEqual(YEAR);
+		expect(membershipStart.Term).toBe(SPRING);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(FALL);
+		expect(membershipEnd.Year).toBe(YEAR);
 	});
 
 	// ---
@@ -40,10 +40,10 @@ describe('Date Member Unit Test', () => {
 			SEMESTER_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(FALL);
-		expect(membershipEnd.Year).toEqual(YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(FALL);
+		expect(membershipEnd.Year).toBe(YEAR);
 	});
 
 	test('May 13: Year', () => {
@@ -52,10 +52,10 @@ describe('Date Member Unit Test', () => {
 			YEAR_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(SPRING);
-		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(SPRING);
+		expect(membershipEnd.Year).toBe(NEXT_YEAR);
 	});
 
 	// ---
@@ -66,10 +66,10 @@ describe('Date Member Unit Test', () => {
 			SEMESTER_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(FALL);
-		expect(membershipEnd.Year).toEqual(YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(FALL);
+		expect(membershipEnd.Year).toBe(YEAR);
 	});
 
 	test('July 15: Year', () => {
@@ -78,10 +78,10 @@ describe('Date Member Unit Test', () => {
 			YEAR_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(SPRING);
-		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(SPRING);
+		expect(membershipEnd.Year).toBe(NEXT_YEAR);
 	});
 
 	// ---
@@ -92,10 +92,10 @@ describe('Date Member Unit Test', () => {
 			SEMESTER_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(FALL);
-		expect(membershipEnd.Year).toEqual(YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(FALL);
+		expect(membershipEnd.Year).toBe(YEAR);
 	});
 
 	test('August 1: Year', () => {
@@ -104,10 +104,10 @@ describe('Date Member Unit Test', () => {
 			YEAR_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(SPRING);
-		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(SPRING);
+		expect(membershipEnd.Year).toBe(NEXT_YEAR);
 	});
 
 	// ---
@@ -118,10 +118,10 @@ describe('Date Member Unit Test', () => {
 			SEMESTER_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(FALL);
-		expect(membershipEnd.Year).toEqual(YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(FALL);
+		expect(membershipEnd.Year).toBe(YEAR);
 	});
 
 	test('Nov 1: Year', () => {
@@ -130,10 +130,10 @@ describe('Date Member Unit Test', () => {
 			YEAR_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(SPRING);
-		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(SPRING);
+		expect(membershipEnd.Year).toBe(NEXT_YEAR);
 	});
 
 	// ---
@@ -144,10 +144,10 @@ describe('Date Member Unit Test', () => {
 			SEMESTER_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(FALL);
-		expect(membershipEnd.Year).toEqual(YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(FALL);
+		expect(membershipEnd.Year).toBe(YEAR);
 	});
 
 	test('Dec 1: Year', () => {
@@ -156,10 +156,10 @@ describe('Date Member Unit Test', () => {
 			YEAR_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(FALL);
-		expect(membershipStart.Year).toEqual(YEAR);
-		expect(membershipEnd.Term).toEqual(SPRING);
-		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
+		expect(membershipStart.Term).toBe(FALL);
+		expect(membershipStart.Year).toBe(YEAR);
+		expect(membershipEnd.Term).toBe(SPRING);
+		expect(membershipEnd.Year).toBe(NEXT_YEAR);
 	});
 
 	test('Dec 16: Semester', () => {
@@ -182,10 +182,10 @@ describe('Date Member Unit Test', () => {
 			SEMESTER_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(SPRING);
-		expect(membershipStart.Year).toEqual(NEXT_YEAR);
-		expect(membershipEnd.Term).toEqual(SPRING);
-		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
+		expect(membershipStart.Term).toBe(SPRING);
+		expect(membershipStart.Year).toBe(NEXT_YEAR);
+		expect(membershipEnd.Term).toBe(SPRING);
+		expect(membershipEnd.Year).toBe(NEXT_YEAR);
 	});
 
 	test('Dec 20: Year', () => {
@@ -194,9 +194,9 @@ describe('Date Member Unit Test', () => {
 			YEAR_TERM,
 			date
 		);
-		expect(membershipStart.Term).toEqual(SPRING);
-		expect(membershipStart.Year).toEqual(NEXT_YEAR);
-		expect(membershipEnd.Term).toEqual(FALL);
-		expect(membershipEnd.Year).toEqual(NEXT_YEAR);
+		expect(membershipStart.Term).toBe(SPRING);
+		expect(membershipStart.Year).toBe(NEXT_YEAR);
+		expect(membershipEnd.Term).toBe(FALL);
+		expect(membershipEnd.Year).toBe(NEXT_YEAR);
 	});
 });
