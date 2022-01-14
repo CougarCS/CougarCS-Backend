@@ -1248,11 +1248,9 @@
     chalk "^4.0.0"
 
 "@newrelic/aws-sdk@^4.0.1":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@newrelic/aws-sdk/-/aws-sdk-4.1.0.tgz#c271e8f43f38196fc054a4e001560a68530c3fe9"
-  integrity sha512-YWn1JVCinWkJcIth6rg+jpNCLVdWNGwnhRogtESK/O29HUa3v24/OtpzO1YkAJexA/pwE/4q+/QgA6s4jNdTlQ==
-  dependencies:
-    semver "^7.3.5"
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@newrelic/aws-sdk/-/aws-sdk-4.0.1.tgz#8a4051a316c19172a3cc80511c2c7265e3f068e6"
+  integrity sha512-6pjPHKODTMItaO6zHDSR3HH7ohvUP9zzQf2pKMKdU4lB/1HV2+Xf6r92X96zPmGQsAnCP9xhgbseUklHD00a1Q==
 
 "@newrelic/koa@^6.0.1":
   version "6.1.0"
@@ -1419,7 +1417,7 @@
     "@sentry/types" "6.16.1"
     tslib "^1.9.3"
 
-"@sentry/node@^6.12.0":
+"@sentry/node@^6.13.3":
   version "6.16.1"
   resolved "https://registry.yarnpkg.com/@sentry/node/-/node-6.16.1.tgz#d92916da3e95d23e1ada274e97d6bf369e74ac51"
   integrity sha512-SeDDoug2kUxeF1D7JGPa3h5EXxKtmA01mITBPYx5xbJ0sMksnv5I5bC1SJ8arRRzq6+W1C4IEeDBQtrVCk6ixA==
@@ -2570,9 +2568,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.4.17:
-  version "1.4.44"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.44.tgz#8a41923afdd6ef5ddabe001626036ba5d1d64ae6"
-  integrity sha512-tHGWiUUmY7GABK8+DNcr474cnZDTzD8x1736SlDosVH8+/vRJeqfaIBAEHFtMjddz/0T4rKKYsxEc8BwQRdBpw==
+  version "1.4.45"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.45.tgz#cf1144091d6683cbd45a231954a745f02fb24598"
+  integrity sha512-czF9eYVuOmlY/vxyMQz2rGlNSjZpxNQYBe1gmQv7al171qOIhgyO9k7D5AKlgeTCSPKk+LHhj5ZyIdmEub9oNg==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -5581,9 +5579,9 @@ strip-json-comments@~2.0.1:
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
 stripe@^8.181.0:
-  version "8.196.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-8.196.0.tgz#112550fd78cedaecd4071bb7c0b7249edc9d551e"
-  integrity sha512-y9vIgPJUdfUJACUyf+Uji57bQTFBZluVW7Ia63Jp7QNwgp/kdoNKgLX0u0njNwRBmJpKX+BxLFJBHw+VRUYrMQ==
+  version "8.197.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-8.197.0.tgz#7875403ce4303788355b40f8a897f835b05b7784"
+  integrity sha512-EQLgqFiX1wNQEeve6QnUcGIby6XtXXzbzEWPJiZ68qFj02YFjNjLLxl9atueKgUQ+YRbrMAlrc6ECwvm+cf/Rw==
   dependencies:
     "@types/node" ">=8.1.0"
     qs "^6.6.0"
