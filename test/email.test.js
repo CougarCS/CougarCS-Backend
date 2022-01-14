@@ -15,9 +15,9 @@ describe('Email Validation', () => {
 			email: 'test@test.com',
 			body: 'test',
 		});
-		expect(res.status).toEqual(400);
+		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('First Name is required');
+		expect(res.body.message[0].msg).toBe('First Name is required');
 	});
 
 	test('Last Name missing', async () => {
@@ -27,9 +27,9 @@ describe('Email Validation', () => {
 			email: 'test@test.com',
 			body: 'test',
 		});
-		expect(res.status).toEqual(400);
+		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Last Name is required');
+		expect(res.body.message[0].msg).toBe('Last Name is required');
 	});
 
 	test('Email missing', async () => {
@@ -39,9 +39,9 @@ describe('Email Validation', () => {
 			email: '',
 			body: 'test',
 		});
-		expect(res.status).toEqual(400);
+		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Email is required');
+		expect(res.body.message[0].msg).toBe('Email is required');
 	});
 
 	test('Email invalid', async () => {
@@ -51,9 +51,9 @@ describe('Email Validation', () => {
 			email: 'test.com',
 			body: 'test',
 		});
-		expect(res.status).toEqual(400);
+		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Email is required');
+		expect(res.body.message[0].msg).toBe('Email is required');
 	});
 
 	test('Body missing', async () => {
@@ -63,9 +63,9 @@ describe('Email Validation', () => {
 			email: 'test@test.com',
 			body: '',
 		});
-		expect(res.status).toEqual(400);
+		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message[0].msg).toEqual('Body is required');
+		expect(res.body.message[0].msg).toBe('Body is required');
 	});
 
 	test('First and Last name missing', async () => {
@@ -75,11 +75,11 @@ describe('Email Validation', () => {
 			email: 'test@test.com',
 			body: 'Test',
 		});
-		expect(res.status).toEqual(400);
+		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message');
 		expect(res.body.message).toHaveLength(2);
-		expect(res.body.message[0].msg).toEqual('First Name is required');
-		expect(res.body.message[1].msg).toEqual('Last Name is required');
+		expect(res.body.message[0].msg).toBe('First Name is required');
+		expect(res.body.message[1].msg).toBe('Last Name is required');
 	});
 
 	test('First name and Email missing', async () => {
@@ -89,11 +89,11 @@ describe('Email Validation', () => {
 			email: '',
 			body: 'Test',
 		});
-		expect(res.status).toEqual(400);
+		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message');
 		expect(res.body.message).toHaveLength(2);
-		expect(res.body.message[0].msg).toEqual('First Name is required');
-		expect(res.body.message[1].msg).toEqual('Email is required');
+		expect(res.body.message[0].msg).toBe('First Name is required');
+		expect(res.body.message[1].msg).toBe('Email is required');
 	});
 
 	test('Last name and Email missing', async () => {
@@ -103,11 +103,11 @@ describe('Email Validation', () => {
 			email: '',
 			body: 'Test',
 		});
-		expect(res.status).toEqual(400);
+		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message');
 		expect(res.body.message).toHaveLength(2);
-		expect(res.body.message[0].msg).toEqual('Last Name is required');
-		expect(res.body.message[1].msg).toEqual('Email is required');
+		expect(res.body.message[0].msg).toBe('Last Name is required');
+		expect(res.body.message[1].msg).toBe('Email is required');
 	});
 
 	test('Email has send failed', async () => {
@@ -121,9 +121,9 @@ describe('Email Validation', () => {
 			email: 'test@test.com',
 			body: 'Test',
 		});
-		expect(res.status).toEqual(500);
+		expect(res.status).toBe(500);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('Unable to send email');
+		expect(res.body.message).toBe('Unable to send email');
 	});
 
 	test('Email has send successfully', async () => {
@@ -135,8 +135,8 @@ describe('Email Validation', () => {
 			email: 'test@test.com',
 			body: 'Test',
 		});
-		expect(res.status).toEqual(200);
+		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body.message).toEqual('Email sent.');
+		expect(res.body.message).toBe('Email sent.');
 	});
 });
