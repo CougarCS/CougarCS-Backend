@@ -20,6 +20,7 @@ module.exports = {
 		'import/prefer-default-export': 'off',
 		'global-require': 'off',
 		'import/no-unresolved': 'off',
+		'import/no-import-module-exports': 'off',
 		'linebreak-style': ['error', 'unix'],
 		'prettier/prettier': [
 			'error',

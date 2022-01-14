@@ -3,7 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import express, { json } from 'express';
 import helmet from 'helmet';
-import RateLimit from 'express-rate-limit';
+import rateLimit from 'express-rate-limit';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import actuator from 'express-actuator';
@@ -19,9 +19,11 @@ import { ENABLE_CORS, PROD, SENTRY_URL } from '../utils/config';
 
 const app = express();
 
-const limiter = new RateLimit({
+const limiter = rateLimit({
 	windowMs: 1 * 60 * 1000,
 	max: 90,
+	standardHeaders: true,
+	legacyHeaders: false,
 });
 
 if (PROD) {
