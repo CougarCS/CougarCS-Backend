@@ -32,7 +32,7 @@
     "express-actuator": "^1.8.0",
     "express-rate-limit": "^6.0.0",
     "express-validator": "^6.12.2",
-    "helmet": "^4.6.0",
+    "helmet": "^5.0.0",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
     "moment": "^2.24.0",
