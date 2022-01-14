@@ -5,7 +5,7 @@ module.exports = {
 		"jest/globals": true,
 	},
 	extends: ['airbnb-base', 'plugin:prettier/recommended', 'plugin:jest/recommended', 'plugin:jest/style'],
-	plugins: ['prettier', 'jest'],
+	plugins: ['prettier'],
 	parserOptions: {
 		ecmaVersion: 12,
 		sourceType: 'module',
@@ -20,6 +20,7 @@ module.exports = {
 		'import/prefer-default-export': 'off',
 		'global-require': 'off',
 		'import/no-unresolved': 'off',
+		'import/no-import-module-exports': 'off',
 		'linebreak-style': ['error', 'unix'],
 		'prettier/prettier': [
 			'error',
