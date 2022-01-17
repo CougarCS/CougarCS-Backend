@@ -81,7 +81,6 @@ jobs:
   sonar-coverage:
     needs: [lint,test-build]
     if: ${{github.base_ref != 'dev'}}
-
     runs-on: ubuntu-latest
 
     steps:
