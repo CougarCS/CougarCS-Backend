@@ -10,18 +10,16 @@ RUN npm install
 
 COPY ./src ./src
 
-RUN npm run build
-
-RUN npm prune --production
+RUN npm run build \
+    && npm prune --production
 
 
 FROM node:14.18.3-alpine3.14
 
 WORKDIR /app
 
-RUN chown -R 1000:1000 /app
-
-RUN chmod 755 /app
+RUN chown -R 1000:1000 /app \
+    && chmod 755 /app
 
 USER 1000
 

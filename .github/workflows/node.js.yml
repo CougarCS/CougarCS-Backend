@@ -61,8 +61,8 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install dependencies
-      run: yarn --frozen-lockfile  
-      
+      run: yarn --frozen-lockfile
+
     - name: Test
       run: yarn test:coverage
       env:
@@ -73,19 +73,18 @@ jobs:
       with:
         name: coverage
         path: coverage/
-        retention-days: 1   
+        retention-days: 1
 
     - name: Build
       run: yarn build
-  
+
   sonar-coverage:
     needs: [lint,test-build]
     if: ${{github.base_ref != 'dev'}}
-    
     runs-on: ubuntu-latest
 
     steps:
-    
+
     - name: Checkout Repo
       uses: actions/checkout@v2
       with:
@@ -119,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
+
     - name: Checkout Repo
       uses: actions/checkout@v2
 
@@ -141,7 +140,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-        
+
     - name: Checkout Repo
       uses: actions/checkout@v2
 
