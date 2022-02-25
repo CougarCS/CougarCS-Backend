@@ -1031,7 +1031,7 @@
   dependencies:
     "@changesets/types" "^4.1.0"
 
-"@changesets/cli@^2.21.0":
+"@changesets/cli@2.21.0":
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/@changesets/cli/-/cli-2.21.0.tgz#b689f91ed908150efc06e0985e6b4cfbd9aea3a3"
   integrity sha512-cJXRg28MmF9VbQrlwSjpY4AJA2xZUbXFCpQ3kFmX0IeppO7wknZ2QfocAhIqwM828t8d3R4Zpi5xnvJ/crIcQw==
