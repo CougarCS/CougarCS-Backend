@@ -1,6 +1,6 @@
 {
   "name": "cougarcs-backend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "CougarCS-Backend",
   "main": "src/server.js",
   "scripts": {
