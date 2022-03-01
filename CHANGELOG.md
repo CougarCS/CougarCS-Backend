@@ -1,5 +1,11 @@
 # cougarcs-backend
 
+## 1.1.2
+
+### Patch Changes
+
+- updated deps
+
 ## 1.1.1
 
 ### Patch Changes
