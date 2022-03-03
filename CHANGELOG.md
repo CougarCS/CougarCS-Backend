@@ -1,5 +1,11 @@
 # cougarcs-backend
 
+## 1.1.3
+
+### Patch Changes
+
+- update ci yaml
+
 ## 1.1.2
 
 ### Patch Changes
