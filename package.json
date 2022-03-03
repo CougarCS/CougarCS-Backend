@@ -19,7 +19,7 @@
   "dependencies": {
     "@babel/runtime": "^7.16.3",
     "@newrelic/winston-enricher": "^2.1.0",
-    "@notionhq/client": "^0.4.2",
+    "@notionhq/client": "^1.0.0",
     "@sendgrid/mail": "^7.5.0",
     "@sentry/node": "^6.17.1",
     "@sentry/tracing": "^6.17.1",
