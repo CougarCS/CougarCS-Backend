@@ -269,7 +269,9 @@ describe('Payment API test', () => {
 		expect(res.body.message).toBe('Payment Error!');
 	});
 
+
 	test('CCS Cloud Post Contact', async () => {
+
 		jest.spyOn(apiCall, 'checkRecaptcha').mockImplementationOnce(() => {
 			return { data: { success: 'Success' } };
 		});
@@ -298,7 +300,9 @@ describe('Payment API test', () => {
 		expect(res.body.message).toBe('OK');
 	});
 
+
 	test('CCS Cloud Post Contact Fail', async () => {
+
 		jest.spyOn(apiCall, 'checkRecaptcha').mockImplementationOnce(() => {
 			return { data: { success: 'Success' } };
 		});

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
 import { v4 as uuidv4 } from 'uuid';
@@ -69,6 +70,7 @@ router.post(
 			shirtSize,
 			paidUntil,
 			phone,
+			shirtSize,
 		} = user;
 
 		// check recaptcha
@@ -111,6 +113,7 @@ router.post(
 			return res.status(500).json({ message: 'Payment Error!' });
 		}
 
+
 		try {
 			await APICall.postContact({
 				transaction: `Payment via Stripe on ${new Date().toLocaleDateString()}`,
@@ -121,6 +124,7 @@ router.post(
 				phone,
 				shirtSize,
 				paidUntil,
+
 			});
 		} catch (err) {
 			await APICall.sendEmail(

@@ -15,6 +15,7 @@ import {
 	COUGARCS_CLOUD_URL,
 	COUGARCS_CLOUD_ACCESS_KEY,
 	COUGARCS_CLOUD_SECRET_KEY,
+
 	CCSCLOUD_TOKEN_CACHE_TIME,
 	YOUTUBE_PLAYLIST_ID,
 	YOUTUBE_API_KEY,
@@ -22,6 +23,7 @@ import {
 import { logger } from '../logger/logger';
 import { getCache, setCache } from '../caching/cacheData';
 import { getMembershipDates } from '../membershipDate';
+
 
 const key = 'token';
 const stripe = new Stripe(STRIPE_API_KEY);
@@ -164,6 +166,7 @@ exports.getTutors = async function getTutors() {
 async function getAccessToken() {
 	const cacheContent = getCache(key);
 	if (cacheContent) {
+
 		logger.info('Fetched Access Token from Cache');
 		return cacheContent.token;
 	}
@@ -179,6 +182,7 @@ async function getAccessToken() {
 	logger.info('Stored Access Token in Cache');
 	setCache(key, { token: res.data.token }, CCSCLOUD_TOKEN_CACHE_TIME); // We need to reduce the cache time to 5 minutes (access token expires in 5)
 
+
 	return res.data.token;
 }
 
@@ -190,12 +194,14 @@ exports.postContact = async function postContact({
 	lastName,
 	phone,
 	shirtSize,
+
 	paidUntil,
 }) {
 	const { membershipStart, membershipEnd } = getMembershipDates(paidUntil);
 
 	const token = await getAccessToken();
 	const URL = `${COUGARCS_CLOUD_URL}/contact`;
+
 	const data = {
 		transaction,
 		psid: uhID,
@@ -204,6 +210,7 @@ exports.postContact = async function postContact({
 		lastName,
 		phoneNumber: phone,
 		shirtSize,
+
 		membershipStart,
 		membershipEnd,
 	};
@@ -229,4 +236,5 @@ exports.getYoutubeVideos = async function getYoutubeVideos() {
 	});
 
 	return { videos };
+
 };
