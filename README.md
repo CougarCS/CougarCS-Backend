@@ -12,6 +12,7 @@ Offical backend of CougarCS.
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CougarCS_CougarCS-Backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CougarCS_CougarCS-Backend)
+[![CodeFactor](https://www.codefactor.io/repository/github/cougarcs/cougarcs-backend/badge)](https://www.codefactor.io/repository/github/cougarcs/cougarcs-backend)
 
 # Libraries
 
