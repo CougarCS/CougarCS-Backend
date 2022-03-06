@@ -8,13 +8,12 @@
     "progress",
     "dashboard"
   ],
-  "commandRunner": {
-    "command": "yarn test"
-  },
+  "testRunner": "jest",
   "coverageAnalysis": "perTest",
   "mutate": [
     "src/utils/api/utils/utils.js",
-    "src/utils/membershipDate.js"
+    "src/utils/membershipDate.js",
+    "src/utils/caching/cacheData.js"
   ],
   "thresholds": {
     "high": 95,

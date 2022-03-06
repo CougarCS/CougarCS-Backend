@@ -7,7 +7,6 @@ const config = {
         "coverage/",
         "src/server.js",
         "src/utils/api/calls.js",
-        "src/utils/caching/",
         "src/utils/logger/",
         "src/utils/config.js",
         "dist/",
