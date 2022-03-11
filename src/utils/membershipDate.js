@@ -11,7 +11,7 @@ export const getMembershipDates = (paidUntil, today = new Date()) => {
 
 	const terms = {
 		spring: new Date(year, SPRING_END.month, SPRING_END.day),
-		fall: new Date(year, FALL_END.month, SPRING_END.day),
+		fall: new Date(year, FALL_END.month, FALL_END.day),
 	};
 
 	// Today is BEFORE last day of Spring
