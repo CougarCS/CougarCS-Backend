@@ -20,3 +20,6 @@ dist/
 coverage/
 grafana/grafana.ini
 newrelic_agent.log
+# stryker temp files
+.stryker-tmp
+reports/
