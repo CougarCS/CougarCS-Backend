@@ -40,7 +40,7 @@ jobs:
 
     - name: Install dependencies
       run: yarn --prefer-offline --frozen-lockfile
-
+      
     - name: Build
       run: yarn build
 
