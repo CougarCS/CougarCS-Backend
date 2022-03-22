@@ -39,8 +39,8 @@ router.post(
             );
             return res.status(500).json({ message: err.message });
         }
-        logger.info('Email sent');
-        return res.status(200).json({ message: 'Email sent.' });
+        logger.info('Email of Newsletter sent');
+        return res.status(200).json({ message: 'Email of Newsletter sent.' });
     }
 );
 export default router;
