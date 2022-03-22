@@ -26,7 +26,7 @@ router.post(
             await APICall.sendEmail(
                 toEmail,
                 {
-                    name: 'CougarCS Website Newsletter',
+                    name: 'CougarCS Website Newsletter of today',
                     email,
                 },
                 'New Message from Newsletter',
