@@ -22,7 +22,7 @@
     "@newrelic/winston-enricher": "^2.1.0",
     "@notionhq/client": "^0.4.2",
     "@sendgrid/mail": "^7.5.0",
-    "@sentry/node": "^6.17.1",
+    "@sentry/node": "^6.19.0",
     "@sentry/tracing": "^6.17.1",
     "axios": "^0.26.0",
     "compression": "^1.7.4",
