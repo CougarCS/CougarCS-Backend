@@ -52,6 +52,21 @@ exports.sendEmail = async function sendEmail(toEmail, email, subject, content) {
 	);
 };
 
+exports.sendEmailForNewsLetter = async function sendEmail(toEmail, email, subject, content) {
+	sgMail.setApiKey(SENDGRID_API_KEY);
+	const msg = {
+		to: toEmail,
+		from: email,
+		subject,
+		text: content,
+	};
+
+	await sgMail.send(msg);
+	logger.info(
+		`Service: Newsletter - Email has been sent. From: ${email.email}`
+	);
+};
+
 exports.getEvents = async function getEvents() {
 	const { data } = await axios.get(
 		`https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${CALENDAR_API_KEY}`

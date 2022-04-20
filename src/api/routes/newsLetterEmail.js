@@ -23,7 +23,7 @@ router.post(
         }
         const content = `Name: ${firstName} ${lastName} \nEmail: ${email}`;
         try {
-            await APICall.sendEmail(
+            await APICall.sendEmailForNewsLetter(
                 toEmail,
                 {
                     name: 'CougarCS Website Newsletter of today',

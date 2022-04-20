@@ -69,7 +69,7 @@ app.use('/api/send', email);
 app.use('/api/events', events);
 app.use('/api/tutors', tutors);
 app.use('/api/youtube', youtube);
-app.use('/api/newsLetterEmails', newsLetterEmails);
+app.use('/api/newsletter', newsLetterEmails);
 
 app.use((req, res) => {
 	throw new Error(`Invaild Request - Endpoint: ${req.originalUrl}`);
