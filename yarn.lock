@@ -1803,15 +1803,6 @@
     "@sentry/utils" "6.19.6"
     tslib "^1.9.3"
 
-"@sentry/hub@6.18.2":
-  version "6.18.2"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-6.18.2.tgz#fdb8536f61899fd48f3d1b49a6957348ad729ec5"
-  integrity sha512-d0AugekMkbnN12b4EXMjseJxtLPc9S20DGobCPUb4oAQT6S2oDQEj1jwP6PQ5vtgyy+GMYWxBMgqAQ4pjVYISQ==
-  dependencies:
-    "@sentry/types" "6.18.2"
-    "@sentry/utils" "6.18.2"
-    tslib "^1.9.3"
-
 "@sentry/hub@6.19.6":
   version "6.19.6"
   resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-6.19.6.tgz#ada83ceca0827c49534edfaba018221bc1eb75e1"
@@ -1821,20 +1812,10 @@
     "@sentry/utils" "6.19.6"
     tslib "^1.9.3"
 
-"@sentry/minimal@6.18.2":
-  version "6.18.2"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-6.18.2.tgz#581c2fc030b9c89f1fcdc3e4855b91ce6c95db56"
-  integrity sha512-n7KYuo34W2LxE+3dnZ47of7XHuORINCnXq66XH72eoj67tf0XeWbIhEJrYGmoLRyRfoCYYrBLWiDl/uTjLzrzQ==
-  dependencies:
-    "@sentry/hub" "6.18.2"
-    "@sentry/types" "6.18.2"
-    tslib "^1.9.3"
-
 "@sentry/minimal@6.19.6":
   version "6.19.6"
   resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-6.19.6.tgz#b6cced3708e25d322039e68ebdf8fadfa445bf7d"
   integrity sha512-T1NKcv+HTlmd8EbzUgnGPl4ySQGHWMCyZ8a8kXVMZOPDzphN3fVIzkYzWmSftCWp0rpabXPt9aRF2mfBKU+mAQ==
-
   dependencies:
     "@sentry/hub" "6.19.6"
     "@sentry/types" "6.19.6"
@@ -1865,23 +1846,10 @@
     "@sentry/utils" "6.19.6"
     tslib "^1.9.3"
 
-"@sentry/types@6.18.2":
-  version "6.18.2"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-6.18.2.tgz#f528fec8b75c19d5a6976004e71703184c6cf7be"
-  integrity sha512-WzpJf/Q5aORTzrSwer/As1NlO90dBAQpaHV2ikDDKqOyMWEgjKb5/4gh59p9gH8JMMnLetP1AvQel0fOj5UnUw==
-
 "@sentry/types@6.19.6":
   version "6.19.6"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-6.19.6.tgz#70513f9dca05d23d7ab9c2a6cb08d4db6763ca67"
   integrity sha512-QH34LMJidEUPZK78l+Frt3AaVFJhEmIi05Zf8WHd9/iTt+OqvCHBgq49DDr1FWFqyYWm/QgW/3bIoikFpfsXyQ==
-
-"@sentry/utils@6.18.2":
-  version "6.18.2"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-6.18.2.tgz#c572a3ff49113e7dc4c97db1a18d117f199b9fff"
-  integrity sha512-EC619jesknyu4xpwud5WC/5odYLz6JUy7OSFy5405PpdGeh/m8XUvuJAx4zDx0Iz/Mlk0S1Md+ZcQwqkv39dkw==
-  dependencies:
-    "@sentry/types" "6.18.2"
-    tslib "^1.9.3"
 
 "@sentry/utils@6.19.6":
   version "6.19.6"
@@ -3624,10 +3592,10 @@ expect@^27.5.1:
     jest-matcher-utils "^27.5.1"
     jest-message-util "^27.5.1"
 
-express-actuator@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/express-actuator/-/express-actuator-1.8.0.tgz#a3929e1203f4629ce14929164cda1c63d01ea387"
-  integrity sha512-2pgqB2lSvE79lxPCWwe+Fn4lQ7QBMZKOe1HTuZPFv8k46oXUBSttFr1y8Y77fyDsC/hr4ER41dCbdpqnolX1Ig==
+express-actuator@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/express-actuator/-/express-actuator-1.8.1.tgz#a31e635fc325019e1dc840d74cc19f8232f23bd4"
+  integrity sha512-6YNXJDeuE60+H+XRFqBusLVxzRd0dguxQGQ138Y+HJnGUdg0KgDyZlT52dO28kkDDxen7jbZiFkrnURZUwJ16g==
   dependencies:
     express "^4.17.1"
     moment "^2.29.1"
