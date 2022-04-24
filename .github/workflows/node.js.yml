@@ -3,153 +3,163 @@ name: Install, Test, Build
 on: [push, pull_request]
 
 jobs:
-
   lint:
     runs-on: ubuntu-latest
 
     steps:
-    - id: yarn-cache
-      name: Get Yarn cache path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.17.4
 
-    - name: Use Node.js 14.x
-      uses: actions/setup-node@master
-      with:
-        node-version: 14.17.4
+      - name: Install dependencies
+        run: yarn --prefer-offline --frozen-lockfile
 
-    - name: Load cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.yarn-cache.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+      - name: Run ESLint
+        run: yarn eslint-check
 
-    - name: Install dependencies
-      run: yarn --frozen-lockfile
-
-    - name: Run ESLint
-      run: yarn eslint-check
-
-  test-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - id: yarn-cache
-      name: Get Yarn cache path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-    - name: Checkout Repo
-      uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.17.4
 
-    - name: Use Node.js 14.x
-      uses: actions/setup-node@master
-      with:
-        node-version: 14.17.4
+      - name: Install dependencies
+        run: yarn --prefer-offline --frozen-lockfile
 
-    - name: Load cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.yarn-cache.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+      - name: Build
+        run: yarn build
 
-    - name: Install dependencies
-      run: yarn --frozen-lockfile
+  unit-integration-test:
+    needs: build
+    runs-on: ubuntu-latest
 
-    - name: Test
-      run: yarn test:coverage
-      env:
-        NEW_RELIC_ENABLED: false
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
 
-    - name: Upload a Coverage Artifact
-      uses: actions/upload-artifact@v2.3.1
-      with:
-        name: coverage
-        path: coverage/
-        retention-days: 1
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.17.4
 
-    - name: Build
-      run: yarn build
+      - name: Install dependencies
+        run: yarn --prefer-offline --frozen-lockfile
+
+      - name: Unit and Integration Test
+        run: yarn test:coverage
+        env:
+          NEW_RELIC_ENABLED: false
+
+      - name: Upload a Coverage Artifact
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 1
+
+  mutation-test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.17.4
+
+      - name: Install dependencies
+        run: yarn --prefer-offline --frozen-lockfile
+
+      - name: Mutation Test
+        run: yarn test:mutation
+        env:
+          NEW_RELIC_ENABLED: false
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
 
   sonar-coverage:
-    needs: [lint,test-build]
+    needs: unit-integration-test
     if: ${{github.base_ref != 'dev'}}
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - name: Download Coverage Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+          path: coverage
 
-    - name: Download Coverage Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: coverage
-        path: coverage
-
-    - name: Analyze with SonarCloud
-      uses: sonarsource/sonarcloud-github-action@master
-      with:
-        args: >
-          -Dsonar.organization=${{ secrets.SONAR_ORG }}
-          -Dsonar.projectKey=${{ secrets.SONAR_PROJ_KEY }}
-          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-          -Dsonar.sources=src/
-          -Dsonar.coverage.exclusions=src/server.js,src/utils/config.js,src/utils/api/**,src/utils/caching/**,src/utils/logger/**,src/utils/monitoring/**,src/utils/tracing/**
-          -Dsonar.test.exclusions=test/**
-          -Dsonar.tests=test/
-          -Dsonar.verbose=false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORG }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJ_KEY }}
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.sources=src/
+            -Dsonar.coverage.exclusions=src/server.js,src/utils/config.js,src/utils/api/**,src/utils/caching/**,src/utils/logger/**,src/utils/monitoring/**,src/utils/tracing/**
+            -Dsonar.test.exclusions=test/**
+            -Dsonar.tests=test/
+            -Dsonar.verbose=false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   coveralls:
-    needs: [lint,test-build]
+    needs: unit-integration-test
 
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-    - name: Checkout Repo
-      uses: actions/checkout@v2
+      - name: Download Coverage Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+          path: coverage
 
-    - name: Download Coverage Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: coverage
-        path: coverage
-
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        path-to-lcov: ./coverage/lcov.info
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          path-to-lcov: ./coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   sentry-release:
-    needs: [lint,test-build]
+    needs: [lint, build, unit-integration-test]
 
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-
-    - name: Create Sentry release
-      if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
-      uses: getsentry/action-release@v1
-      env:
-        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-        SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-      with:
-        environment: production
+      - name: Create Sentry release
+        if: ${{ github.repository_owner == 'CougarCS' && !contains(toJSON(github.event), 'pull_request')}}
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production

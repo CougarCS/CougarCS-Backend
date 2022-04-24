@@ -22,20 +22,10 @@ import {
 import { logger } from '../logger/logger';
 import { getCache, setCache } from '../caching/cacheData';
 import { getMembershipDates } from '../membershipDate';
+import { renameKey } from './utils/utils';
 
 const key = 'token';
 const stripe = new Stripe(STRIPE_API_KEY);
-
-const renameKey = (obj, oldKey, newKey) => {
-	if (oldKey !== newKey && !obj.date) {
-		Object.defineProperty(
-			obj,
-			newKey,
-			Object.getOwnPropertyDescriptor(obj, oldKey)
-		);
-		delete obj[oldKey];
-	}
-};
 
 exports.sendEmail = async function sendEmail(toEmail, email, subject, content) {
 	sgMail.setApiKey(SENDGRID_API_KEY);
