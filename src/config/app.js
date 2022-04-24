@@ -13,6 +13,7 @@ import events from '../api/routes/event';
 import tutors from '../api/routes/tutors';
 import youtube from '../api/routes/youtube';
 import payment from '../api/routes/payment';
+import newsLetterEmails from '../api/routes/newsLetterEmail';
 import { logger } from '../utils/logger/logger';
 import { httpLogger } from '../utils/logger/httpLogger';
 import { ENABLE_CORS, PROD, SENTRY_URL } from '../utils/config';
@@ -41,9 +42,9 @@ if (PROD) {
 
 const corsOptions = ENABLE_CORS
 	? {
-			origin: ['https://cougarcs.com', 'http://localhost:45678'],
-			methods: ['GET', 'POST'],
-	  }
+		origin: ['https://cougarcs.com', 'http://localhost:45678'],
+		methods: ['GET', 'POST'],
+	}
 	: '*';
 
 app.use(compression());
@@ -68,6 +69,7 @@ app.use('/api/send', email);
 app.use('/api/events', events);
 app.use('/api/tutors', tutors);
 app.use('/api/youtube', youtube);
+app.use('/api/newsletter', newsLetterEmails);
 
 app.use((req, res) => {
 	throw new Error(`Invaild Request - Endpoint: ${req.originalUrl}`);
@@ -77,8 +79,7 @@ app.use(Sentry.Handlers.errorHandler());
 
 app.use((err, req, res, next) => {
 	logger.info(
-		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-			req.method
+		`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
 		} - ${req.ip}`
 	);
 
