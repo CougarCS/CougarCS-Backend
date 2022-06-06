@@ -1722,10 +1722,10 @@
   resolved "https://registry.yarnpkg.com/@newrelic/superagent/-/superagent-5.1.1.tgz#57e61878903718e1ba4310a365f65fae14a2b1a6"
   integrity sha512-Bp2QtknriKHLKSfrBRyg4PjGJ8CCSkxYfZEDppOWmrGukJAP/9Vvr+ya0Mmj7SU8eIMMhaTvAnjvb2mVmX8wBw==
 
-"@newrelic/winston-enricher@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@newrelic/winston-enricher/-/winston-enricher-2.1.2.tgz#a0e8d657e2199f1748db7813259cbcabe373acd3"
-  integrity sha512-9LVwFvGd0QwQbEbKO1VGx47saxF4abvWG69abIYAGPVOOPPZMtf13hFXwE/1/pT73AP6xntgn4bFwM4gZmg1NA==
+"@newrelic/winston-enricher@^3.0.0":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@newrelic/winston-enricher/-/winston-enricher-3.1.1.tgz#05aa0385b15546d8d4d8bbd9cdd32a56e5a688ab"
+  integrity sha512-ioLw2H10CTPknd9kUvAAjMeg3n32WsEfW/N+gTGEOs1OhK9wB1ZWOYOEj54Zkas/ATwQsl4V/m6AAcJp891Pww==
 
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3":
   version "2.1.8-no-fsevents.3"
