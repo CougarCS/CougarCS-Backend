@@ -19,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.17.9",
-    "@newrelic/winston-enricher": "^2.1.0",
+    "@newrelic/winston-enricher": "^2.1.2",
     "@notionhq/client": "^0.4.2",
     "@sendgrid/mail": "^7.5.0",
     "@sentry/node": "^6.19.0",
@@ -36,11 +36,11 @@
     "helmet": "^5.0.2",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
-    "moment": "^2.29.2",
+    "moment": "^2.29.3",
     "morgan": "^1.10.0",
     "morgan-json": "^1.1.0",
     "newrelic": "^8.10.0",
-    "stripe": "^8.210.0",
+    "stripe": "^8.217.0",
     "uuid": "^8.3.0",
     "winston": "^3.7.2"
   },
