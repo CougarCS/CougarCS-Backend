@@ -19,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.17.9",
-    "@newrelic/winston-enricher": "^2.1.0",
+    "@newrelic/winston-enricher": "^2.1.2",
     "@notionhq/client": "^0.4.2",
     "@sendgrid/mail": "^7.5.0",
     "@sentry/node": "^6.19.0",

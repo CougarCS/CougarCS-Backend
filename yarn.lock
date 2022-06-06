@@ -1722,12 +1722,10 @@
   resolved "https://registry.yarnpkg.com/@newrelic/superagent/-/superagent-5.1.1.tgz#57e61878903718e1ba4310a365f65fae14a2b1a6"
   integrity sha512-Bp2QtknriKHLKSfrBRyg4PjGJ8CCSkxYfZEDppOWmrGukJAP/9Vvr+ya0Mmj7SU8eIMMhaTvAnjvb2mVmX8wBw==
 
-"@newrelic/winston-enricher@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@newrelic/winston-enricher/-/winston-enricher-2.1.0.tgz#627cc93894bff0aaa1009a60f047988815162c14"
-  integrity sha512-yfRK+lj8mUfSCqKQ0tot1Iloz+wU1upTf2YhQi5sSxYmV1RF6H6tQa8GHVDImTpOObQPX0BDAJJ7wL4mfy4lUw==
-  dependencies:
-    winston "^3.0.0"
+"@newrelic/winston-enricher@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@newrelic/winston-enricher/-/winston-enricher-2.1.2.tgz#a0e8d657e2199f1748db7813259cbcabe373acd3"
+  integrity sha512-9LVwFvGd0QwQbEbKO1VGx47saxF4abvWG69abIYAGPVOOPPZMtf13hFXwE/1/pT73AP6xntgn4bFwM4gZmg1NA==
 
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3":
   version "2.1.8-no-fsevents.3"
@@ -7404,22 +7402,6 @@ winston-transport@^4.5.0:
     logform "^2.3.2"
     readable-stream "^3.6.0"
     triple-beam "^1.3.0"
-
-winston@^3.0.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/winston/-/winston-3.6.0.tgz#be32587a099a292b88c49fac6fa529d478d93fb6"
-  integrity sha512-9j8T75p+bcN6D00sF/zjFVmPp+t8KMPB1MzbbzYjeN9VWxdsYnTB40TkbNUEXAmILEfChMvAMgidlX64OG3p6w==
-  dependencies:
-    "@dabh/diagnostics" "^2.0.2"
-    async "^3.2.3"
-    is-stream "^2.0.0"
-    logform "^2.4.0"
-    one-time "^1.0.0"
-    readable-stream "^3.4.0"
-    safe-stable-stringify "^2.3.1"
-    stack-trace "0.0.x"
-    triple-beam "^1.3.0"
-    winston-transport "^4.5.0"
 
 winston@^3.7.2:
   version "3.7.2"
