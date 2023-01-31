@@ -1434,7 +1434,18 @@
     "@grpc/proto-loader" "^0.6.4"
     "@types/node" ">=12.12.47"
 
-"@grpc/proto-loader@^0.6.4", "@grpc/proto-loader@^0.6.9":
+"@grpc/proto-loader@^0.6.13":
+  version "0.6.13"
+  resolved "https://registry.yarnpkg.com/@grpc/proto-loader/-/proto-loader-0.6.13.tgz#008f989b72a40c60c96cd4088522f09b05ac66bc"
+  integrity sha512-FjxPYDRTn6Ec3V0arm1FtSpmP6V50wuph2yILpyvTKzjc76oDdoihXqM1DzOW5ubvCC8GivfCnNtfaRE8myJ7g==
+  dependencies:
+    "@types/long" "^4.0.1"
+    lodash.camelcase "^4.3.0"
+    long "^4.0.0"
+    protobufjs "^6.11.3"
+    yargs "^16.2.0"
+
+"@grpc/proto-loader@^0.6.4":
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/@grpc/proto-loader/-/proto-loader-0.6.9.tgz#4014eef366da733f8e04a9ddd7376fe8a58547b7"
   integrity sha512-UlcCS8VbsU9d3XTXGiEVFonN7hXk+oMXZtoHHG2oSA1/GcDP1q6OUgs20PzHDGizzyi8ufGSUDlk3O2NyY7leg==
@@ -5953,13 +5964,13 @@ negotiator@0.6.3:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
-newrelic@^8.10.0:
-  version "8.10.0"
-  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-8.10.0.tgz#b3e9531e0690cc241588c953601ea6cd1634318c"
-  integrity sha512-7gBtVsdblR074M262zuyMIrkOCIzJ+uJsmKrRfqkoqFos0ck/SpnahNSp+Q5LDiVq3Q+03G3sBVErK2yShv6iQ==
+newrelic@^8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-8.17.1.tgz#0cea28c6eaab302815d10d5e57bd15e4016f1a50"
+  integrity sha512-7KJQaTTszlX2DaHRFXgvhG1Ebt0sR57ix5PXw/06dALP2G2f+5B9VBI2QenYuiwwebcw9KcxI07+yQRjF46fWg==
   dependencies:
     "@grpc/grpc-js" "^1.5.5"
-    "@grpc/proto-loader" "^0.6.9"
+    "@grpc/proto-loader" "^0.6.13"
     "@newrelic/aws-sdk" "^4.1.1"
     "@newrelic/koa" "^6.1.1"
     "@newrelic/superagent" "^5.1.0"
@@ -5970,6 +5981,7 @@ newrelic@^8.10.0:
     json-stringify-safe "^5.0.0"
     readable-stream "^3.6.0"
     semver "^5.3.0"
+    winston-transport "^4.5.0"
   optionalDependencies:
     "@newrelic/native-metrics" "^8.0.0"
 
@@ -6472,7 +6484,7 @@ properties-reader@^2.2.0:
   dependencies:
     mkdirp "^1.0.4"
 
-protobufjs@^6.10.0:
+protobufjs@^6.10.0, protobufjs@^6.11.3:
   version "6.11.3"
   resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-6.11.3.tgz#637a527205a35caa4f3e2a9a4a13ddffe0e7af74"
   integrity sha512-xL96WDdCZYdU7Slin569tFX712BxsxslWwAfAhCYjQKGTq7dAU91Lomy6nLLhh/dyGhk/YH4TwTSRxTzhuHyZg==
