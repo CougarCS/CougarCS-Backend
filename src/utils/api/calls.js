@@ -12,19 +12,13 @@ import {
 	STRIPE_API_KEY,
 	NOTION_TOKEN,
 	NOTION_TUTOR_DB,
-	COUGARCS_CLOUD_URL,
-	COUGARCS_CLOUD_ACCESS_KEY,
-	COUGARCS_CLOUD_SECRET_KEY,
-	CCSCLOUD_TOKEN_CACHE_TIME,
 	YOUTUBE_PLAYLIST_ID,
 	YOUTUBE_API_KEY,
 } from '../config';
 import { logger } from '../logger/logger';
-import { getCache, setCache } from '../caching/cacheData';
-import { getMembershipDates } from '../membershipDate';
 import { renameKey } from './utils/utils';
+import { supabase } from '../supabase';
 
-const key = 'token';
 const stripe = new Stripe(STRIPE_API_KEY);
 
 exports.sendEmail = async function sendEmail(toEmail, email, subject, content) {
@@ -151,27 +145,6 @@ exports.getTutors = async function getTutors() {
 	return { tutors };
 };
 
-async function getAccessToken() {
-	const cacheContent = getCache(key);
-	if (cacheContent) {
-		logger.info('Fetched Access Token from Cache');
-		return cacheContent.token;
-	}
-
-	const URL = `${COUGARCS_CLOUD_URL}/login`;
-	const data = {
-		accessKeyID: COUGARCS_CLOUD_ACCESS_KEY,
-		secretAccessKey: COUGARCS_CLOUD_SECRET_KEY,
-	};
-	logger.info('Fetching access token...');
-	const res = await axios.post(URL, data);
-
-	logger.info('Stored Access Token in Cache');
-	setCache(key, { token: res.data.token }, CCSCLOUD_TOKEN_CACHE_TIME); // We need to reduce the cache time to 5 minutes (access token expires in 5)
-
-	return res.data.token;
-}
-
 exports.postContact = async function postContact({
 	transaction,
 	uhID,
@@ -182,26 +155,71 @@ exports.postContact = async function postContact({
 	shirtSize,
 	paidUntil,
 }) {
-	const { membershipStart, membershipEnd } = getMembershipDates(paidUntil);
-
-	const token = await getAccessToken();
-	const URL = `${COUGARCS_CLOUD_URL}/contact`;
-	const data = {
-		transaction,
-		psid: uhID,
+	let contactResponse = await supabase.from('contacts').upsert({
+		uh_id: uhID,
 		email,
-		firstName,
-		lastName,
-		phoneNumber: phone,
-		shirtSize,
-		membershipStart,
-		membershipEnd,
-	};
-	const headers = { Authorization: `Bearer ${token}` };
-	logger.info(`POST to CougarCS Cloud API for UHID=${uhID}`);
-	const res = await axios.post(URL, data, { headers });
+		first_name: firstName,
+		last_name: lastName,
+		phone_number: phone,
+		shirt_size_id: shirtSize,
+	});
 
-	return res.data;
+	if (contactResponse.error) {
+		if (contactResponse.error.code === '23505') {
+			contactResponse = await supabase
+				.from('contacts')
+				.update({
+					uh_id: uhID,
+					email,
+					first_name: firstName,
+					last_name: lastName,
+					phone_number: phone,
+					shirt_size_id: shirtSize,
+				})
+				.eq('email', email);
+		} else {
+			logger.info(contactResponse.error);
+			return;
+		}
+	}
+
+	const contactData = await supabase
+		.from('contacts')
+		.select('contact_id')
+		.eq('email', email);
+
+	if (contactData.error) {
+		logger.info(contactData.error);
+		return;
+	}
+
+	const today = new Date();
+	const springStart = today.getMonth() < 6;
+	let endDate = '';
+	if (paidUntil === 'semester') {
+		if (springStart) {
+			endDate = `${today.getFullYear()}-7-1 06:00:00`;
+		} else {
+			endDate = `${today.getFullYear() + 1}-1-1 06:00:00`;
+		}
+	} else if (springStart) {
+		endDate = `${today.getFullYear() + 1}-1-1 06:00:00`;
+	} else {
+		endDate = `${today.getFullYear() + 1}-7-1 06:00:00`;
+	}
+
+	const membershipResponse = await supabase.from('membership').insert({
+		contact_id: contactData.data[0].contact_id,
+		start_date: today.toISOString(),
+		end_date: endDate,
+		membership_code_id: transaction.includes('Stripe') ? 'mc-ps' : 'mc-p',
+	});
+
+	if (membershipResponse.error) {
+		logger.info(membershipResponse.error);
+		return;
+	}
+	logger.info(`POST to CougarCS Cloud API for UHID=${uhID}`);
 };
 
 exports.getYoutubeVideos = async function getYoutubeVideos() {
