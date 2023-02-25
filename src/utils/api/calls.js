@@ -164,23 +164,23 @@ exports.postContact = async function postContact({
 		shirt_size_id: shirtSize,
 	});
 
+	if (contactResponse.error && contactResponse.error.code === '23505') {
+		contactResponse = await supabase
+			.from('contacts')
+			.update({
+				uh_id: uhID,
+				email,
+				first_name: firstName,
+				last_name: lastName,
+				phone_number: phone,
+				shirt_size_id: shirtSize,
+			})
+			.eq('email', email);
+	}
+
 	if (contactResponse.error) {
-		if (contactResponse.error.code === '23505') {
-			contactResponse = await supabase
-				.from('contacts')
-				.update({
-					uh_id: uhID,
-					email,
-					first_name: firstName,
-					last_name: lastName,
-					phone_number: phone,
-					shirt_size_id: shirtSize,
-				})
-				.eq('email', email);
-		} else {
-			logger.info(contactResponse.error);
-			return;
-		}
+		logger.error(contactResponse.error);
+		return;
 	}
 
 	const contactData = await supabase
@@ -189,24 +189,18 @@ exports.postContact = async function postContact({
 		.eq('email', email);
 
 	if (contactData.error) {
-		logger.info(contactData.error);
+		logger.error(contactData.error);
 		return;
 	}
 
 	const today = new Date();
 	const springStart = today.getMonth() < 6;
-	let endDate = '';
-	if (paidUntil === 'semester') {
-		if (springStart) {
-			endDate = `${today.getFullYear()}-7-1 06:00:00`;
-		} else {
-			endDate = `${today.getFullYear() + 1}-1-1 06:00:00`;
-		}
-	} else if (springStart) {
-		endDate = `${today.getFullYear() + 1}-1-1 06:00:00`;
-	} else {
-		endDate = `${today.getFullYear() + 1}-7-1 06:00:00`;
-	}
+	const paidForSemester = paidUntil === 'semester';
+
+	const endYear =
+		today.getFullYear() + (paidForSemester && springStart ? 0 : 1);
+	const endMonth = springStart !== paidForSemester ? '-1' : '-7';
+	const endDate = `${endYear}${endMonth}-1 06:00:00`;
 
 	const membershipResponse = await supabase.from('membership').insert({
 		contact_id: contactData.data[0].contact_id,
@@ -216,7 +210,7 @@ exports.postContact = async function postContact({
 	});
 
 	if (membershipResponse.error) {
-		logger.info(membershipResponse.error);
+		logger.error(membershipResponse.error);
 		return;
 	}
 	logger.info(`POST to CougarCS Cloud API for UHID=${uhID}`);

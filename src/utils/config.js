@@ -17,6 +17,8 @@ export const {
 	JAEGER_URL = '',
 	YOUTUBE_PLAYLIST_ID = '',
 	YOUTUBE_API_KEY = '',
+	SUPABASE_URL = '',
+	SUPABASE_KEY = '',
 } = process.env;
 
 export const PROD = NODE_ENV === 'prod';
