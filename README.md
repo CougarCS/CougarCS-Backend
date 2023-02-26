@@ -21,6 +21,7 @@ Offical backend of CougarCS.
 - Request : [Axios](https://github.com/axios/axios)
 - Linting: [ESLint](https://eslint.org/)
 - Testing: [Jest](https://jestjs.io/)
+- Supabase: [Supabase](https://supabase.com)
 
 # Getting Started
 
@@ -52,6 +53,8 @@ Offical backend of CougarCS.
     COUGARCS_CLOUD_ACCESS_KEY
     COUGARCS_CLOUD_SECRET_KEY
     NEW_RELIC_ENABLED
+    SUPABASE_URL
+    SUPABASE_KEY
   ```
   - Reach out to the Webmaster(webmaster@cougarcs.com) for the env values
 - ## Linting
