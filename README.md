@@ -21,7 +21,7 @@ Offical backend of CougarCS.
 - Request : [Axios](https://github.com/axios/axios)
 - Linting: [ESLint](https://eslint.org/)
 - Testing: [Jest](https://jestjs.io/)
-- Supabase: [Supabase](https://supabase.com)
+- Database: [Supabase](https://supabase.com)
 
 # Getting Started
 

@@ -164,12 +164,30 @@ exports.postContact = async function postContact({
 		shirt_size_id: shirtSize,
 	});
 
-	if (contactResponse.error && contactResponse.error.code === '23505') {
+	const dupViolation = contactResponse.error?.code === '23505';
+	const dupUHID =
+		dupViolation &&
+		contactResponse.error?.message?.includes('contacts_uh_id_key');
+	const dupEmail =
+		dupViolation &&
+		contactResponse.error?.message?.includes('contacts_email_key');
+
+	if (dupUHID) {
+		contactResponse = await supabase
+			.from('contacts')
+			.update({
+				email,
+				first_name: firstName,
+				last_name: lastName,
+				phone_number: phone,
+				shirt_size_id: shirtSize,
+			})
+			.eq('uh_id', uhID);
+	} else if (dupEmail) {
 		contactResponse = await supabase
 			.from('contacts')
 			.update({
 				uh_id: uhID,
-				email,
 				first_name: firstName,
 				last_name: lastName,
 				phone_number: phone,
