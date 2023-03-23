@@ -125,6 +125,7 @@ router.post(
 		} catch (err) {
 			await APICall.sendEmail(
 				[
+					'vyas.r@cougarcs.com',
 					'ben@cougarcs.com',
 					'webmaster@cougarcs.com',
 					'president@cougarcs.com',

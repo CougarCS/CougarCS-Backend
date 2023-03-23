@@ -164,15 +164,15 @@ exports.postContact = async function postContact({
 		shirt_size_id: shirtSize,
 	});
 
-	const dupViolation = contactResponse.error?.code === '23505';
-	const dupUHID =
-		dupViolation &&
+	const isDuplicateContact = contactResponse.error?.code === '23505';
+	const isDuplicateUHID =
+		isDuplicateContact &&
 		contactResponse.error?.message?.includes('contacts_uh_id_key');
-	const dupEmail =
-		dupViolation &&
+	const isDuplicateEmail =
+		isDuplicateContact &&
 		contactResponse.error?.message?.includes('contacts_email_key');
 
-	if (dupUHID) {
+	if (isDuplicateUHID) {
 		contactResponse = await supabase
 			.from('contacts')
 			.update({
@@ -183,7 +183,7 @@ exports.postContact = async function postContact({
 				shirt_size_id: shirtSize,
 			})
 			.eq('uh_id', uhID);
-	} else if (dupEmail) {
+	} else if (isDuplicateEmail) {
 		contactResponse = await supabase
 			.from('contacts')
 			.update({
