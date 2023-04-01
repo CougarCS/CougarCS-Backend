@@ -1,6 +1,8 @@
 FROM node:16-alpine3.14 AS build
 
-RUN apk add g++ make py3-pip
+WORKDIR /app
+
+RUN apk add g++ make py3-pip --no-cache
 
 COPY package.json .babelrc ./
 
