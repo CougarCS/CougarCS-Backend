@@ -225,6 +225,7 @@ exports.postContact = async function postContact({
 		start_date: today.toISOString(),
 		end_date: endDate,
 		membership_code_id: transaction.includes('Stripe') ? 'mc-ps' : 'mc-p',
+		semesters: paidForSemester ? 1 : 2,
 	});
 
 	if (membershipResponse.error) {
