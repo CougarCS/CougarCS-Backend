@@ -28,35 +28,51 @@ Offical backend of CougarCS.
 - ## Requirements
   - [NodeJS](https://nodejs.org/en/) version 14+
   - We use [Yarn](https://yarnpkg.com/getting-started/install) as our package manager
+  - [Docker](https://www.docker.com/)
 - ## Installation
   - Install dependencies: `yarn`
   - Start local server: `yarn server`
   - The local server will start on [http://localhost:4000](http://localhost:4000)
 - ## ENV Setup:
+
   - If you want to test out the payment or the reCAPTCHA, create a `.env` file in the root project folder.
   - You must have a [Stripe](https://stripe.com/), [Google's reCAPTCHA](https://www.google.com/recaptcha/about/), and [SendGrid](https://sendgrid.com) accounts.
   - <strong>NEW_RELIC_ENABLED must be disabled (`NEW_RELIC_ENABLED=false`) in development.</strong>
   - In the `.env` file include these:
+
   ```
-    SENDGRID_API_KEY
-    CALENDAR_ID
-    CALENDAR_API_KEY
-    SHEET_API
-    RECAPTCHA_SECRET_KEY
-    STRIPE_API_KEY
-    SENTRY_URL
-    SEND_EMAIL
-    INGESTION_KEY
-    NOTION_TOKEN
-    NOTION_TUTOR_DB
-    COUGARCS_CLOUD_URL
-    COUGARCS_CLOUD_ACCESS_KEY
-    COUGARCS_CLOUD_SECRET_KEY
-    NEW_RELIC_ENABLED
-    SUPABASE_URL
-    SUPABASE_KEY
+  PORT
+  SENDGRID_API_KEY
+  CALENDAR_ID
+  CALENDAR_API_KEY
+  SHEET_API
+  RECAPTCHA_SECRET_KEY
+  STRIPE_API_KEY
+  SENTRY_URL
+  SEND_EMAIL
+  NOTION_TOKEN
+  NOTION_TUTOR_DB
+  YOUTUBE_API_KEY
+  YOUTUBE_PLAYLIST_ID
+  COUGARCS_CLOUD_URL
+  COUGARCS_CLOUD_ACCESS_KEY
+  COUGARCS_CLOUD_SECRET_KEY
+  NEW_RELIC_LICENSE_KEY
+  NEW_RELIC_APP_NAME
+  SUPABASE_URL
+  SUPABASE_KEY
   ```
+
   - Reach out to the Webmaster(webmaster@cougarcs.com) for the env values
+
+- ## Docker Usage
+
+- Development Docker:
+  - Build the image run `docker build -t <image-name> -f Dockerfile.dev .`
+  - Create a container run `docker run -dp <docker-port>:<external-port> --env-file .env <image-name>`
+- Production Docker:
+  - Build the image run `docker build -t <image-name> .`
+  - Create a container run `docker run -dp <docker-port>:<external-port> --env-file .env <image-name>`
 - ## Linting
 
   - We use ESLint to fix styling and to enforce rules.
@@ -89,6 +105,7 @@ Offical backend of CougarCS.
   - We use [Coveralls](https://coveralls.io/github/CougarCS/CougarCS-Backend) to track the coverage.
 
 - ## Project Structure
+
   - `server.js` is the starting point of the application
   - `src/api/routes/` has the routes of the applications
   - `src/config/app.js` sets up the middlewares
