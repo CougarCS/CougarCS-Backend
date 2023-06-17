@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'cougarcs-backend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D76A96DC223140EFAAF636233C4616B7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_81F35C7450434A5EBD57C1751F9B36DE }}
           package: .
