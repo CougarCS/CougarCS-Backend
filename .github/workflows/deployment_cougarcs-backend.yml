@@ -25,7 +25,7 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-#         npm run test --if-present
+          npm run test --if-present
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'cougarcs-backend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_81F35C7450434A5EBD57C1751F9B36DE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8A6BBDFA3D534E8292EF83C3CD7EEBA5 }}
           package: .
