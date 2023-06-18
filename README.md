@@ -112,3 +112,16 @@ Offical backend of CougarCS.
   - `src/utils/api/calls.js` has the api logic
   - `src/utils/` has config for logger and caching
   - `test` has the unit and the intergeration tests
+
+- ## Deployment on Azure
+  - Azure App Service + Github Actions + Cloudflare
+    - [Azure Github Actions deployment config](https://github.com/CougarCS/CougarCS-Backend/blob/Deployment/.github/workflows/deployment_cougarcs-backend.yml)
+    - [package.json](https://github.com/CougarCS/CougarCS-Backend/blob/Deployment/package.json)
+      - `start` script configured to both build and start
+  - Resources/Blog posts used for deployment
+    - [How and where to define an environment variable on Azure](https://stackoverflow.com/questions/34608769/how-and-where-to-define-an-environment-variable-on-azure)
+    - [Continuous deployment to Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github)
+    - [Deploy a Node.js web app to Azure](https://learn.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-azure-portal)
+    - [Module not found with Node on App Service Linux](https://azureossd.github.io/2022/10/25/Module-not-found-with-Node-on-App-Service-Linux/)
+    - [NPM executables not being found on App Service Linux](https://azureossd.github.io/2022/10/24/NPM-Executables-not-being-found-at-startup-on-App-Service-Linux/index.html)
+    - [Map an existing custom DNS name to Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain?tabs=root%2Cazurecli)
