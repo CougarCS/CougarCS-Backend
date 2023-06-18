@@ -6,7 +6,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=prod babel src -d dist",
     "server": "cross-env NODE_ENV=dev nodemon --exec babel-node ./src/server.js",
-    "start": "cross-env NODE_ENV=prod babel src -d dist && node dist/server.js",
+    "start": "node_modules/cross-env/src/bin/cross-env.js NODE_ENV=prod babel src -d dist && node dist/server.js",
     "test:dev": "cross-env NODE_ENV=test jest --watch --runInBand --detectOpenHandles",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage --runInBand --detectOpenHandles --forceExit",
     "test:mutation": "cross-env NODE_ENV=test stryker run",
