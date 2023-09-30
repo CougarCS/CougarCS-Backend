@@ -37,23 +37,33 @@ exports.sendEmail = async function sendEmail(toEmail, email, subject, content) {
 };
 
 exports.getEvents = async function getEvents() {
-	const { data } = await axios.get(
-		`https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${CALENDAR_API_KEY}`
-	);
-
 	let events = [];
-	data.items
-		.filter((obj) => obj?.start?.date || obj?.start?.dateTime)
-		.forEach((obj) => {
-			renameKey(obj.start, 'dateTime', 'date');
-			renameKey(obj.end, 'dateTime', 'date');
-			events.push({
-				start: obj.start.date,
-				end: obj.end.date,
-				title: obj.summary,
-				desc: obj?.description ? obj.description : 'TBD',
+	let pageToken = null;
+
+	const { data } = await axios.get(
+		`https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${CALENDAR_API_KEY}`,{
+			params:{
+				pageToken
+			}
+		}
+	);
+	
+	do{
+		data.items
+			.filter((obj) => obj?.start?.date || obj?.start?.dateTime)
+			.forEach((obj) => {
+				renameKey(obj.start, 'dateTime', 'date');
+				renameKey(obj.end, 'dateTime', 'date');
+				events.push({
+					start: obj.start.date,
+					end: obj.end.date,
+					title: obj.summary,
+					desc: obj?.description ? obj.description : 'TBD',
+				});
 			});
-		});
+
+		pageToken = data.nextPageToken;
+	} while (pageToken)
 
 	events = _.sortBy(events, (o) => moment(o.start));
 	return { events };
