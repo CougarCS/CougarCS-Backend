@@ -59,7 +59,7 @@ exports.getEvents = async function getEvents(pageToken = null, allEvents = []) {
     if (data.nextPageToken) {
       return getEvents(data.nextPageToken, allEvents);
     } else {
-      return _.sortBy(allEvents, (o) => moment(o.start));
+		return { "events": _.sortBy(allEvents, (o) => moment(o.start)) };
     }
 };
 
