@@ -36,12 +36,13 @@ exports.sendEmail = async function sendEmail(toEmail, email, subject, content) {
 	);
 };
 
-exports.getEvents = async function getEvents() {
-	const { data } = await axios.get(
-		`https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${CALENDAR_API_KEY}`
-	);
-
-	let events = [];
+exports.getEvents = async function getEvents(pageToken = null, allEvents = []) {
+	let url = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?maxResults=50&key=${CALENDAR_API_KEY}`;
+	if (pageToken) {
+		url += `&pageToken=${pageToken}`;
+	}
+	const { data } = await axios.get(url);
+	const events = [];
 	data.items
 		.filter((obj) => obj?.start?.date || obj?.start?.dateTime)
 		.forEach((obj) => {
@@ -54,9 +55,11 @@ exports.getEvents = async function getEvents() {
 				desc: obj?.description ? obj.description : 'TBD',
 			});
 		});
-
-	events = _.sortBy(events, (o) => moment(o.start));
-	return { events };
+	allEvents.push(...events);
+	if (data.nextPageToken) {
+		return getEvents(data.nextPageToken, allEvents);
+	}
+	return { events: _.sortBy(allEvents, (o) => moment(o.start)) };
 };
 
 exports.checkRecaptcha = async function checkRecaptcha(recaptchaToken) {
