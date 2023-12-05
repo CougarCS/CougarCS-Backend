@@ -21,7 +21,7 @@
     "@babel/runtime": "^7.17.9",
     "@newrelic/winston-enricher": "^2.1.2",
     "@notionhq/client": "^0.4.2",
-    "@sendgrid/mail": "^7.5.0",
+    "@sendgrid/mail": "^8.0.0",
     "@sentry/node": "^6.19.7",
     "@sentry/tracing": "^6.19.0",
     "@supabase/supabase-js": "^2.8.0",
