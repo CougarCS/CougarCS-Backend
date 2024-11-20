@@ -52,7 +52,7 @@
     "@babel/plugin-transform-runtime": "7.17.10",
     "@babel/preset-env": "7.17.10",
     "@babel/register": "7.17.7",
-    "@changesets/cli": "2.26.0",
+    "@changesets/cli": "2.27.10",
     "@stryker-mutator/core": "^5.6.1",
     "@stryker-mutator/jest-runner": "^5.6.1",
     "@types/jest": "27.4.1",
