@@ -46,12 +46,12 @@
     "winston": "^3.7.2"
   },
   "devDependencies": {
-    "@babel/cli": "7.17.10",
-    "@babel/core": "7.17.10",
-    "@babel/node": "7.17.10",
-    "@babel/plugin-transform-runtime": "7.17.10",
-    "@babel/preset-env": "7.17.10",
-    "@babel/register": "7.17.7",
+    "@babel/cli": "7.26.4",
+    "@babel/core": "7.26.0",
+    "@babel/node": "7.26.0",
+    "@babel/plugin-transform-runtime": "7.25.9",
+    "@babel/preset-env": "7.26.0",
+    "@babel/register": "7.25.9",
     "@changesets/cli": "2.26.0",
     "@stryker-mutator/core": "^5.6.1",
     "@stryker-mutator/jest-runner": "^5.6.1",
