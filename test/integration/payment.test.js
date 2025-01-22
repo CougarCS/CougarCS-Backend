@@ -330,4 +330,166 @@ describe('Payment API test', () => {
 		expect(res.body).toHaveProperty('message');
 		expect(res.body.message).toBe('OK');
 	});
+
+	test('Stripe Session CCS Cloud Session ID Missing', async () => {
+		const res = await agent
+			.post('/api/payment/sessionRegister')
+			.send({ sessionId: '' });
+
+		expect(res.status).toBe(500);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message[0].msg).toBe('Session ID is required');
+	});
+
+	test('Stripe Session CCS Cloud Post Contact Fail', async () => {
+		jest.spyOn(apiCall, 'getStripeSessionData').mockImplementationOnce(
+			() => {
+				return {
+					status: 'complete',
+					custom_fields: [
+						{ key: 'uhID', numeric: { value: 1234567 } },
+						{ key: 'shirtSize', dropdown: { value: 'M' } },
+					],
+					metadata: { tenure: 'semester' },
+				};
+			}
+		);
+
+		jest.spyOn(apiCall, 'getStripeCustomerData').mockImplementationOnce(
+			() => {
+				return {
+					name: 'John Doe',
+					email: 'john@test.com',
+					phone: '123-456-7890',
+				};
+			}
+		);
+
+		jest.spyOn(apiCall, 'sendEmail').mockImplementationOnce(() => true);
+
+		jest.spyOn(apiCall, 'postContact').mockImplementationOnce(() => {
+			throw new Error();
+		});
+
+		const res = await agent.post('/api/payment/sessionRegister').send({
+			sessionId:
+				'cs_test_a11YYufWQzNY63zpQ6QSNRQhkUpVph4WRmzW0zWJO2znZKdVujZ0N0S22u',
+		});
+
+		expect(res.status).toBe(500);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message).toBe('Failed to write to DB');
+	});
+
+	test('Stripe Session CCS Cloud Post Contact', async () => {
+		jest.spyOn(apiCall, 'getStripeSessionData').mockImplementationOnce(
+			() => {
+				return {
+					status: 'complete',
+					custom_fields: [
+						{ key: 'uhID', numeric: { value: 1234567 } },
+						{ key: 'shirtSize', dropdown: { value: 'M' } },
+					],
+					metadata: { tenure: 'semester' },
+				};
+			}
+		);
+
+		jest.spyOn(apiCall, 'getStripeCustomerData').mockImplementationOnce(
+			() => {
+				return {
+					name: 'John Doe',
+					email: 'john@test.com',
+					phone: '123-456-7890',
+				};
+			}
+		);
+
+		jest.spyOn(apiCall, 'postContact').mockImplementationOnce(() => true);
+
+		const res = await agent.post('/api/payment/sessionRegister').send({
+			sessionId:
+				'cs_test_a11YYufWQzNY63zpQ6QSNRQhkUpVph4WRmzW0zWJO2znZKdVujZ0N0S22u',
+		});
+
+		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message).toBe('OK');
+	});
+
+	test('Stripe Session CCS Cloud Get Session Fail', async () => {
+		jest.spyOn(apiCall, 'getStripeSessionData').mockImplementationOnce(
+			() => {
+				throw new Error();
+			}
+		);
+
+		jest.spyOn(apiCall, 'sendEmail').mockImplementationOnce(() => true);
+
+		const res = await agent.post('/api/payment/sessionRegister').send({
+			sessionId:
+				'cs_test_a11YYufWQzNY63zpQ6QSNRQhkUpVph4WRmzW0zWJO2znZKdVujZ0N0S22u',
+		});
+
+		expect(res.status).toBe(500);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message).toBe('Failed to retrieve session');
+	});
+
+	test('Stripe Session CCS Cloud Invalid Session', async () => {
+		jest.spyOn(apiCall, 'getStripeSessionData').mockImplementationOnce(
+			() => null
+		);
+
+		jest.spyOn(apiCall, 'getStripeCustomerData').mockImplementationOnce(
+			() => null
+		);
+
+		jest.spyOn(apiCall, 'postContact').mockImplementationOnce(() => true);
+
+		jest.spyOn(apiCall, 'sendEmail').mockImplementationOnce(() => true);
+
+		const res = await agent.post('/api/payment/sessionRegister').send({
+			sessionId:
+				'cs_test_a11YYufWQzNY63zpQ6QSNRQhkUpVph4WRmzW0zWJO2znZKdVujZ0N0S22u',
+		});
+
+		expect(res.status).toBe(500);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message).toBe('Payment incomplete or invalid.');
+	});
+
+	test('Stripe Session CCS Cloud Invalid Customer', async () => {
+		jest.spyOn(apiCall, 'getStripeSessionData').mockImplementationOnce(
+			() => {
+				return {
+					status: 'complete',
+					custom_fields: [
+						{ key: 'uhID', numeric: { value: 1234567 } },
+						{ key: 'shirtSize', dropdown: { value: 'M' } },
+					],
+					metadata: { tenure: 'semester' },
+				};
+			}
+		);
+
+		jest.spyOn(apiCall, 'getStripeCustomerData').mockImplementationOnce(
+			() => {
+				return null;
+			}
+		);
+
+		jest.spyOn(apiCall, 'sendEmail').mockImplementationOnce(() => true);
+
+		jest.spyOn(apiCall, 'postContact').mockImplementationOnce(() => true);
+
+		const res = await agent.post('/api/payment/sessionRegister').send({
+			sessionId:
+				'cs_test_a11YYufWQzNY63zpQ6QSNRQhkUpVph4WRmzW0zWJO2znZKdVujZ0N0S22u',
+		});
+
+		expect(res.status).toBe(500);
+		expect(res.body).toHaveProperty('message');
+		expect(res.body.message).toBe('Failed to retrieve customer');
+	});
 });

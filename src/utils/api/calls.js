@@ -116,6 +116,20 @@ exports.createStripeCustomer = async function createStripeCustomer(
 	});
 };
 
+exports.getStripeSessionData = async function getStripeSessionData(sessionId) {
+	const session = await stripe.checkout.sessions.retrieve(sessionId, {
+		expand: ['line_items'],
+	});
+	return session;
+};
+
+exports.getStripeCustomerData = async function getStripeCustomerData(
+	customerId
+) {
+	const customer = stripe.customers.retrieve(customerId);
+	return customer;
+};
+
 exports.getTutors = async function getTutors() {
 	const notion = new Client({
 		auth: NOTION_TOKEN,
