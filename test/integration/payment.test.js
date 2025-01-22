@@ -351,6 +351,7 @@ describe('Payment API test', () => {
 						{ key: 'shirtSize', dropdown: { value: 'M' } },
 					],
 					metadata: { tenure: 'semester' },
+					livemode: true,
 				};
 			}
 		);
@@ -391,6 +392,7 @@ describe('Payment API test', () => {
 						{ key: 'shirtSize', dropdown: { value: 'M' } },
 					],
 					metadata: { tenure: 'semester' },
+					livemode: true,
 				};
 			}
 		);
@@ -469,6 +471,7 @@ describe('Payment API test', () => {
 						{ key: 'shirtSize', dropdown: { value: 'M' } },
 					],
 					metadata: { tenure: 'semester' },
+					livemode: true,
 				};
 			}
 		);

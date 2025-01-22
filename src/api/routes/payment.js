@@ -253,16 +253,22 @@ router.post(
 		} = paymentDetails;
 
 		try {
-			await APICall.postContact({
-				transaction: `Payment via Stripe on ${new Date().toLocaleDateString()}`,
-				firstName,
-				lastName,
-				email,
-				uhID,
-				phone,
-				shirtSize,
-				paidUntil,
-			});
+			if (session.livemode) {
+				await APICall.postContact({
+					transaction: `Payment via Stripe on ${new Date().toLocaleDateString()}`,
+					firstName,
+					lastName,
+					email,
+					uhID,
+					phone,
+					shirtSize,
+					paidUntil,
+				});
+			} else {
+				logger.info(
+					`[TEST MODE] POST to CougarCS Cloud API for UHID=${uhID}`
+				);
+			}
 		} catch (err) {
 			await APICall.sendEmail(
 				[
