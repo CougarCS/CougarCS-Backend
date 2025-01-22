@@ -209,6 +209,7 @@ router.post(
 			);
 
 			paymentDetails = {
+				...paymentDetails,
 				firstName: customer.name ? customer.name.split(' ')[0] : null,
 				lastName: customer.name
 					? customer.name.split(' ').slice(1).join(' ')
@@ -266,7 +267,9 @@ router.post(
 				});
 			} else {
 				logger.info(
-					`[TEST MODE] POST to CougarCS Cloud API for UHID=${uhID}`
+					`[TEST MODE] POST to CougarCS Cloud API for CUSTOMER=${JSON.stringify(
+						paymentDetails
+					)}`
 				);
 			}
 		} catch (err) {
