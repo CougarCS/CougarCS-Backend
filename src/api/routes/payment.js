@@ -152,4 +152,154 @@ router.post(
 	}
 );
 
+/* webhook setup to handle successful Payments (https://docs.stripe.com/checkout/fulfillment) */
+router.post(
+	'/sessionRegister',
+	[
+		check('sessionId', 'Session ID is required')
+			.not()
+			.isEmpty()
+			.trim()
+			.escape(),
+	],
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			logger.info(errors);
+			return res.status(500).json({ message: errors.array() });
+		}
+
+		const { sessionId } = req.body;
+
+		let session = null;
+		let paymentDetails = {};
+
+		try {
+			session = await APICall.getStripeSessionData(sessionId);
+
+			if (!session || session.status === 'unpaid') {
+				return res
+					.status(500)
+					.json({ message: 'Payment incomplete or invalid.' });
+			}
+
+			paymentDetails.uhID = session.custom_fields.find(
+				(field) => field.key === 'uhID'
+			).numeric.value;
+
+			paymentDetails.shirtSize = session.custom_fields.find(
+				(field) => field.key === 'shirtSize'
+			).dropdown.value;
+
+			paymentDetails.paidUntil = session.metadata.tenure;
+		} catch (err) {
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
+			return res
+				.status(500)
+				.json({ message: 'Failed to retrieve session' });
+		}
+
+		try {
+			const customer = await APICall.getStripeCustomerData(
+				session.customer
+			);
+
+			paymentDetails = {
+				...paymentDetails,
+				firstName: customer.name ? customer.name.split(' ')[0] : null,
+				lastName: customer.name
+					? customer.name.split(' ').slice(1).join(' ')
+					: '',
+				email: customer.email,
+				phone: customer.phone,
+			};
+		} catch (err) {
+			await APICall.sendEmail(
+				[
+					'webmaster@cougarcs.com',
+					'president@cougarcs.com',
+					'vice.president@cougarcs.com',
+				],
+				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
+				'CougarCS Cloud API - postContact Failed',
+				JSON.stringify({
+					sessionId: session.id,
+					err: err.message,
+				})
+			);
+
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
+
+			return res
+				.status(500)
+				.json({ message: 'Failed to retrieve customer' });
+		}
+
+		const {
+			firstName,
+			lastName,
+			email,
+			uhID,
+			shirtSize,
+			paidUntil,
+			phone,
+		} = paymentDetails;
+
+		try {
+			if (session.livemode) {
+				await APICall.postContact({
+					transaction: `Payment via Stripe on ${new Date().toLocaleDateString()}`,
+					firstName,
+					lastName,
+					email,
+					uhID,
+					phone,
+					shirtSize,
+					paidUntil,
+				});
+			} else {
+				logger.info(
+					`[TEST MODE] POST to CougarCS Cloud API for CUSTOMER=${JSON.stringify(
+						paymentDetails
+					)}`
+				);
+			}
+		} catch (err) {
+			await APICall.sendEmail(
+				[
+					'webmaster@cougarcs.com',
+					'president@cougarcs.com',
+					'vice.president@cougarcs.com',
+				],
+				{ name: 'Payment Failure', email: 'info@cougarcs.com' },
+				'CougarCS Cloud API - postContact Failed',
+				JSON.stringify({
+					name: `${firstName} ${lastName}`,
+					email,
+					uhID,
+					err: err.message,
+				})
+			);
+
+			logger.error(
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+					req.method
+				} - ${req.ip}`
+			);
+
+			return res.status(500).json({ message: 'Failed to write to DB' });
+		}
+
+		return res.status(200).json({ message: 'OK' });
+	}
+);
+
 export default router;
