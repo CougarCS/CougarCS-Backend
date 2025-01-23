@@ -211,9 +211,10 @@ router.post(
 			paymentDetails = {
 				...paymentDetails,
 				firstName: customer.name ? customer.name.split(' ')[0] : null,
-				lastName: customer.name
-					? customer.name.split(' ').slice(1).join(' ')
-					: '',
+				lastName:
+					customer.name && customer.name.split(' ').length > 1
+						? customer.name.split(' ').slice(1).join(' ')
+						: '',
 				email: customer.email,
 				phone: customer.phone,
 			};
