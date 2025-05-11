@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/runtime": "^7.17.9",
+    "@babel/runtime": "^7.26.10",
     "@newrelic/winston-enricher": "^2.1.2",
     "@notionhq/client": "^0.4.2",
     "@sendgrid/mail": "^7.5.0",
