@@ -104,8 +104,7 @@ router.post(
 			);
 		} catch (err) {
 			logger.error(
-				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-					req.method
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
 				} - ${req.ip}`
 			);
 			return res.status(500).json({ message: 'Payment Error!' });
@@ -141,8 +140,7 @@ router.post(
 				})
 			);
 			logger.error(
-				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-					req.method
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
 				} - ${req.ip}`
 			);
 		}
@@ -194,8 +192,7 @@ router.post(
 			paymentDetails.paidUntil = session.metadata.tenure;
 		} catch (err) {
 			logger.error(
-				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-					req.method
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
 				} - ${req.ip}`
 			);
 			return res
@@ -210,13 +207,17 @@ router.post(
 
 			paymentDetails = {
 				...paymentDetails,
-				firstName: customer.name ? customer.name.split(' ')[0] : null,
+				firstName: customer.name
+					? customer.name.split(' ')[0]
+					: 'UNKNOWN',
 				lastName:
 					customer.name && customer.name.split(' ').length > 1
 						? customer.name.split(' ').slice(1).join(' ')
-						: '',
+						: 'UNKNOWN',
 				email: customer.email,
-				phone: customer.phone,
+				phone: customer.phone // we want to filter this to digits only
+					? customer.phone.replace(/\D/g, '')
+					: null,
 			};
 		} catch (err) {
 			await APICall.sendEmail(
@@ -234,8 +235,7 @@ router.post(
 			);
 
 			logger.error(
-				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-					req.method
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
 				} - ${req.ip}`
 			);
 
@@ -291,8 +291,7 @@ router.post(
 			);
 
 			logger.error(
-				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-					req.method
+				`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method
 				} - ${req.ip}`
 			);
 
