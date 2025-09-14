@@ -63,7 +63,7 @@ jobs:
           NEW_RELIC_ENABLED: false
 
       - name: Upload a Coverage Artifact
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: coverage
           path: coverage/
@@ -103,7 +103,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download Coverage Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: coverage
           path: coverage
@@ -134,7 +134,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download Coverage Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: coverage
           path: coverage
