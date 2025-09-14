@@ -63,7 +63,7 @@ jobs:
           NEW_RELIC_ENABLED: false
 
       - name: Upload a Coverage Artifact
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v3.2.1
         with:
           name: coverage
           path: coverage/
