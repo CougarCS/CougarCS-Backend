@@ -42,7 +42,7 @@
     "morgan-json": "^1.1.0",
     "newrelic": "^8.10.0",
     "stripe": "^8.217.0",
-    "uuid": "^8.3.0",
+    "uuid": "^11.0.0",
     "winston": "^3.7.2"
   },
   "devDependencies": {
